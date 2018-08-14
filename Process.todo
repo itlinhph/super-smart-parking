@@ -37,4 +37,35 @@ Chapter 2. Background:
             chồng chéo nhau sau cùng vẫn trả lại đúng số tiền đó cho người dùng.
             Mixer ko ghi log thì khó phát hiện.
 
+        Bitcoin dễ bị tấn công bằng phân tích mạng:
+        Nếu kẻ tấn công có thể đọc được toàn bộ luồng traffic đến và đi của nạn nhân, chúng có thể 
+        dễ dàng biết được transaction nào được brocast từ nạn nhân
         
+        - Tất cả giao dịch đều được công khai trên mạng bitcoin. Với bitcoin, bất kỳ ai cũng đều có thể
+        tham gia, kể cả những kẻ xấu. Vì thế nó mới gọi là no-trust-anyone network.
+        => bitcoin kém riêng tư hơn so với tiền mặt, thậm chí là cả credit cards.
+        Nếu bạn trả tiền mua bán bằng bitcoin, hãy cân nhắc vì nó sẽ công khai giao dịch đó mãi mãi.
+
+        Vì mọi người có thể tạo ra nhiều địa chỉ khác nhau, nên bitcoin chỉ đưa ra cơ chế bảo về quyền riêng tư 
+        thông qua chữ ký.
+
+        2013, Ian Miers... cung cấp 1 tiện ích cho phép ẩn danh các giao dịch hoàn toàn gọi là ZeroCoin.
+
+    2.2. Reception, usage, abuses (lạm dụng) :
+        2.2.1 Spending Bitcoin:
+            Chỉ nêu những nơi chấp nhận thanh toán bitcoin, sự tăng trưởng bitcoin
+        2.2.2 Trading & exchanges:
+            Sự tăng trưởng bitcoin trên thị trường
+        2.2.3 The silk road: 
+            Ko có gì.
+        2.2.4   No thing:
+        2.2.5 Bitcoin in cybercrime (Bitcoin trong giới tội phạm):
+            Ko có gì thú vị
+
+
+    2.3. State of the art, goals and challenges: 
+        Ko có gì thú vị
+
+    ✔ -------------------- @done (8/14/2018, 5:05:09 PM)
+
+    
