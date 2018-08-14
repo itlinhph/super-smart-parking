@@ -1,0 +1,17 @@
+Chapter 2: 
+    Background
+    2.1.1: Cái nhìn tổng quan về bitcoin:
+        - Bitcoin được biết đến như 1 loại tiền ảo, trust-no-one, ko có ngân hàng hay chính phủ trung gian.
+        - Bitcoin là một mạng phi tập trung, opensource, thiết kế với bảo mật cryptocurency.
+        - Speed and price: Giao dịch nhanh, rẻ hơn so với ngân hàng (từ nước này qua nước khác)
+        - No central authority
+        - Better privacy: Ko có ngân hàng trung giao, mọi giao dịch đều được coi là ẩn danh
+        - No account freezing
+        - Bitcoin sử dụng cryptocurency:
+            + Public - Private key cryptocurency: Giống với hashed public key.
+            + Khi A gửi tiền cho B thì một transaction được tạo ra.
+             transaction được brocast lên mạng bitcoin. Khi transaction đã verify, nó được giữ trong blockchain,
+             tất cả máy tính peer-to-peer đều có một bản copy của chuỗi blockchain này.
+            + SHA256
+            + bla bla ....
+        
