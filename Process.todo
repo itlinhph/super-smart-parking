@@ -1,6 +1,5 @@
-Chapter 2: 
-    Background
-    2.1.1: Cái nhìn tổng quan về bitcoin:
+Chapter 2. Background:
+    2.1.1 Cái nhìn tổng quan về bitcoin:
         - Bitcoin được biết đến như 1 loại tiền ảo, trust-no-one, ko có ngân hàng hay chính phủ trung gian.
         - Bitcoin là một mạng phi tập trung, opensource, thiết kế với bảo mật cryptocurency.
         - Speed and price: Giao dịch nhanh, rẻ hơn so với ngân hàng (từ nước này qua nước khác)
@@ -14,4 +13,28 @@ Chapter 2:
              tất cả máy tính peer-to-peer đều có một bản copy của chuỗi blockchain này.
             + SHA256
             + bla bla ....
+    2.1.3 Quy định tại Hoa Kỳ, Đức:
+        - Tóm lại là vào đầu năm 2013 thì Mỹ vẫn chưa coi bitcoin là một loại tiền tệ,
+        Muốn trao đổi tiền thật với giao dịch lớn thì phải xác thực người giao dịch với chính phủ,
+        còn sử dụng mua thức ăn, đồ dùng các kiểu thì oke.
+        Ở Đức thì Bicoin được coi như 1 đơn vị tiền dùng trong tài khoản ngân hàng. có
+        thể trả thuế các kiểu nhưng vẫn phải nằm dưới quyền kiểm soát của chính phủ
+        - Đến cuối năm 2013 Mỹ coi Bitoin như 1 loại tiền ảo, cho phép trao đổi với ngân hàng với 
+        tỷ suất 900$/ coin
+
+    2.1.4 Privacy in Bicoin:
+        - Chế độ bảo mật của bitcoin vẫn chưa đủ để bảo vệ quyền riêng tư của người dùng nếu
+        dùng bitcoin như một loại tiền kỹ thuật số.
+        - Trong một môi trường hẹp, phương pháp clustering vẫn có thể tìm ra danh tính người dùng,
+        kể cả khi họ cố tạo ra những địa chỉ mới.
+        - Lý do chính bắt nguồn từ lịch sử của bitcoin, nó sinh ra với mọi dữ liệu được public. Mọi người
+        đều có thể xem được lịch sử cùng luồng giao dịch của 1 tài khoản bất kỳ.
+        
+        - Một số kỹ thuật ẩn danh phổ biến:
+            + Ngẫu nhiên gửi coin tới các địa chỉ mới cũng của chính người dùng đó.
+             Người ngoài ko biết rằng mình đang gửi coin cho địa chỉ khác hay chính mình.
+            + Sử dụng các mixer, lấy coin của nhiều người, sau đó mix chúng lại loạn xị ngậu lên, gửi và nhận
+            chồng chéo nhau sau cùng vẫn trả lại đúng số tiền đó cho người dùng.
+            Mixer ko ghi log thì khó phát hiện.
+
         
