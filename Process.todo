@@ -68,4 +68,11 @@ Chapter 2. Background:
 
     ✔ -------------------- @done (8/14/2018, 5:05:09 PM)
 
-    
+
+Chapter 3: BitIodine: system overview:
+    3.1 Bitcoin terminology (Các thuật ngữ bitcoin):
+        - Địa chỉ: 1 địa chỉ trong bitcoin là 1 chuỗi có dạng 1MikiSPbrhCFk7S4wzZP7gQqhwWH866DCb
+        được sinh ra bởi bitcoin client cùng với private key. Địa chỉ được public và có thể show
+        ra bất cứ đâu để thanh toán.
+        
+        - Ví:
