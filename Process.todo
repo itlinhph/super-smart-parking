@@ -75,4 +75,35 @@ Chapter 3: BitIodine: system overview:
         được sinh ra bởi bitcoin client cùng với private key. Địa chỉ được public và có thể show
         ra bất cứ đâu để thanh toán.
         
-        - Ví:
+        - Ví: Lưu địa chỉ và private key 
+        - blockchain: Khái niệm nhiều rồi
+        - Block: Cũng nói nhiều rồi
+        - Transaction: CHuyển giao giá trị giữa các địa chỉ bitcoin
+        Giao dịch được ký bởi private key.
+
+    3.2: BitIodine terminology :
+        3.2.1 Transaction & User graphs:
+            - Để phân tích giao dịch giữa 1 vài địa chỉ riêng lẻ dường như là điều vô nghĩa, thay
+            vào đó, ta cần xây dựng 1 đồ thị giữa chúng.
+            - Hình 3.1 là 1 ví dụ về visualization của mạng lưới liên quan tới 1 Bitcoin faucet.
+            
+            ✔ (Bitcoin-faucet là trang web, tại đó bạn có thể nhận bitcoin sau một khoảng thời gian. @done (8/19/2018, 10:01:13 PM)
+                Những khoản tiền này tồn tại nhờ các chi phí quảng cáo (treo banner, cập nhật video và v.v.). @done (8/19/2018, 10:01:45 PM)
+                Đăng ký miễn phí, tuy nhiên thỉnh thoảng vẫn cần email để có thể đăng ký. @done (8/19/2018, 10:01:43 PM)
+                Để nhận đồng tiền ảo, bạn cần phải truy cập vào trang web của nhà quảng cáo. @done (8/19/2018, 10:01:44 PM)
+                Tại một số Bitcoin-faucet chỉ cần truy cập vào là đủ, một số khác cần phải thực hiện một vài thao tác, ví dụ điền mã số từ bức ảnh. @done (8/19/2018, 10:01:40 PM)
+                Sau một khoảng thời gian truy cập (thông thường không quá 2 phút), sẽ xuất hiện ô để điền số ví BTC và satoshi (một phần của bitcoin) @done (8/19/2018, 10:01:39 PM)
+            ✔ sẽ được chuyển sang tài khoản của bạn.) @done (8/19/2018, 10:02:06 PM)
+            
+            - BitIodine phá bỏ sự ẩn danh bằng cách nhóm các địa chỉ thành các User hoặc các Cluster. 
+            Ta sẽ kết hợp những giao dịch lớn trong đồ thị và đưa ra 1 ý nghĩa mới cho những giao dịch này: Các cạnh kết nối giữa
+            người dùng với nhau là những giao dịch chuyển tiền giữa những người dùng ngoài đời thực.
+            Trong đồ thị này, các node là ngừoi dùng, cạnh là những giao dịch giữa người dùng với nhau.
+            Kết quả sau bước phân tích đồ thị, ta có thể truy xuất các thông tin có giá trị về 1 người dùng nào đó bằng cách chỉ biết 1 trong
+            các địa chỉ của họ.
+
+            - Nhóm người dùng thành các cluster sẽ làm đơn giản hóa việc phân tích đồ thị bitcoin. Nó tạo ra các cạnh của giao dịch tổng hợp giữa
+            những người dùng tương ứng.
+            Với cách tiếp cận này, ta có thể loại bỏ bớt những giao dịch ẩn danh giữa những địa chỉ vô nghiã. Các giao dịch thực sự giữa những người dùng có thể được
+            nhìn thấy rõ ràng hơn.
+
