@@ -107,3 +107,40 @@ Chapter 3: BitIodine: system overview:
             Với cách tiếp cận này, ta có thể loại bỏ bớt những giao dịch ẩn danh giữa những địa chỉ vô nghiã. Các giao dịch thực sự giữa những người dùng có thể được
             nhìn thấy rõ ràng hơn.
 
+        3.2.2 Heuristics:
+            Có 2 Heuristics được sử dụng để nhóm các địa chỉ thành những người dùng thực tế
+            3.2.2.1: First Heuristics:
+                Heuristics đầu tiên tiếp cận thông qua giao dịch đa đầu vào (multi-input transactions)
+                Giao dịch có nhiều đầu vào xảy ra khi một người dùng muốn thực hiện khoản thanh toán nào đó nhưng khoản thanh toán đó lại lớn hơn số dư của từng địa chỉ 
+                bitcoin riêng lẻ. Để tránh phải thực hiện nhiều giao dịch, Bicoin client chọn ra 1 tập các địa chỉ sao cho tổng số dư có thể thanh toán được giao dịch đó
+                nhằm giảm thiểu phí giao dịch và thời gian chờ đợi, giao dịch đa đầu vào sẽ được khởi tạo.
+                Điều này có nghĩa là khi một giao dịch xuất hiện nhiều địa chỉ đầu vào, chúng ta có thể đoán rằng những địa chỉ này thuộc về cùng 1 ví, 1 user thực.
+            3.2.2.2: Second Heuristics:
+                Heuristics thứ hai làm việc với số dư của các giao dịch.
+                Bitcoin protocol buộc mỗi giao dịch đầu ra, sẽ là đầu vào của giao dịch mới. Điều này có nghĩa là những giao dịch chưa tiêu
+                unspend output sẽ đươc sử dụng như đầu vào cho giao dịch mới, số tiền này sẽ được trả lại cho người dùng.
+                Để đảm bảo tính ẩn danh, một địa chỉ ẩn (shadow address) được tự động tạo ra để thu thập toàn bộ số dư trả về cho người dùng.
+                Heuristics cố gắng đoán xem một trong những địa chỉ đầu ra thực sự thuộc về cùng 1 người dùng.
+                Biểu đồ các node lớn là các con bạc lớn cùng những địa chỉ ảo của chúng. bla bla...
+            
+    3.3. Cấu trúc và luồng thực thi:
+        BitIodine là một module, dễ dàng mở rộng. triển khai như 1 framework xây dựng các ứng dụng phức tạp hơn.
+
+        3.3.1 Block Parser:
+            Block Parser đọc các block và giao dịch từ folder .bitcoin ( quản lý bởi bitcoind client) xuất ra database.
+            Database được thiết kế các schema phù hợp giúp truy xuất, cập nhật nhanh dữ liệu từ mạng bitcoin.
+        
+        3.3.2 Clusterizer:
+            Mục tiêu của bộ phân nhóm là tìm ra các nhóm địa chỉ thuộc cùng 1 người dùng thực sự.
+            Nó đọc lần lượt từng blockchain database và sinh ra/cập nhật thêm các cluster của các địa chỉ sử dụng 2 Heuristics
+            đề cập ở trên.
+            Heuristics đầu tiên khai thác những giao dịch đa đầu vào, còn heuristics thứ 2 thì lại tập trung vào nội dung thay đổi
+            số dư trong mỗi transaction.
+
+
+        3.3.3 Scrapers:
+            Một tập hợp các module thu thập dữ liệu từ web về địa chỉ bitcoin tương ứng với người dùng nào trong thực tế
+            sẽ được tự động thu thập, cập nhật theo danh sách...
+            - Tên người dùng (Username) trên các diễn đàn, market-place như Bitcoin-Talk, Bitcoin-OTC (Thu thập từ chữ ký và database)
+            - physical coins: Được tạo bởi Casascius (https://www.casascius.com) cùng với giá trị và trạng thái bitcoin của chúng. (opened, untouched)
+            
