@@ -143,4 +143,9 @@ Chapter 3: BitIodine: system overview:
             sẽ được tự động thu thập, cập nhật theo danh sách...
             - Tên người dùng (Username) trên các diễn đàn, market-place như Bitcoin-Talk, Bitcoin-OTC (Thu thập từ chữ ký và database)
             - physical coins: Được tạo bởi Casascius (https://www.casascius.com) cùng với giá trị và trạng thái bitcoin của chúng. (opened, untouched)
+            - Các scammers đã biết : Được đưa ra bởi trình định danh tự động, phải hồi xấu từ Bitcoin-OTC, Bitcoin Talk.
+            - Các cổ đông trong các giao dịch chứng khoán (Hiện tại đã được giới hạn bởi BitFunder)
+            - Một danh sách bổ sung khác có thể xây dựng qua pp bán tự động cần sự can thiệp của con người.
+            Đặc biệt, bằng cách download các thẻ tag từ website Blockchain.info - công cụ giúp chúng ta xây dựng danh sách các địa chỉ
+            dùng để đánh bạc, ví online, mining pool, hay các địa chỉ bị tịch thu bởi cơ quan pháp luật.
             
