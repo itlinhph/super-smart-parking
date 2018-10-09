@@ -2,10 +2,18 @@ import cv2
 import numpy as np
 import logging
 
+# is can be char
+MIN_CHAR_AREA = 30
+MIN_CHAR_W    = 2
+MIN_CHAR_H    = 8
+MIN_WH_RATIO = 0.15
+MAX_WH_RATIO = 1.0
+
+
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
 
 def main():
-    imgOrigin = cv2.imread("1111.jpg")
+    imgOrigin = cv2.imread("plate.jpg")
     height, width, numChannels = imgOrigin.shape
     logging.debug("Shape: %s, %s, %s", height, width, numChannels)
     
@@ -17,7 +25,6 @@ def main():
 
     
     imgGray, imgPreprocess = preprocess(imgOrigin)
-    # imgGrayScene, imgThreshScene = preprocess(imgOrigin)
 
     listChars = findCharsFromImg(imgPreprocess)
 
@@ -59,12 +66,34 @@ def findCharsFromImg(imgThresh):
     
     # draw Contours:
     for i, item in enumerate(contours):
-        cv2.drawContours(imgContours, contours, i, (0, 255.0, 255.0) ) #SCALAR_WHITE
-        cv2.imshow("Draw Contour", imgContours)
+    #     cv2.drawContours(imgContours, contours, i, (0, 255.0, 255.0) ) #SCALAR_WHITE
+    #     cv2.imshow("Draw Contour", imgContours)
+
+        isChar = isCanBeChar(item)
+        if(isChar):
+            listChars.append(isChar)
+            
+    logging.debug("Len list chars: %s", len(listChars))
+
+    
 
     return listChars
 
 
+
+def isCanBeChar(contour):
     
+    char = None
+    boundRect = cv2.boundingRect(contour)
+    X, Y, W, H = boundRect
+    # logging.debug("%s %s %s %s", X, Y, W, H)
+    boundArea = W * H
+    WHRatio = float(W)/float(H)
+
+    if(W > MIN_CHAR_W and H > MIN_CHAR_H and boundArea > MIN_CHAR_AREA and WHRatio > MIN_WH_RATIO and WHRatio < MAX_WH_RATIO):
+        char = {"x": X, "y": Y, "w": W, "h": H }
+
+    return char
+
 
 main()

@@ -1,6 +1,7 @@
-DEBUG	Shape: 800, 533, 3
+DEBUG	Shape: 320, 500, 3
 DEBUG	
-GrayScale: (800, 533, 1),
-ThreshScene: (800, 533, 1), 
-ConTours: (800, 533, 3)
-DEBUG	Num contours: 617
+GrayScale: (320, 500, 1),
+ThreshScene: (320, 500, 1), 
+ConTours: (320, 500, 3)
+DEBUG	Num contours: 553
+DEBUG	Len list chars: 46
