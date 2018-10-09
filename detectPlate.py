@@ -5,7 +5,7 @@ import logging
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
 
 def main():
-    imgOrigin = cv2.imread("test.jpg")
+    imgOrigin = cv2.imread("1111.jpg")
     height, width, numChannels = imgOrigin.shape
     logging.debug("Shape: %s, %s, %s", height, width, numChannels)
     
@@ -19,7 +19,10 @@ def main():
     imgGray, imgPreprocess = preprocess(imgOrigin)
     # imgGrayScene, imgThreshScene = preprocess(imgOrigin)
 
-    cv2.imshow('plate',imgGray)
+    listChars = findCharsFromImg(imgPreprocess)
+
+
+    # cv2.imshow('plate',imgGray)
     cv2.imshow('plate2',imgPreprocess)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -43,6 +46,25 @@ def preprocess(imgOrigin):
     
 
     return imgGray, imgThresh
+
+def findCharsFromImg(imgThresh):
+    
+    listChars = []
+    countChars = 0
+
+    imgThreshCopy = imgThresh.copy()
+    imgContours, contours, npaHierarchy = cv2.findContours(imgThreshCopy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    imgContours = np.zeros((imgThresh.shape[0], imgThresh.shape[1], 3), np.uint8)
+    logging.debug("Num contours: %s", len(contours) )
+    
+    # draw Contours:
+    for i, item in enumerate(contours):
+        cv2.drawContours(imgContours, contours, i, (0, 255.0, 255.0) ) #SCALAR_WHITE
+        cv2.imshow("Draw Contour", imgContours)
+
+    return listChars
+
+
     
 
 main()
