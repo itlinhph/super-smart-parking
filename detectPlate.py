@@ -14,7 +14,7 @@ CHAR_MAX_RATIO = 1.0
 # Cluster char
 CLUSTER_MIN_NUM_CHAR   = 2
 CLUSTER_MAX_ANGLE_CHAR = 15.0
-MAX_DIFF_AREA   = 0.15
+MAX_DIFF_AREA   = 0.4
 MAX_DIFF_WIDTH  = 0.6
 MAX_DIFF_HEIGHT = 0.2
 MAX_DISTANCE_MULTI = 3.2
@@ -27,9 +27,9 @@ logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(level
 #get grayScale and threshold 
 def preprocess(imgOrigin):
     
-    # imgHSV = cv2.cvtColor(imgOrigin, cv2.COLOR_BGR2HSV)
-    # hue, saturation, imgGray = cv2.split(imgHSV)
-    imgGray = cv2.cvtColor(imgOrigin, cv2.COLOR_BGR2GRAY)
+    imgHSV = cv2.cvtColor(imgOrigin, cv2.COLOR_BGR2HSV)
+    hue, saturation, imgGray = cv2.split(imgHSV)
+    # imgGray = cv2.cvtColor(imgOrigin, cv2.COLOR_BGR2GRAY)
 
     # MaximizeContrast
     structuringElement = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
@@ -80,8 +80,8 @@ def isCanBeChar(contour):
     WHRatio = float(W)/float(H)
 
     if(W > CHAR_MIN_W and H > CHAR_MIN_H and boundArea > CHAR_MIN_AREA and WHRatio > CHAR_MIN_RATIO and WHRatio < CHAR_MAX_RATIO):
-        centerX = (X+X+W)/2
-        centerY = (Y+Y+H)/2
+        centerX = (X+X+W)*1.0/2
+        centerY = (Y+Y+H)*1.0/2
         # diagonal= math.sqrt(W**2 + H**2)
         char = {
             "centerX": centerX,
@@ -98,25 +98,28 @@ def isCanBeChar(contour):
 
 def findClusterChar(char, listChars): 
     clusterChar = [char]
+    numContinue = 0
+    # logging.debug("listChar find CLuster: %s", listChars)
     for pChar in listChars: 
         if pChar == char:
+            numContinue += 1
+            # logging.debug("Numcontinue: %s", numContinue)
             continue
 
         centerX, centerY, W, H, boundArea = char["centerX"], char["centerY"],char["position"][2],char["position"][3], char["boundArea"]
         pcenterX, pcenterY, pW, pH, pboundArea = pChar["centerX"], pChar["centerY"],pChar["position"][2],pChar["position"][3], pChar["boundArea"]
 
         # pcenterX, pcenterY, pW, pH, pboundArea, = pChar
-        # logging.debug("Char: %s %s %s %s %s", centerX, centerY, W, H, boundArea)
+        # logging.debug("Char: %s %s %s %s %s", pcenterX, pcenterY, pW, pH, pboundArea)
         # Compute distance two char
         diffX = abs(pcenterX - centerX)
         diffY = abs(pcenterY - centerY)
         distanceTwoChar = math.sqrt(diffX**2 + diffY**2)
-
         # Angle two char
         if (diffX ==0): # can't divide by 0 => angle = 90
             angleTwoChar = 90
         else:
-            angleTwoChar = math.atan(float(diffY)/float(diffX))
+            angleTwoChar = math.atan(float(diffY)/float(diffX))*(180.0/math.pi)
 
         # Norm 2 W, H Multiple:
         maxDistance = math.sqrt(W**2 + H**2)*MAX_DISTANCE_MULTI
@@ -125,10 +128,17 @@ def findClusterChar(char, listChars):
         diffArea  = float(abs(pboundArea - boundArea))/boundArea
         diffWidth = float(abs(pW - W))/W
         diffHeight= float(abs(pH - H))/H
+        # logging.debug("Distance: %s, angle: %s, diffArea: %s, diffW: %s, diffH: %s",distanceTwoChar, angleTwoChar, diffArea, diffWidth, diffHeight)
 
-        if(distanceTwoChar < maxDistance and diffArea < MAX_DIFF_AREA 
-            and angleTwoChar < CLUSTER_MAX_ANGLE_CHAR and diffWidth < MAX_DIFF_WIDTH and diffHeight < MAX_DIFF_HEIGHT):
+
+
+
+        # SAI O DAY......
+        logging.debug("---> COMPARE: %s < %s, %s <%s, %s < %s, %s < %s, %s < %s", distanceTwoChar, maxDistance, angleTwoChar, CLUSTER_MAX_ANGLE_CHAR, diffArea, MAX_DIFF_AREA,  diffWidth, MAX_DIFF_WIDTH, diffHeight, MAX_DIFF_HEIGHT)
+        if(distanceTwoChar < maxDistance and angleTwoChar < CLUSTER_MAX_ANGLE_CHAR 
+            and diffArea < MAX_DIFF_AREA and diffWidth < MAX_DIFF_WIDTH and diffHeight < MAX_DIFF_HEIGHT):
             
+            logging.info("---> APPEND %s", pChar["position"])
             clusterChar.append(pChar)
 
 
@@ -138,10 +148,18 @@ def findClusterChar(char, listChars):
 def findListClusterChar(listChars):
     
     listClusterChar = []
+    
+    for item in listChars:
+        logging.debug("Item 2: %s" , item["position"])
+    
+
+
+
 
     for char in listChars:
         clusterChar = findClusterChar(char, listChars)
-        logging.debug("Cluster char: %s", len(clusterChar))
+        logging.debug("---> Char %s Cluster char: %s", char["position"], len(clusterChar))
+        # logging.debug("Cluster char: %s", len(clusterChar))
 
         if( len(clusterChar) < CLUSTER_MIN_NUM_CHAR ):
             continue
@@ -170,7 +188,7 @@ def findListClusterChar(listChars):
 
 
 def main():
-    imgOrigin = cv2.imread("plate.jpg")
+    imgOrigin = cv2.imread("test.jpg")
     height, width, numChannels = imgOrigin.shape
     logging.debug("Shape: %s, %s, %s", height, width, numChannels)
     
@@ -186,6 +204,10 @@ def main():
     listChars = findCharsFromImg(imgPreprocess)
     listChars = sorted(listChars, key=lambda x: x["centerX"])
     logging.debug("Sorted List Chars: \t%s", len(listChars))
+    # for item in listChars:
+        # logging.debug("Item: %s %s %s %s", item["centerX"], item["centerY"], item["position"][2], item["position"][3])
+    
+
 
     listClusterChars = findListClusterChar(listChars)
 
