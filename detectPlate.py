@@ -19,6 +19,17 @@ MAX_DIFF_WIDTH  = 0.6
 MAX_DIFF_HEIGHT = 0.2
 MAX_DISTANCE_MULTI = 3.2
 
+# PLATE
+PLATE_WIDTH_PADD_MULTI = 1.8
+PLATE_HEIGHT_PADD_MULTI = 1.5
+
+
+# Combine Plate
+MIN_DIFF_ANGLE = -20
+MAX_DIFF_ANGLE =  20
+
+MIN_PLATE_RATIO = 0.7
+MAX_PLATE_RATIO = 1.3
 
 
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
@@ -64,7 +75,9 @@ def findCharsFromImg(imgThresh):
             cv2.drawContours(imgContours, contours, i, (255.0, 255.0, 255.0) )
             
     logging.debug("Len list chars after: %s", len(listChars))
-    cv2.imshow("Draw Contour", imgContours)
+    # cv2.imshow("Draw Contour", imgContours)
+
+    #END DRAW CONTOUR
 
     return listChars
 
@@ -80,8 +93,8 @@ def isCanBeChar(contour):
     WHRatio = float(W)/float(H)
 
     if(W > CHAR_MIN_W and H > CHAR_MIN_H and boundArea > CHAR_MIN_AREA and WHRatio > CHAR_MIN_WHRATIO and WHRatio < CHAR_MAX_WHRATIO):
-        centerX = (X+X+W)*1.0/2
-        centerY = (Y+Y+H)*1.0/2
+        centerX = (X+X+W)/2.0
+        centerY = (Y+Y+H)/2.0
         # diagonal= math.sqrt(W**2 + H**2)
         char = {
             "centerX": centerX,
@@ -166,7 +179,66 @@ def findListClusterChar(listChars):
 
     return listClusterChar
 
+#Extract Plate
 def getPlateFromClusterChar(clusterChar):
+
+    plate = {
+        'img': None,
+        'imgGray': None,
+        'imgThresh': None,
+        'isTwoRow': False,
+        'isPlate': False,
+        'rrLocation': None,
+        'strChars': ""
+    }
+
+    clusterChar.sort(key = lambda x: x["centerX"])
+    plateCenterX = (clusterChar[0]["centerX"] + clusterChar[-1]["centerX"])/2.0
+    plateCenterY = (clusterChar[0]["centerY"] + clusterChar[-1]["centerY"])/2.0
+    
+    plateWidth = int(clusterChar[-1]["position"][0] + clusterChar[-1]["position"][2] - clusterChar[0]["position"][0])*PLATE_WIDTH_PADD_MULTI  # (X_END+W_END - X_FIRST)*EXTEND_AREA
+
+    avgPlateHeight = sum(item['position'][3] for item in clusterChar) / len(clusterChar)
+    
+    # for item in clusterChar:
+    #     logging.debug("Cluster char: %s", item["position"])
+    # logging.debug("AVG height: %s", avgPlateHeight)
+
+    plateHeight = avgPlateHeight*PLATE_HEIGHT_PADD_MULTI
+
+    # plate angle
+    plateOpposite = clusterChar[-1]["centerY"] - clusterChar[0]["centerY"]
+    plateHipote   = math.hypot(clusterChar[-1]["centerX"] - clusterChar[0]["centerX"],clusterChar[-1]["centerY"] - clusterChar[0]["centerY"] )
+
+    plateAngle = math.asin(plateOpposite/plateHipote) *(180/math.pi)
+
+    plate["rrLocation"] = (plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle)
+
+    return plate
+
+
+def combinePlates(imgOrigin, listPlates):
+
+    for i, plate in enumerate(listPlates):
+        for j in range(i-1):
+            plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plate["rrLocation"]
+            jplateCenterX, jplateCenterY, jplateWidth, jplateHeight, jplateAngle = listPlates[j]["rrLocation"]
+
+            heightRatio = jplateHeight*1.0/plateHeight
+            diffAngle = jplateAngle - plateAngle
+            plaleDistanceRatio = math.hypot(jplateCenterX - plateCenterX, jplateCenterY - plateCenterY) / plateHeight
+            plateHeightRatio = jplateHeight/plateHeight
+
+            if( MIN_DIFF_ANGLE < diffAngle and diffAngle < MAX_DIFF_ANGLE and MIN_PLATE_RATIO < plaleDistanceRatio and plaleDistanceRatio < MAX_PLATE_RATIO
+                and MIN_PLATE_RATIO < heightRatio and heightRatio < MAX_PLATE_RATIO ):
+                
+
+
+
+
+
+
+
 
 
 def main():
@@ -208,10 +280,16 @@ def main():
 
         cv2.drawContours(imgContours, contours, -1, color)
 
-    cv2.imshow("3", imgContours)
+    # cv2.imshow("3", imgContours)
 
+    #End draw contours
+
+    listPlates = []
     for clusterChar in listClusterChars:
         plate = getPlateFromClusterChar(clusterChar)
+        listPlates.append(plate)
+    
+    listPlates = combinePlates(imgOrigin, listPlates)
 
 
     
@@ -220,4 +298,8 @@ def main():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+import time
+stime = time.time()
 main()
+etime = time.time()
+print "ESTIMATE TIME: ", etime - stime
