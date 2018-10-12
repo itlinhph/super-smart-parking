@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import math
 import random
+import shapely.geometry
+import shapely.affinity
 import logging
 
 # is can be char
@@ -30,6 +32,8 @@ MAX_DIFF_ANGLE =  20
 
 MIN_PLATE_RATIO = 0.7
 MAX_PLATE_RATIO = 1.3
+MIN_OVERLAP_RATIO = 0.75
+MAX_OVERLAP_RATIO = 1
 
 
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
@@ -216,24 +220,93 @@ def getPlateFromClusterChar(clusterChar):
 
     return plate
 
+def getContour(location):
+    cx, cy, w, h, angle = location
+    c = shapely.geometry.box(-w/2.0, -h/2.0, w/2.0, h/2.0)
+    rc = shapely.affinity.rotate(c, angle)
+    return shapely.affinity.translate(rc, cx, cy)
+
+
+def getRelativeArea(locationP1, locationP2):
+    contour1 = getContour(locationP1)
+    contour2 = getContour(locationP2)
+    
+    area1 = contour1.area
+    area2 = contour2.area
+
+    intersectArea = contour1.intersection(contour2)
+    relativeA1 = intersectArea/area1
+    relativeA2 = intersectArea/area2
+
+    return relativeA1, relativeA2, area1, area2, intersectArea
+
 
 def combinePlates(imgOrigin, listPlates):
-
+    setImg = set([])
     for i, plate in enumerate(listPlates):
         for j in range(i-1):
-            plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plate["rrLocation"]
-            jplateCenterX, jplateCenterY, jplateWidth, jplateHeight, jplateAngle = listPlates[j]["rrLocation"]
+            plateLocation = plate["rrLocation"]
+            jplateLocation = listPlates[j]["rrLocation"]
+            plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plateLocation
+            jplateCenterX, jplateCenterY, jplateWidth, jplateHeight, jplateAngle = jplateLocation
 
             heightRatio = jplateHeight*1.0/plateHeight
             diffAngle = jplateAngle - plateAngle
             plaleDistanceRatio = math.hypot(jplateCenterX - plateCenterX, jplateCenterY - plateCenterY) / plateHeight
             plateHeightRatio = jplateHeight/plateHeight
 
+            #Check direction
             if( MIN_DIFF_ANGLE < diffAngle and diffAngle < MAX_DIFF_ANGLE and MIN_PLATE_RATIO < plaleDistanceRatio and plaleDistanceRatio < MAX_PLATE_RATIO
                 and MIN_PLATE_RATIO < heightRatio and heightRatio < MAX_PLATE_RATIO ):
                 
+                relativeA1, relativeA2, area1, area2, intersectArea = getRelativeArea(plateLocation, jplateLocation)
+
+                if ( MIN_OVERLAP_RATIO < relativeA1  and relativeA1 < MAX_OVERLAP_RATIO and MIN_PLATE_RATIO < relativeA2 and relativeA2 <  MIN_PLATE_RATIO ):
+                    if area1 < area2:
+                        setImg.add(i)
+                        break
+                    else:
+                        setImg.add(j)
+                        continue
+                if intersectArea >0:
+                    combineCenterX = (plateCenterX + jplateCenterX)/2
+                    combineCenterY = (plateCenterY + jplateCenterY)/2
+                    if plateWidth > jplateWidth:
+                        combineWidth = plateWidth
+                    else:
+                        combineWidth = jplateWidth
+                    combineHeight = plateHeight + jplateHeight
+                    combineAngle = (plateAngle + jplateAngle)/2
+
+                    plate["isTwoRow"] = True
+                    plate["rrLocation"] = (combineCenterX, combineCenterY, combineWidth, combineHeight, combineAngle)
+                    setImg.add(j)
+                    break
+    
+    listIndex = list(setImg)
+    listPlateReturn = []
+    for i, plate in enumerate(listPlates):
+        if i not in listIndex and plate["isTwoRow"]:
+            plateReturn = rotationPlate(imgOrigin, plate)
+            centerX, centerY, width, height, _ = plateReturn["rrLocation"]
+            shapeRatio = width/height
+            if plateReturn["img"] is not None:
+                listPlateReturn.append(plateReturn)
+    
+    return listPlateReturn
 
 
+
+def rotationPlate(imgOrigin, plate):
+    plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plate["rrLocation"]
+    rotationMatrix = cv2.getRotationMatrix2D( (plateCenterX, plateCenterY), plateAngle, 1.0)
+
+    imgHeight, imgWidth, _ = imgOrigin.shape
+    imgRotated = cv2.warpAffine(imgOrigin, rotationMatrix, (imgWidth, imgHeight))
+    imgCropped = cv2.getRectSubPix(imgRotated, (plateWidth, plateHeight), (plateCenterX, plateCenterY) )
+    plate["img"] = imgCropped
+    
+    return plate
 
 
 
@@ -250,6 +323,9 @@ def main():
     imgContours = np.zeros((height, width, 3), np.uint8)
 
     imgGray, imgPreprocess = preprocess(imgOrigin)
+    cv2.imshow('plate2',imgPreprocess)
+    # cv2.waitKey(0)
+    # cv2.imwrite("preprocess.jpg", imgPreprocess)
 
     listChars = findCharsFromImg(imgPreprocess)
     listChars = sorted(listChars, key=lambda x: x["centerX"])
@@ -280,7 +356,8 @@ def main():
 
         cv2.drawContours(imgContours, contours, -1, color)
 
-    # cv2.imshow("3", imgContours)
+    cv2.imshow("3", imgContours)
+    # cv2.imwrite("imgcontour.jpg", imgContours)
 
     #End draw contours
 
@@ -289,12 +366,9 @@ def main():
         plate = getPlateFromClusterChar(clusterChar)
         listPlates.append(plate)
     
-    listPlates = combinePlates(imgOrigin, listPlates)
-
-
+    # listPlates = combinePlates(imgOrigin, listPlates)
     
     # cv2.imshow('plate',imgGray)
-    # cv2.imshow('plate2',imgPreprocess)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 

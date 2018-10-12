@@ -9,17 +9,3 @@ DEBUG	---> APPEND (283, 164, 13, 28)
 DEBUG	---> APPEND (297, 163, 10, 27)
 DEBUG	---> APPEND (310, 207, 6, 10)
 DEBUG	Len List Cluster Char: 3
-DEBUG	Cluster char: (242, 203, 11, 27)
-DEBUG	Cluster char: (255, 200, 13, 28)
-DEBUG	Cluster char: (270, 198, 13, 27)
-DEBUG	Cluster char: (291, 195, 11, 28)
-DEBUG	Cluster char: (306, 193, 13, 26)
-DEBUG	AVG height: 27
-DEBUG	Cluster char: (244, 170, 13, 28)
-DEBUG	Cluster char: (258, 169, 12, 26)
-DEBUG	Cluster char: (283, 164, 13, 28)
-DEBUG	Cluster char: (297, 163, 10, 27)
-DEBUG	AVG height: 27
-DEBUG	Cluster char: (274, 211, 6, 12)
-DEBUG	Cluster char: (310, 207, 6, 10)
-DEBUG	AVG height: 11
