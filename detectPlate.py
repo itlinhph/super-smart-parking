@@ -5,6 +5,9 @@ import random
 import shapely.geometry
 import shapely.affinity
 import logging
+logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
+
+
 
 # is can be char
 CHAR_MIN_AREA = 30
@@ -36,7 +39,6 @@ MIN_OVERLAP_RATIO = 0.75
 MAX_OVERLAP_RATIO = 1
 
 
-logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
 
 
 #get grayScale and threshold 
@@ -114,14 +116,16 @@ def isCanBeChar(contour):
 
 
 def findClusterChar(char, listChars): 
-    clusterChar = [char]
-    numContinue = 0
+    clusterChar = []
+    # numContinue = 0
     # logging.debug("listChar find CLuster: %s", listChars)
     for pChar in listChars: 
         if pChar == char:
-            numContinue += 1
+            # numContinue += 1
             # logging.debug("Numcontinue: %s", numContinue)
             continue
+        item = pChar
+        # logging.debug("possible Machingchar: %s", item["position"])
 
         centerX, centerY, W, H, boundArea = char["centerX"], char["centerY"],char["position"][2],char["position"][3], char["boundArea"]
         pcenterX, pcenterY, pW, pH, pboundArea = pChar["centerX"], pChar["centerY"],pChar["position"][2],pChar["position"][3], pChar["boundArea"]
@@ -145,23 +149,28 @@ def findClusterChar(char, listChars):
         diffArea  = float(abs(pboundArea - boundArea))/boundArea
         diffWidth = float(abs(pW - W))/W
         diffHeight= float(abs(pH - H))/H
-
+        
+        # logging.debug("---> COMPARE: %s %s %s %s %s %s %s %s %s %s", distanceTwoChar,maxDistance  ,angleTwoChar, CLUSTER_MAX_ANGLE_CHAR, diffArea, MAX_DIFF_AREA, diffWidth, MAX_DIFF_WIDTH, diffHeight, MAX_DIFF_HEIGHT)
+        
         if(distanceTwoChar < maxDistance and angleTwoChar < CLUSTER_MAX_ANGLE_CHAR 
             and diffArea < MAX_DIFF_AREA and diffWidth < MAX_DIFF_WIDTH and diffHeight < MAX_DIFF_HEIGHT):
             
             logging.debug("---> APPEND %s", pChar["position"])
             clusterChar.append(pChar)
 
-
+    # clusterChar.append(char)
     return clusterChar
 
 
 def findListClusterChar(listChars):
-    
+    logging.error("CALL RECURSIVE.///")
     listClusterChar = []
 
     for char in listChars:
         clusterChar = findClusterChar(char, listChars)
+        clusterChar.append(char)
+        # for item in clusterChar:
+        #     logging.debug("List cluster char item: %s", item["position"])
 
         if( len(clusterChar) < CLUSTER_MIN_NUM_CHAR ):
             continue
@@ -169,11 +178,14 @@ def findListClusterChar(listChars):
         listClusterChar.append(clusterChar)
         
         listCharRemain = []
+        # listCharRemain = list(set(listChars) - set(listClusterChar))
         for item in listChars:
             if item not in clusterChar:
                 listCharRemain.append(item)
-
+                logging.debug("List char remain item: %s", item["position"])
         #recursive
+
+        logging.warn("Len list char: %s, len list remain: %s", len(listChars), len(listCharRemain))
         recuListClusterChar = findListClusterChar(listCharRemain)
         
         for item in recuListClusterChar:
@@ -200,7 +212,7 @@ def getPlateFromClusterChar(clusterChar):
     plateCenterX = (clusterChar[0]["centerX"] + clusterChar[-1]["centerX"])/2.0
     plateCenterY = (clusterChar[0]["centerY"] + clusterChar[-1]["centerY"])/2.0
     
-    plateWidth = int(clusterChar[-1]["position"][0] + clusterChar[-1]["position"][2] - clusterChar[0]["position"][0])*PLATE_WIDTH_PADD_MULTI  # (X_END+W_END - X_FIRST)*EXTEND_AREA
+    plateWidth = int((clusterChar[-1]["position"][0] + clusterChar[-1]["position"][2] - clusterChar[0]["position"][0])*PLATE_WIDTH_PADD_MULTI)  # (X_END+W_END - X_FIRST)*EXTEND_AREA
 
     avgPlateHeight = sum(item['position'][3] for item in clusterChar) / len(clusterChar)
     
@@ -208,7 +220,7 @@ def getPlateFromClusterChar(clusterChar):
     #     logging.debug("Cluster char: %s", item["position"])
     # logging.debug("AVG height: %s", avgPlateHeight)
 
-    plateHeight = avgPlateHeight*PLATE_HEIGHT_PADD_MULTI
+    plateHeight = int(avgPlateHeight*PLATE_HEIGHT_PADD_MULTI)
 
     # plate angle
     plateOpposite = clusterChar[-1]["centerY"] - clusterChar[0]["centerY"]
@@ -217,6 +229,8 @@ def getPlateFromClusterChar(clusterChar):
     plateAngle = math.asin(plateOpposite/plateHipote) *(180/math.pi)
 
     plate["rrLocation"] = (plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle)
+    
+    logging.debug("----> rrLocation: %s", plate["rrLocation"])
 
     return plate
 
@@ -234,7 +248,7 @@ def getRelativeArea(locationP1, locationP2):
     area1 = contour1.area
     area2 = contour2.area
 
-    intersectArea = contour1.intersection(contour2)
+    intersectArea = contour1.intersection(contour2).area 
     relativeA1 = intersectArea/area1
     relativeA2 = intersectArea/area2
 
@@ -244,7 +258,7 @@ def getRelativeArea(locationP1, locationP2):
 def combinePlates(imgOrigin, listPlates):
     setImg = set([])
     for i, plate in enumerate(listPlates):
-        for j in range(i-1):
+        for j in range(i):
             plateLocation = plate["rrLocation"]
             jplateLocation = listPlates[j]["rrLocation"]
             plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plateLocation
@@ -253,7 +267,9 @@ def combinePlates(imgOrigin, listPlates):
             heightRatio = jplateHeight*1.0/plateHeight
             diffAngle = jplateAngle - plateAngle
             plaleDistanceRatio = math.hypot(jplateCenterX - plateCenterX, jplateCenterY - plateCenterY) / plateHeight
-            plateHeightRatio = jplateHeight/plateHeight
+            plateHeightRatio = jplateHeight*1.0/plateHeight
+
+            logging.debug("---> plateDistance: %s, plate Height: %s, angle: %s", plaleDistanceRatio, plateHeightRatio, diffAngle)
 
             #Check direction
             if( MIN_DIFF_ANGLE < diffAngle and diffAngle < MAX_DIFF_ANGLE and MIN_PLATE_RATIO < plaleDistanceRatio and plaleDistanceRatio < MAX_PLATE_RATIO
@@ -323,17 +339,27 @@ def main():
     imgContours = np.zeros((height, width, 3), np.uint8)
 
     imgGray, imgPreprocess = preprocess(imgOrigin)
-    cv2.imshow('plate2',imgPreprocess)
+    # cv2.imshow('imgPreprocess',imgPreprocess)
     # cv2.waitKey(0)
     # cv2.imwrite("preprocess.jpg", imgPreprocess)
 
     listChars = findCharsFromImg(imgPreprocess)
     listChars = sorted(listChars, key=lambda x: x["centerX"])
+    
+    for char in listChars:
+        logging.debug("Char: %s", char["position"])
+    # Matching whole in this time!!!!!!!!!!!!!!!!!!!!!!
 
     listClusterChars = findListClusterChar(listChars)
 
     logging.debug("Len List Cluster Char: %s", len(listClusterChars))
-    
+    for item in listClusterChars:
+        logging.debug("ITEM LIST CLUSTER CHAR:")
+        for char in item:
+            logging.debug("Char: %s", char["position"])
+
+
+
     imgContours = np.zeros((height, width, 3), np.uint8)
 
 
@@ -365,8 +391,26 @@ def main():
     for clusterChar in listClusterChars:
         plate = getPlateFromClusterChar(clusterChar)
         listPlates.append(plate)
-    
-    # listPlates = combinePlates(imgOrigin, listPlates)
+
+    #WE ARE HERE 12-10
+    listPlates = combinePlates(imgOrigin, listPlates)
+    print "Len list plate:", len(listPlates)
+    logging.info("Len list plate: %s", len(listPlates))
+    # print len(listPlates)
+    for i in range(0, len(listPlates)):
+        location = ((listPlates[i]["rrLocation"][0], listPlates[i]["rrLocation"][1]), (listPlates[i]["rrLocation"][2], listPlates[i]["rrLocation"][3]), listPlates[i]["rrLocation"][4])
+        p2fRectPoints = cv2.boxPoints(location)
+
+        cv2.line(imgContours, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), (0,255,255), 2)
+        cv2.line(imgContours, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), (0,255,255), 2)
+        cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), (0,255,255), 2)
+        cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), (0,255,255), 2)
+
+        cv2.imshow("4a", imgContours)
+
+        cv2.imshow("4b", listPlates[i]["img"])
+
+
     
     # cv2.imshow('plate',imgGray)
     cv2.waitKey(0)
