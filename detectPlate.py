@@ -82,6 +82,7 @@ def findCharsFromImg(imgThresh):
             
     logging.debug("Len list chars after: %s", len(listChars))
     # cv2.imshow("Draw Contour", imgContours)
+    # cv2.waitKey(0)
 
     #END DRAW CONTOUR
 
@@ -107,7 +108,8 @@ def isCanBeChar(contour):
             "centerY": centerY, 
             "position": (X, Y, W, H), 
             "boundArea": boundArea,
-            "contour" : contour
+            "contour" : contour,
+            "isChar": True
         }
         # char = (centerX, centerY, X, Y, W, H, boundArea, contour)
 
@@ -115,7 +117,7 @@ def isCanBeChar(contour):
 
 
 
-def findClusterChar(char, listChars): 
+def findClusterChar(char, listChars, maxAngle): 
     clusterChar = []
     # numContinue = 0
     # logging.debug("listChar find CLuster: %s", listChars)
@@ -150,7 +152,7 @@ def findClusterChar(char, listChars):
         diffWidth = float(abs(pW - W))/W
         diffHeight= float(abs(pH - H))/H
         
-        if(distanceTwoChar < maxDistance and angleTwoChar < CLUSTER_MAX_ANGLE_CHAR 
+        if(distanceTwoChar < maxDistance and angleTwoChar < maxAngle 
             and diffArea < MAX_DIFF_AREA and diffWidth < MAX_DIFF_WIDTH and diffHeight < MAX_DIFF_HEIGHT):
             
             clusterChar.append(pChar)
@@ -158,14 +160,14 @@ def findClusterChar(char, listChars):
     return clusterChar
 
 
-def findListClusterChar(listChars):
+def findListClusterChar(listChars, minNumChar, maxAngle):
     listClusterChar = []
 
     for char in listChars:
-        clusterChar = findClusterChar(char, listChars)
+        clusterChar = findClusterChar(char, listChars, maxAngle)
         clusterChar.append(char)
 
-        if( len(clusterChar) < CLUSTER_MIN_NUM_CHAR ):
+        if( len(clusterChar) < minNumChar ):
             continue
 
         listClusterChar.append(clusterChar)
@@ -176,7 +178,7 @@ def findListClusterChar(listChars):
                 listCharRemain.append(item)
 
         #recursive
-        recuListClusterChar = findListClusterChar(listCharRemain)
+        recuListClusterChar = findListClusterChar(listCharRemain, minNumChar, maxAngle)
         
         for item in recuListClusterChar:
             listClusterChar.append(item)
@@ -305,7 +307,61 @@ def rotationPlate(imgOrigin, plate):
     
     return plate
 
+def getBounding(data):
+    m = np.median(data)
+    std = np.std(data)
+    ratio = std / m
+    # if ratio is small, use large size from standard deviation
+    n = [1, 3][ratio < 0.05]
 
+    return m + n * std, m - n * std
+
+# mode = 1 for list of List, mode = 0 for list
+def getEqualHeightList(listChars, mode=0):
+    if mode:
+        listHeight = [x[0]["position"][3] for x in listChars]
+    else:
+        listHeight = [x["position"][3] for x in listChars]
+    
+    upperBound, lowerBound = getBounding(listHeight)
+    if mode:
+        listChars = [x for x in listChars if x[0]["position"][3] <= upperBound and x[0]["position"][3] >= lowerBound]
+    else:
+        listChars = [x for x in listChars if x["position"][3] <= upperBound and x["position"][3] >= lowerBound]
+    return listChars
+
+# remove inner chars
+def removeInnerChars(listOfCharsInPlate):
+    for i, char1 in enumerate(listOfCharsInPlate):
+        for j, char2 in enumerate(listOfCharsInPlate):
+            charStart_1X, charStart_1Y = char1["position"][0], char1["position"][1]
+            charEnd_1X, charEnd_1Y = char1["position"][0] + char1["position"][2], char1["position"][1] + char1["position"][3]
+                
+            charStart_2X, charStart_2Y = char2["position"][0], char2["position"][1]
+            charEnd_2X, charEnd_2Y = char2["position"][0] + char2["position"][2], char2["position"][1] + char2["position"][3]
+            if charStart_1X < charStart_2X and charStart_1Y < charStart_2Y and charEnd_1X > charEnd_2X and charEnd_1Y > charEnd_2Y:
+                char2["isChar"] = False
+            else:
+                char2["isChar"] = True
+    
+    listOfChars = [char for char in listOfCharsInPlate if char["isChar"] == True]
+    return listOfChars
+
+def removeDistanceChar(charsInPlate):
+    for i, char1 in enumerate(charsInPlate):
+        validChar = False
+        diagonalSize1 = math.hypot(char1["position"][2], char1["position"][3])
+        
+        for j, char2 in enumerate(charsInPlate):
+            relativeDistance = math.sqrt( (char1["centerX"] - char2["centerX"])**2 + (char1["centerY"] - char2["centerY"])**2 ) / diagonalSize1
+            if relativeDistance > 0 and relativeDistance < 1:
+                validChar = True
+        
+        if not validChar:
+            char1.isChar = False
+            
+    listOfChars = [char for char in charsInPlate if char["isChar"] == True]
+    return listOfChars
 
 def getListChars(listPlates):
     
@@ -323,7 +379,7 @@ def getListChars(listPlates):
         # cv2.imshow("BluePlate", blurPlate)
         # cv2.imshow("processedPlate", processedPlate)
 
-        plate["imgThresh"] = cv2.resize(plate["imgThresh"],(0, 0), fx = 1.6, fy = 1.6)
+        # plate["imgThresh"] = cv2.resize(plate["imgThresh"],(0, 0), fx = 1.6, fy = 1.6)
         # cv2.imshow("threash", plate["imgThresh"])
         # cv2.waitKey(0)
 
@@ -332,32 +388,73 @@ def getListChars(listPlates):
         logging.debug("list char: %s", len(listChar))
         
         #20:04 15/10
+        listClusterChars= findListClusterChar(listChar, 3, 10) # Min char, max angle
+        if len(listClusterChars) == 0:
+            continue
+        print(len(listClusterChars))
+
+        listClusterChar1 = [getEqualHeightList(x) for x in listClusterChars]
+        listClusterChar2 = getEqualHeightList(listClusterChar1, mode=1)
+        listClusterChar3 = [removeDistanceChar(x) for x in listClusterChar2]
+        listOfCharsInPlate = [char for listChars in listClusterChar3 for char in listChars]
+        listOfCharsInPlate = removeInnerChars(listOfCharsInPlate)
         
+        if len(listOfCharsInPlate) >= 6:
+            plate["isPlate"] = True
+            showListOfLists(plate, listOfCharsInPlate)
+        imgThresh = plate["imgThresh"]
+        height, width = imgThresh.shape
+        imgThreshColor = np.zeros((height, width, 3), np.uint8)
+        listChar.sort(key = charPlace)        # sort chars
+        cv2.cvtColor(imgThresh, cv2.COLOR_GRAY2BGR, imgThreshColor)  
+        
+        for i, currentChar in enumerate(listOfCharsInPlate):   
+            pt1 = (currentChar["position"][0], currentChar["position"][1])
+            pt2 = ((currentChar["position"][0] + currentChar["position"][2]), (currentChar["position"][1] + currentChar["position"][3]))
 
+            cv2.rectangle(imgThreshColor, pt1, pt2, (255,255,0), 2) 
 
-
+        cv2.imshow("imgThreshColor", imgThreshColor)
+        cv2.waitKey(0)
 
     return 0
+
+def charPlace(char):
+    return char["centerX"] + 10 * char["centerY"]
     
+def showListOfLists(possiblePlate, listOfCharsInPlate):
+    height, width, numChannels = possiblePlate["img"].shape
+    imgContours = np.zeros((height, width, 3), np.uint8)
 
+    intRandomBlue = random.randint(0, 255)
+    intRandomGreen = random.randint(0, 255)
+    intRandomRed = random.randint(0, 255)
 
+    contours = []
+
+    for matchingChar in listOfCharsInPlate:
+        contours.append(matchingChar["contour"])
+
+    cv2.drawContours(imgContours, contours, -1, (intRandomBlue, intRandomGreen, intRandomRed))
+
+    # cv2.imshow("7.combineListOfLists", imgContours)
+    # cv2.waitKey(0)
 
 
 def main():
-    imgOrigin = cv2.imread("testIMG/test.jpg")
+    imgOrigin = cv2.imread("testIMG/test1.jpg")
     height, width, numChannels = imgOrigin.shape
     
     imgContours = np.zeros((height, width, 3), np.uint8)
 
     imgGray, imgPreprocess = preprocess(imgOrigin)
-    # cv2.imshow('imgPreprocess',imgPreprocess)
+    cv2.imshow('imgPreprocess',imgPreprocess)
     # cv2.waitKey(0)
-    # cv2.imwrite("preprocess.jpg", imgPreprocess)
 
     listChars = findCharsFromImg(imgPreprocess)
     listChars = sorted(listChars, key=lambda x: x["centerX"])
     
-    listClusterChars = findListClusterChar(listChars)
+    listClusterChars = findListClusterChar(listChars, CLUSTER_MIN_NUM_CHAR, CLUSTER_MAX_ANGLE_CHAR)
 
     logging.debug("Len List Cluster Char: %s", len(listClusterChars))
 
@@ -383,9 +480,9 @@ def main():
 
         cv2.drawContours(imgContours, contours, -1, color)
 
-    # cv2.imshow("3", imgContours)
+    cv2.imshow("contours", imgContours)
     # cv2.imwrite("imgcontour.jpg", imgContours)
-    cv2.waitKey(0)
+    # cv2.waitKey(0)
     #End draw contours
 
     listPlates = []
@@ -407,9 +504,9 @@ def main():
         cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), (0,255,255), 2)
         cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), (0,255,255), 2)
 
-        # cv2.imshow("4a", imgContours)
+        cv2.imshow("4a contours2 ", imgContours)
 
-        # cv2.imshow("4b", listPlates[i]["img"])
+        cv2.imshow("4b plate", listPlates[i]["img"])
 
 
     # 15/10
