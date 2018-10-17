@@ -38,6 +38,9 @@ MAX_PLATE_RATIO = 1.3
 MIN_OVERLAP_RATIO = 0.75
 MAX_OVERLAP_RATIO = 1
 
+# Char detect
+CHAR_SIZE = (28,28)
+
 
 
 
@@ -385,10 +388,14 @@ def getListChars(listPlates):
 
         listChar = findCharsFromImg(adaptivePlate)
         listChar.sort(key = lambda Char: Char["centerX"])
-        logging.debug("list char: %s", len(listChar))
+        logging.debug("len list char: %s", len(listChar))
+        # for item in listChar:
+        #     logging.debug("---> Char: %s", (item["centerX"], item["centerY"]))
         
         #20:04 15/10
         listClusterChars= findListClusterChar(listChar, 3, 10) # Min char, max angle
+
+
         if len(listClusterChars) == 0:
             continue
         print(len(listClusterChars))
@@ -399,56 +406,89 @@ def getListChars(listPlates):
         listOfCharsInPlate = [char for listChars in listClusterChar3 for char in listChars]
         listOfCharsInPlate = removeInnerChars(listOfCharsInPlate)
         
+        # logging.debug("--------------> Start point:")
+        # for char in listOfCharsInPlate:
+        #     logging.debug("---> Char: %s", (char["centerX"], char["centerY"]))
+        
         if len(listOfCharsInPlate) >= 6:
             plate["isPlate"] = True
-            showListOfLists(plate, listOfCharsInPlate)
-        imgThresh = plate["imgThresh"]
-        height, width = imgThresh.shape
-        imgThreshColor = np.zeros((height, width, 3), np.uint8)
-        listChar.sort(key = charPlace)        # sort chars
+            
+            # showListOfLists(plate, listOfCharsInPlate)
+
+            plate["strChar"] = getStrCharFromPlate(plate["imgGray"], listOfCharsInPlate, i)
+
+
+def getStrCharFromPlate(imgThresh, listChar, indexi):
+    height, width = imgThresh.shape
+    listChar.sort(key = charPlace)        # sort chars
+    imgThreshColor = np.zeros((height, width, 3), np.uint8)
+    cv2.cvtColor(imgThresh, cv2.COLOR_GRAY2BGR, imgThreshColor) 
+    # logging.info("Debug here")
+    # for char in listChar:
+    #     logging.debug("---> Char: %s", (char["centerX"], char["centerY"]))
+
+
+
+    for i, currentChar in enumerate(listChar):   
+        pt1 = (currentChar["position"][0], currentChar["position"][1])
+        pt2 = ((currentChar["position"][0] + currentChar["position"][2]), (currentChar["position"][1] + currentChar["position"][3]))
+
+        cv2.rectangle(imgThreshColor, pt1, pt2, (255,255,0), 2) 
+
+        # cv2.imshow("imgThreshColor", imgThreshColor)
+
+        imgROI = imgThresh[pt1[1]:pt2[1], pt1[0]:pt2[0]]
+        imgROIResized = cv2.resize(imgROI, CHAR_SIZE)
+        
+        # retreive binary image from the char images
+        adaptivePlate = cv2.adaptiveThreshold(imgROIResized,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,11,2)
+        blurPlate = cv2.GaussianBlur(adaptivePlate, (5,5),0)
+        ret, im = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+
+        # cv2.imwrite("resize_" + str(i)+ ".jpg", im)
+        # cv2.imshow("img_thresh", imgThresh)
+        # cv2.waitKey(0)
+
+        #17/10 DONE TRUE FOR THIS
+    
+    
+    
+        # imgThresh = plate["imgThresh"]
         cv2.cvtColor(imgThresh, cv2.COLOR_GRAY2BGR, imgThreshColor)  
         
-        for i, currentChar in enumerate(listOfCharsInPlate):   
-            pt1 = (currentChar["position"][0], currentChar["position"][1])
-            pt2 = ((currentChar["position"][0] + currentChar["position"][2]), (currentChar["position"][1] + currentChar["position"][3]))
-
-            cv2.rectangle(imgThreshColor, pt1, pt2, (255,255,0), 2) 
-
-        cv2.imshow("imgThreshColor", imgThreshColor)
-        cv2.waitKey(0)
 
     return 0
 
 def charPlace(char):
     return char["centerX"] + 10 * char["centerY"]
     
-def showListOfLists(possiblePlate, listOfCharsInPlate):
-    height, width, numChannels = possiblePlate["img"].shape
-    imgContours = np.zeros((height, width, 3), np.uint8)
+# def showListOfLists(possiblePlate, listOfCharsInPlate):
+#     height, width, numChannels = possiblePlate["img"].shape
+#     imgContours = np.zeros((height, width, 3), np.uint8)
 
-    intRandomBlue = random.randint(0, 255)
-    intRandomGreen = random.randint(0, 255)
-    intRandomRed = random.randint(0, 255)
+#     intRandomBlue = random.randint(0, 255)
+#     intRandomGreen = random.randint(0, 255)
+#     intRandomRed = random.randint(0, 255)
 
-    contours = []
+#     contours = []
 
-    for matchingChar in listOfCharsInPlate:
-        contours.append(matchingChar["contour"])
+#     for matchingChar in listOfCharsInPlate:
+#         contours.append(matchingChar["contour"])
 
-    cv2.drawContours(imgContours, contours, -1, (intRandomBlue, intRandomGreen, intRandomRed))
+#     cv2.drawContours(imgContours, contours, -1, (intRandomBlue, intRandomGreen, intRandomRed))
 
     # cv2.imshow("7.combineListOfLists", imgContours)
     # cv2.waitKey(0)
 
 
 def main():
-    imgOrigin = cv2.imread("testIMG/test1.jpg")
+    imgOrigin = cv2.imread("testIMG/plate.jpg")
     height, width, numChannels = imgOrigin.shape
     
     imgContours = np.zeros((height, width, 3), np.uint8)
 
     imgGray, imgPreprocess = preprocess(imgOrigin)
-    cv2.imshow('imgPreprocess',imgPreprocess)
+    # cv2.imshow('imgPreprocess',imgPreprocess)
     # cv2.waitKey(0)
 
     listChars = findCharsFromImg(imgPreprocess)
@@ -480,7 +520,7 @@ def main():
 
         cv2.drawContours(imgContours, contours, -1, color)
 
-    cv2.imshow("contours", imgContours)
+    # cv2.imshow("contours", imgContours)
     # cv2.imwrite("imgcontour.jpg", imgContours)
     # cv2.waitKey(0)
     #End draw contours
@@ -504,14 +544,14 @@ def main():
         cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), (0,255,255), 2)
         cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), (0,255,255), 2)
 
-        cv2.imshow("4a contours2 ", imgContours)
+        # cv2.imshow("4a contours2 ", imgContours)
 
-        cv2.imshow("4b plate", listPlates[i]["img"])
+        # cv2.imshow("4b plate", listPlates[i]["img"])
 
 
     # 15/10
     
-    logging.info("List Plate: %s", listPlates)
+    # logging.info("List Plate: %s", listPlates)
     if(len(listPlates) ==0):
         print("No plate!")
         return

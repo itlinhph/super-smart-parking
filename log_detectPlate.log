@@ -1,56 +1,7 @@
-DEBUG	Num contours first: 252
-DEBUG	Len list chars after: 57
-DEBUG	Len List Cluster Char: 5
+DEBUG	Num contours first: 647
+DEBUG	Len list chars after: 46
+DEBUG	Len List Cluster Char: 3
 INFO	Len list plate: 1
-INFO	List Plate: [{'isTwoRow': True, 'rrLocation': (220.0, 109.625, 117, 74, 0.4261858325079389), 'img': array([[[35, 11, 19],
-        [34, 10, 18],
-        [34, 10, 18],
-        ...,
-        [54, 37, 41],
-        [60, 43, 47],
-        [68, 51, 55]],
-
-       [[35, 11, 19],
-        [34, 10, 18],
-        [34, 10, 18],
-        ...,
-        [52, 35, 39],
-        [59, 42, 46],
-        [68, 51, 55]],
-
-       [[35, 11, 19],
-        [34, 10, 18],
-        [34, 10, 18],
-        ...,
-        [48, 31, 35],
-        [55, 38, 42],
-        [66, 49, 53]],
-
-       ...,
-
-       [[32,  7, 14],
-        [33,  9, 15],
-        [37, 11, 18],
-        ...,
-        [61, 36, 38],
-        [61, 35, 38],
-        [62, 35, 38]],
-
-       [[31,  8, 13],
-        [33, 10, 15],
-        [36, 11, 17],
-        ...,
-        [60, 36, 38],
-        [60, 36, 38],
-        [62, 35, 38]],
-
-       [[32,  9, 14],
-        [33, 10, 15],
-        [36, 11, 17],
-        ...,
-        [60, 36, 38],
-        [60, 36, 38],
-        [61, 35, 38]]], dtype=uint8), 'imgThresh': None, 'isPlate': False, 'imgGray': None, 'strChars': ''}]
-DEBUG	Num contours first: 83
-DEBUG	Len list chars after: 20
-DEBUG	list char: 20
+DEBUG	Num contours first: 72
+DEBUG	Len list chars after: 17
+DEBUG	len list char: 17
