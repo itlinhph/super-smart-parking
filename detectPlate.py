@@ -5,6 +5,9 @@ import random
 import shapely.geometry
 import shapely.affinity
 import logging
+
+import tensorflow
+from sklearn import preprocessing
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
 
 
@@ -368,7 +371,7 @@ def removeDistanceChar(charsInPlate):
 
 def getListChars(listPlates):
     
-    for i, plate in enumerate(listPlates):
+    for plate in listPlates:
         plate["imgGray"] , plate["imgThresh"] = preprocess(plate["img"])
         
         # cv2.imshow("plate Gray", plate["imgGray"])
@@ -415,53 +418,66 @@ def getListChars(listPlates):
             
             # showListOfLists(plate, listOfCharsInPlate)
 
-            plate["strChar"] = getStrCharFromPlate(plate["imgGray"], listOfCharsInPlate, i)
+            plate["strChar"] = getStrCharFromPlate(plate["imgGray"], listOfCharsInPlate)
 
 
-def getStrCharFromPlate(imgThresh, listChar, indexi):
+def getStrCharFromPlate(imgThresh, listChar):
     height, width = imgThresh.shape
     listChar.sort(key = charPlace)        # sort chars
     imgThreshColor = np.zeros((height, width, 3), np.uint8)
     cv2.cvtColor(imgThresh, cv2.COLOR_GRAY2BGR, imgThreshColor) 
-    # logging.info("Debug here")
-    # for char in listChar:
-    #     logging.debug("---> Char: %s", (char["centerX"], char["centerY"]))
 
 
-
+    listCharImg = []
     for i, currentChar in enumerate(listChar):   
         pt1 = (currentChar["position"][0], currentChar["position"][1])
         pt2 = ((currentChar["position"][0] + currentChar["position"][2]), (currentChar["position"][1] + currentChar["position"][3]))
 
         cv2.rectangle(imgThreshColor, pt1, pt2, (255,255,0), 2) 
 
-        # cv2.imshow("imgThreshColor", imgThreshColor)
 
         imgROI = imgThresh[pt1[1]:pt2[1], pt1[0]:pt2[0]]
         imgROIResized = cv2.resize(imgROI, CHAR_SIZE)
+        # cv2.imshow("IMROI_"+ str(i),imgROI)
         
         # retreive binary image from the char images
         adaptivePlate = cv2.adaptiveThreshold(imgROIResized,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,11,2)
         blurPlate = cv2.GaussianBlur(adaptivePlate, (5,5),0)
-        ret, im = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        _, im = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        
+        listCharImg.append(im)
 
         # cv2.imwrite("resize_" + str(i)+ ".jpg", im)
         # cv2.imshow("img_thresh", imgThresh)
-        # cv2.waitKey(0)
 
-        #17/10 DONE TRUE FOR THIS
-    
-    
-    
-        # imgThresh = plate["imgThresh"]
-        cv2.cvtColor(imgThresh, cv2.COLOR_GRAY2BGR, imgThreshColor)  
-        
+    #17/10 DONE TRUE FOR THIS
+         
+    # cv2.imshow("imgThreshColor", imgThreshColor)
+    # cv2.waitKey(0)
 
-    return 0
+    listStrChar = recognizeChar(listCharImg)
+
+    return "".join(listStrChar)
 
 def charPlace(char):
     return char["centerX"] + 10 * char["centerY"]
+
+
+def recognizeChar(listCharImg):
+    listCharImg = np.asarray(listCharImg, dtype=np.float32)
+
+    labelEncode = preprocessing.LabelEncoder()
+    labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+    # labels = list("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    labelEncode.fit(labels)
     
+    x = tensorflow.random_normal((1,784))
+    # model = CNN_Model()
+    return ["0", "1"]
+
+
+
 # def showListOfLists(possiblePlate, listOfCharsInPlate):
 #     height, width, numChannels = possiblePlate["img"].shape
 #     imgContours = np.zeros((height, width, 3), np.uint8)
@@ -532,7 +548,7 @@ def main():
 
     #12/10
     listPlates = combinePlates(imgOrigin, listPlates)
-    print "Len list plate:", len(listPlates)
+    print ("Len list plate:", len(listPlates))
     logging.info("Len list plate: %s", len(listPlates))
     # print len(listPlates)
     for i in range(0, len(listPlates)):
@@ -566,4 +582,4 @@ import time
 stime = time.time()
 main()
 etime = time.time()
-print "ESTIMATE TIME: ", etime - stime
+print ("ESTIMATE TIME: ", etime - stime)
