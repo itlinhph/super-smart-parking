@@ -22,18 +22,22 @@ def renameCharImg(folderAll):
     folderLabels = os.listdir(folderAll)
     print(folderLabels)
     for folder in folderLabels:
+        os.system("mkdir -p labelRename/"+ folder)
         listImgs = os.listdir(folderAll+"/"+folder)
-        print(listImgs)
         count=1
+        listImgs.sort()
+        print(listImgs)
         for img in listImgs:
             # print img
             name, ext = os.path.splitext(img)
             newName = folder +"_" + str(count) + ext
-            os.rename(folderAll+folder+"/"+img,folderAll+folder+"/"+ newName)
-            print("rename "+ folderAll+folder+"/"+img+ "--> "+folderAll+folder+"/"+ newName)
+            command = "cp '" + folderAll+folder+"/"+img + "' " + "labelRename/"+folder+"/"+ newName  
+            os.system(command)
+            print(command)
             count+=1
 
-renameCharImg("LabelFinal/")
+renameCharImg("LabelAugmentor/")
 
 
 # movieFolder("real_chars/")
+# movieFolder("real_char2/")
