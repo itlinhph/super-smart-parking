@@ -26,13 +26,14 @@ def renameCharImg(folderAll):
         print(listImgs)
         count=1
         for img in listImgs:
-            print img
+            # print img
             name, ext = os.path.splitext(img)
             newName = folder +"_" + str(count) + ext
             os.rename(folderAll+folder+"/"+img,folderAll+folder+"/"+ newName)
+            print("rename "+ folderAll+folder+"/"+img+ "--> "+folderAll+folder+"/"+ newName)
             count+=1
 
-renameCharImg("labels/")
+renameCharImg("LabelFinal/")
 
 
 # movieFolder("real_chars/")
