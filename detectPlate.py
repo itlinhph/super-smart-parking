@@ -447,7 +447,7 @@ def getStrCharFromPlate(imgThresh, listChar):
         
         listCharImg.append(im)
 
-        # cv2.imwrite("resize_" + str(i)+ ".jpg", im)
+        cv2.imwrite("resize_" + str(i)+ ".jpg", im)
         # cv2.imshow("img_thresh", imgThresh)
 
     #17/10 DONE TRUE FOR THIS
@@ -465,6 +465,13 @@ def charPlace(char):
 
 def recognizeChar(listCharImg):
     listCharImg = np.asarray(listCharImg, dtype=np.float32)
+    i =1
+    for item in listCharImg:
+        if i !=1:
+            continue
+        i+=1
+        logging.debug("Shape: %s ", item.shape)
+        logging.info("%s", item)
 
     labelEncode = preprocessing.LabelEncoder()
     labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
