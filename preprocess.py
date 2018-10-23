@@ -48,6 +48,7 @@ def writeVector(labelFolder, fileVector):
     listLabel = []
 
     listDirs = os.listdir(labelFolder)
+    listDirs.sort()
     print('---READING IMAGE---')
     for subDir in listDirs:
         path = labelFolder + subDir + '/'
@@ -55,7 +56,7 @@ def writeVector(labelFolder, fileVector):
         print(path)
         for imgfile in os.listdir(path):
             img = cv2.imread(path + imgfile,0)
-            ret,img = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
+            ret,img = cv2.threshold(img,127,1,cv2.THRESH_BINARY)
             # img = io.imread(path + imgfile, as_grey=True)
             # cv2.imshow("img", img)
             # cv2.waitKey(0)
@@ -93,14 +94,14 @@ def writeFile(Xdata, Ylabel, filename):
     for i in range(0, len(Ylabel)):
         fileWrite.write(str(Ylabel[i]) + ' ')
         for i2 in range(0, 784):
-            fileWrite.write(str(i2) + ':' + str(Xdata[i][i2]) + ' ')
+            fileWrite.write(str(i2+1) + ':' + str(Xdata[i][i2]) + ' ')
 
         fileWrite.write('\n')
     fileWrite.close()
 
 
 
-writeVector("NUMBER/", "vectorNumber.txt")
+writeVector("DATASET/CHAR/", "vectorChar.txt")
 
 
 # renameCharImg("LabelAugmentor/")
