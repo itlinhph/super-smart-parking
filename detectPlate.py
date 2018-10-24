@@ -443,12 +443,14 @@ def getStrCharFromPlate(imgThresh, listChar):
         # retreive binary image from the char images
         adaptivePlate = cv2.adaptiveThreshold(imgROIResized,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,11,2)
         blurPlate = cv2.GaussianBlur(adaptivePlate, (5,5),0)
-        _, im = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-        # _, im = cv2.threshold(blurPlate,0,1,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        # _, im = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        _, im = cv2.threshold(blurPlate,0,1,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        borderChar = cv2.copyMakeBorder(im, 5, 5, 5, 5, cv2.BORDER_CONSTANT, value=0)
+        im = cv2.resize(borderChar, (28,28))
         
         listCharImg.append(im)
 
-        cv2.imwrite("resize_" + str(i)+ ".jpg", im)
+        # cv2.imwrite("resize_" + str(i)+ ".jpg", im)
         # cv2.imshow("img_thresh", imgThresh)
 
     #17/10 DONE TRUE FOR THIS
@@ -466,21 +468,21 @@ def charPlace(char):
 
 def recognizeChar(listCharImg):
     # listCharImg = np.asarray(listCharImg, dtype=np.float32)
-    # charIndex3 = listCharImg.pop(2)
+    charIndex3 = listCharImg.pop(2)
 
     XNumberTemp = np.array(listCharImg)
-    # XCharTemp = np.array(charIndex3)
+    XCharTemp = np.array(charIndex3)
 
     XNumber = XNumberTemp.reshape(len(XNumberTemp), 28 * 28)
-    # XChar   = XCharTemp.reshape(1, 28*28)
+    XChar   = XCharTemp.reshape(1, 28*28)
     for item in XNumber:
         logging.info("Number: %s", item)
-    # svmCharModel = joblib.load("modelML/modelChar.pkl")
+    svmCharModel = joblib.load("modelML/modelChar.pkl")
     svmNumberModel = joblib.load("modelML/modelNumber.pkl")
 
-    # char3 = svmCharModel.predict(XChar)
+    char3 = svmCharModel.predict(XChar)
     numbers = svmNumberModel.predict(XNumber)
-    print numbers 
+    print char3, numbers 
 
     
     return ["0", "1"]
