@@ -5,9 +5,9 @@ import random
 import shapely.geometry
 import shapely.affinity
 import logging
+from sklearn import svm
+from sklearn.externals import joblib
 
-import tensorflow
-from sklearn import preprocessing
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
 
 
@@ -444,6 +444,7 @@ def getStrCharFromPlate(imgThresh, listChar):
         adaptivePlate = cv2.adaptiveThreshold(imgROIResized,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,11,2)
         blurPlate = cv2.GaussianBlur(adaptivePlate, (5,5),0)
         _, im = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+        # _, im = cv2.threshold(blurPlate,0,1,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         
         listCharImg.append(im)
 
@@ -464,44 +465,25 @@ def charPlace(char):
 
 
 def recognizeChar(listCharImg):
-    listCharImg = np.asarray(listCharImg, dtype=np.float32)
-    i =1
-    for item in listCharImg:
-        if i !=1:
-            continue
-        i+=1
-        logging.debug("Shape: %s ", item.shape)
-        logging.info("%s", item)
+    # listCharImg = np.asarray(listCharImg, dtype=np.float32)
+    # charIndex3 = listCharImg.pop(2)
 
-    labelEncode = preprocessing.LabelEncoder()
-    labels = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    XNumberTemp = np.array(listCharImg)
+    # XCharTemp = np.array(charIndex3)
 
-    # labels = list("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    labelEncode.fit(labels)
+    XNumber = XNumberTemp.reshape(len(XNumberTemp), 28 * 28)
+    # XChar   = XCharTemp.reshape(1, 28*28)
+    for item in XNumber:
+        logging.info("Number: %s", item)
+    # svmCharModel = joblib.load("modelML/modelChar.pkl")
+    svmNumberModel = joblib.load("modelML/modelNumber.pkl")
+
+    # char3 = svmCharModel.predict(XChar)
+    numbers = svmNumberModel.predict(XNumber)
+    print numbers 
+
     
-    x = tensorflow.random_normal((1,784))
-    # model = CNN_Model()
     return ["0", "1"]
-
-
-
-# def showListOfLists(possiblePlate, listOfCharsInPlate):
-#     height, width, numChannels = possiblePlate["img"].shape
-#     imgContours = np.zeros((height, width, 3), np.uint8)
-
-#     intRandomBlue = random.randint(0, 255)
-#     intRandomGreen = random.randint(0, 255)
-#     intRandomRed = random.randint(0, 255)
-
-#     contours = []
-
-#     for matchingChar in listOfCharsInPlate:
-#         contours.append(matchingChar["contour"])
-
-#     cv2.drawContours(imgContours, contours, -1, (intRandomBlue, intRandomGreen, intRandomRed))
-
-    # cv2.imshow("7.combineListOfLists", imgContours)
-    # cv2.waitKey(0)
 
 
 def main():

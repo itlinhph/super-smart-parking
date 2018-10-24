@@ -4,7 +4,7 @@ import numpy as np
 import logging
 from skimage import io
 
-logging.basicConfig(filename='log_detectPlate2.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
+logging.basicConfig(filename='log_preprocess.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
 # folderImg = "real_chars/"
 
 def movieFolder(folderImg):
@@ -40,68 +40,6 @@ def renameCharImg(folderAll):
             os.system(command)
             print(command)
             count+=1
-
-
-def writeVector(labelFolder, fileVector):
-
-    listImgs  = []
-    listLabel = []
-
-    listDirs = os.listdir(labelFolder)
-    listDirs.sort()
-    print('---READING IMAGE---')
-    for subDir in listDirs:
-        path = labelFolder + subDir + '/'
-        logging.debug("---> SUB DIR: %s", path)
-        print(path)
-        for imgfile in os.listdir(path):
-            img = cv2.imread(path + imgfile,0)
-            ret,img = cv2.threshold(img,127,1,cv2.THRESH_BINARY)
-            # img = io.imread(path + imgfile, as_grey=True)
-            # cv2.imshow("img", img)
-            # cv2.waitKey(0)
-            
-            # print(path + imgfile)
-            logging.debug(imgfile)
-            label = listDirs.index(subDir)
-            if(img.shape != (28, 28)):
-                print("continue!!")
-                continue
-
-            listImgs.append(img)
-            listLabel.append(label)
-            # logging.info("%s", img)
-            
-    print('---READ IMAGE COMPLETED---\n')
-    
-    XdataTemp = np.array(listImgs)
-    
-    Xdata = XdataTemp.reshape(len(XdataTemp), 28 * 28)
-    Ylabel = np.array(listLabel)
-
-    print('dataShape: ', Xdata.shape)
-   
-    print('   WRITING VECTOR...')
-    if not os.path.exists('vector'):
-        os.makedirs('vector')
-    writeFile(Xdata, Ylabel, 'vector/' + fileVector)
-
-    print('---SAVE VECTOR COMPLETE!---\n')
-
-
-def writeFile(Xdata, Ylabel, filename):
-    fileWrite = open(filename, 'w')
-    for i in range(0, len(Ylabel)):
-        fileWrite.write(str(Ylabel[i]) + ' ')
-        for i2 in range(0, 784):
-            fileWrite.write(str(i2+1) + ':' + str(Xdata[i][i2]) + ' ')
-
-        fileWrite.write('\n')
-    fileWrite.close()
-
-
-
-writeVector("DATASET/CHAR/", "vectorChar.txt")
 
 
 # renameCharImg("LabelAugmentor/")
