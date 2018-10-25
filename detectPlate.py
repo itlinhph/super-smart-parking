@@ -12,7 +12,7 @@ logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(level
 
 
 
-# is can be char
+# Char first pass
 CHAR_MIN_AREA = 30
 CHAR_MIN_W    = 2
 CHAR_MIN_H    = 8
@@ -45,14 +45,11 @@ MAX_OVERLAP_RATIO = 1
 CHAR_SIZE = (28,28)
 
 
-
-
 #get grayScale and threshold 
-def preprocess(imgOrigin):
+def adaptiveImgs(imgOrigin):
     
     imgHSV = cv2.cvtColor(imgOrigin, cv2.COLOR_BGR2HSV)
     hue, saturation, imgGray = cv2.split(imgHSV)
-    # imgGray = cv2.cvtColor(imgOrigin, cv2.COLOR_BGR2GRAY)
 
     # MaximizeContrast
     structuringElement = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
@@ -60,9 +57,8 @@ def preprocess(imgOrigin):
     imgBlackHat = cv2.morphologyEx(imgGray, cv2.MORPH_BLACKHAT, structuringElement)
     imgGrayAddTopHat = cv2.add(imgGray, imgTopHat)
     imgGrayMinusBlackHat = cv2.subtract(imgGrayAddTopHat, imgBlackHat)
-    imgBlurred = cv2.GaussianBlur(imgGrayMinusBlackHat, (5, 5), 0)  # GAUSSIAN_SMOOTH_FILTER_SIZE (5,5)
-    imgThresh = cv2.adaptiveThreshold(imgBlurred, 255.0, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 19, 9) #ADAPTIVE_THRESH_BLOCK_SIZE 19, ADAPTIVE_THRESH_WEIGHT 9
-    
+    imgBlurred = cv2.GaussianBlur(imgGrayMinusBlackHat, (5, 5), 0)
+    imgThresh = cv2.adaptiveThreshold(imgBlurred, 255.0, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 19, 9) 
 
     return imgGray, imgThresh
 
@@ -201,9 +197,7 @@ def getPlateFromClusterChar(clusterChar):
         'imgGray': None,
         'imgThresh': None,
         'isTwoRow': False,
-        'isPlate': False,
         'rrLocation': None,
-        'strChars': ""
     }
 
     clusterChar.sort(key = lambda x: x["centerX"])
@@ -364,15 +358,16 @@ def removeDistanceChar(charsInPlate):
                 validChar = True
         
         if not validChar:
-            char1.isChar = False
+            char1["isChar"] = False
             
     listOfChars = [char for char in charsInPlate if char["isChar"] == True]
     return listOfChars
 
 def getListChars(listPlates):
     
+    listStrChar = []
     for plate in listPlates:
-        plate["imgGray"] , plate["imgThresh"] = preprocess(plate["img"])
+        plate["imgGray"] , plate["imgThresh"] = adaptiveImgs(plate["img"])
         
         # cv2.imshow("plate Gray", plate["imgGray"])
         # cv2.imshow("plate Thresh",plate["imgThresh"])
@@ -401,7 +396,7 @@ def getListChars(listPlates):
 
         if len(listClusterChars) == 0:
             continue
-        print(len(listClusterChars))
+        # print(len(listClusterChars))
 
         listClusterChar1 = [getEqualHeightList(x) for x in listClusterChars]
         listClusterChar2 = getEqualHeightList(listClusterChar1, mode=1)
@@ -414,11 +409,10 @@ def getListChars(listPlates):
         #     logging.debug("---> Char: %s", (char["centerX"], char["centerY"]))
         
         if len(listOfCharsInPlate) >= 6:
-            plate["isPlate"] = True
-            
-            # showListOfLists(plate, listOfCharsInPlate)
+            plateStr = getStrCharFromPlate(plate["imgGray"], listOfCharsInPlate)
+            listStrChar.append(plateStr)
 
-            plate["strChar"] = getStrCharFromPlate(plate["imgGray"], listOfCharsInPlate)
+    return listStrChar
 
 
 def getStrCharFromPlate(imgThresh, listChar):
@@ -455,46 +449,47 @@ def getStrCharFromPlate(imgThresh, listChar):
 
     #17/10 DONE TRUE FOR THIS
          
-    # cv2.imshow("imgThreshColor", imgThreshColor)
-    # cv2.waitKey(0)
+    # cv2.imshow("imgT
 
-    listStrChar = recognizeChar(listCharImg)
+    plateStr = recognizeChar(listCharImg)
 
-    return "".join(listStrChar)
+    return plateStr
 
 def charPlace(char):
     return char["centerX"] + 10 * char["centerY"]
 
 
 def recognizeChar(listCharImg):
-    # listCharImg = np.asarray(listCharImg, dtype=np.float32)
-    charIndex3 = listCharImg.pop(2)
+    
+    charIndex2 = listCharImg.pop(2) # This is a char, other is number
 
     XNumberTemp = np.array(listCharImg)
-    XCharTemp = np.array(charIndex3)
+    XCharTemp = np.array(charIndex2)
 
     XNumber = XNumberTemp.reshape(len(XNumberTemp), 28 * 28)
     XChar   = XCharTemp.reshape(1, 28*28)
-    for item in XNumber:
-        logging.info("Number: %s", item)
+    
+    #load model SVM
     svmCharModel = joblib.load("modelML/modelChar.pkl")
     svmNumberModel = joblib.load("modelML/modelNumber.pkl")
 
-    char3 = svmCharModel.predict(XChar)
-    numbers = svmNumberModel.predict(XNumber)
-    print char3, numbers 
-
+    char2 = svmCharModel.predict(XChar)
+    listStr = svmNumberModel.predict(XNumber)
     
-    return ["0", "1"]
+    listStr = listStr.tolist()
+    listStr.insert(2, char2[0])
+    plateStr = "".join(listStr)
+    
+    return plateStr
 
 
-def main():
-    imgOrigin = cv2.imread("testIMG/plate.jpg")
+def detectPlateMain(fileImg):
+    imgOrigin = cv2.imread(fileImg)
     height, width, numChannels = imgOrigin.shape
     
     imgContours = np.zeros((height, width, 3), np.uint8)
 
-    imgGray, imgPreprocess = preprocess(imgOrigin)
+    imgGray, imgPreprocess = adaptiveImgs(imgOrigin)
     # cv2.imshow('imgPreprocess',imgPreprocess)
     # cv2.waitKey(0)
 
@@ -539,8 +534,8 @@ def main():
 
     #12/10
     listPlates = combinePlates(imgOrigin, listPlates)
-    print ("Len list plate:", len(listPlates))
-    logging.info("Len list plate: %s", len(listPlates))
+    # print ("Len list plate:", len(listPlates))
+    # logging.info("Len list plate: %s", len(listPlates))
     # print len(listPlates)
     for i in range(0, len(listPlates)):
         location = ((listPlates[i]["rrLocation"][0], listPlates[i]["rrLocation"][1]), (listPlates[i]["rrLocation"][2], listPlates[i]["rrLocation"][3]), listPlates[i]["rrLocation"][4])
@@ -564,6 +559,7 @@ def main():
         return
 
     listCharsInPlates = getListChars(listPlates)
+    print listCharsInPlates
 
 
     # cv2.waitKey(0)
@@ -571,6 +567,6 @@ def main():
 
 import time
 stime = time.time()
-main()
+detectPlateMain("testIMG/plate.jpg")
 etime = time.time()
 print ("ESTIMATE TIME: ", etime - stime)
