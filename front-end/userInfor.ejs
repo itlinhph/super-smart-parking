@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width initial-scale=1">
+        <title>User Information</title>
+    
+    
+        <link href="../resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../resources/css/style.css" rel="stylesheet" type="text/css">
+        <script src="../resources/js/jquery-3.1.1.min.js" type="text/javascript"> </script>
+        <script src="../resources/js/script.js" type="text/javascript"></script>
+        <script src="../resources/bootstrap/js/bootstrap.min.js" type="text/javascript"> </script>
+                
+    </head>
+    <body>
+        <!-- Header -->
+        <%- include('partition/header.ejs') %>
+        <%- include('partition/message.ejs') %>
+        
+        <div class="content container">
+
+            <div class="row">
+                 <!-- Nav left  -->
+                <%- include('partition/navLeft.ejs') %>
+
+                <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8 contentRight">
+                    <h2>Public Profile</h2>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-7">
+                            
+                            <form  action="/api/user/updateProfile" method="POST" role="form">
+                                <div class="form-group">
+                                    <label for="">Username</label>
+                                    <span class="form-control disabled"><%= user.username %></span>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="">Name</label>
+                                    <input type="text" name='name' class="form-control" required="required" value="<%= user.name %>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">Email <span class="glyphicon glyphicon-lock"></span></label>
+                                    <input type="email" name='email' class="form-control" required="required" value="<%= user.email %>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    <select class="form-control" name="gender">
+                                        <option  value="<%= user.gender? 'Male': 'Female' %>"><%= user.gender? 'Male': 'Female' %></option>
+                                        <option  value="<%= user.gender? 'Female': 'Male' %>"><%= user.gender? 'Female': 'Male' %></option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Phone <span class="glyphicon glyphicon-lock"></span></label>
+                                    <input type="number" name='phone' class="form-control" required="required" value="<%= user.phone %>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Address </label>
+                                    <input type="text" name='address' class="form-control" value="<%= user.address %>">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>About me</label>
+                                    <br>
+                                    <textarea class="form-control" name="aboutme" rows="5" placeholder="Tell us a little bit about yourself..." ><%= user.aboutme %></textarea>
+                                    <span>There information will show in <a href="/userProfile?username=<%=user.username%>">your profile</a></span>
+                                </div>
+
+                                <button type="submit" class="btn btn-lg btn-primary">Update Profile</button>
+                               
+                            </form>
+                            <hr><hr>
+                            <div>
+                                <h3> Change Your Password:</h3>
+                                
+                                <form action="/api/user/changePassword" method="POST" role="form">
+                                
+                                    <div class="form-group">
+                                        <label for="">Old Password</label>
+                                        <input type="password" class="form-control" id="" name='oldPassword' required="required" placeholder="Old password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">New Password</label>
+                                        <input type="password" class="form-control" id="" name='newPassword' required="required" placeholder="New password">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="">Confirm Password</label>
+                                        <input type="password" class="form-control" id="" name='confirmPassword' required="required" placeholder="Confirm password">
+                                    </div>
+                                
+                                    <button type="submit" class="btn btn-danger">Change Password</button>
+                                </form>
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <h4><B>Profile Picture</B> </h4>
+                            <div class="table-bordered">
+                                <img src="<%- user.image %>" onerror="this.src='resources/images/defaultAvata.jpg'" class="img-responsive img-display" alt="avata">
+                            </div>
+                            <br>
+                            <form action="/api/user/updateAvatar" method="POST" role="form">
+                                <input type="link" class="form-control" name="avatar" id="my-button" value="<%- user.image %>" required="required" style="width: 100%;">
+                                <br>
+                                <button type="submit" class="btn btn-info" style="width: 100%;">Upload new profile picture</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+                
+        </div>
+    <!-- End container -->
+    </body>
+</html>
