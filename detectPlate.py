@@ -70,7 +70,7 @@ def findCharsFromImg(imgThresh):
     listChars = []
 
     imgThreshCopy = imgThresh.copy()
-    imgContours, contours, npaHierarchy = cv2.findContours(imgThreshCopy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    imgContours, contours, _ = cv2.findContours(imgThreshCopy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     logging.debug("Num contours first: %s", len(contours) )
     
     imgContours = np.zeros((imgThresh.shape[0], imgThresh.shape[1], 3), np.uint8)
@@ -196,8 +196,8 @@ def getPlateFromClusterChar(clusterChar):
         'img': None,
         'imgGray': None,
         'imgThresh': None,
-        'isTwoRow': False,
-        'rrLocation': None,
+        'twoRow': False,
+        'location': None,
     }
 
     clusterChar.sort(key = lambda x: x["centerX"])
@@ -216,7 +216,7 @@ def getPlateFromClusterChar(clusterChar):
 
     plateAngle = math.asin(plateOpposite/plateHipote) *(180/math.pi)
 
-    plate["rrLocation"] = (plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle)
+    plate["location"] = (plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle)
 
     return plate
 
@@ -245,8 +245,8 @@ def combinePlates(imgOrigin, listPlates):
     setImg = set([])
     for i, plate in enumerate(listPlates):
         for j in range(i):
-            plateLocation = plate["rrLocation"]
-            jplateLocation = listPlates[j]["rrLocation"]
+            plateLocation = plate["location"]
+            jplateLocation = listPlates[j]["location"]
             plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plateLocation
             jplateCenterX, jplateCenterY, jplateWidth, jplateHeight, jplateAngle = jplateLocation
 
@@ -277,17 +277,17 @@ def combinePlates(imgOrigin, listPlates):
                     combineHeight = plateHeight + jplateHeight
                     combineAngle = (plateAngle + jplateAngle)/2
 
-                    plate["isTwoRow"] = True
-                    plate["rrLocation"] = (combineCenterX, combineCenterY, combineWidth, combineHeight, combineAngle)
+                    plate["twoRow"] = True
+                    plate["location"] = (combineCenterX, combineCenterY, combineWidth, combineHeight, combineAngle)
                     setImg.add(j)
                     break
     
     listIndex = list(setImg)
     listPlateReturn = []
     for i, plate in enumerate(listPlates):
-        if i not in listIndex and plate["isTwoRow"]:
+        if i not in listIndex and plate["twoRow"]:
             plateReturn = rotationPlate(imgOrigin, plate)
-            _, _, width, height, _ = plateReturn["rrLocation"]
+            # _, _, width, height, _ = plateReturn["location"]
             # shapeRatio = width/height
             if plateReturn["img"] is not None:
                 listPlateReturn.append(plateReturn)
@@ -297,7 +297,7 @@ def combinePlates(imgOrigin, listPlates):
 
 
 def rotationPlate(imgOrigin, plate):
-    plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plate["rrLocation"]
+    plateCenterX, plateCenterY, plateWidth, plateHeight, plateAngle = plate["location"]
     rotationMatrix = cv2.getRotationMatrix2D( (plateCenterX, plateCenterY), plateAngle, 1.0)
 
     imgHeight, imgWidth, _ = imgOrigin.shape
@@ -485,13 +485,11 @@ def recognizeChar(listCharImg):
 
 def detectPlateMain(fileImg):
     imgOrigin = cv2.imread(fileImg)
-    height, width, numChannels = imgOrigin.shape
+    height, width, _ = imgOrigin.shape
     
     imgContours = np.zeros((height, width, 3), np.uint8)
 
-    imgGray, imgPreprocess = adaptiveImgs(imgOrigin)
-    # cv2.imshow('imgPreprocess',imgPreprocess)
-    # cv2.waitKey(0)
+    _, imgPreprocess = adaptiveImgs(imgOrigin)
 
     listChars = findCharsFromImg(imgPreprocess)
     listChars = sorted(listChars, key=lambda x: x["centerX"])
@@ -504,26 +502,25 @@ def detectPlateMain(fileImg):
 
 
     # DRAW CLUSTER CHAR
-    colors = {
-        1: (0,255,255), 
-        2: (255,0,255),
-        3: (255,255,0),
-        4: (0,0,255),
-        5: (0,255,0)
-    }
+    # colors = {
+    #     1: (0,255,255), 
+    #     2: (255,0,255),
+    #     3: (255,255,0),
+    #     4: (0,0,255),
+    #     5: (0,255,0)
+    # }
 
-    for i,clusterChar in enumerate (listClusterChars):
+    # for i,clusterChar in enumerate (listClusterChars):
         
-        color = colors.get(i, (255,0,0))  
+    #     color = colors.get(i, (255,0,0))  
         
-        contours = []
-        for char in clusterChar:
-            contours.append(char["contour"])
+    #     contours = []
+    #     for char in clusterChar:
+    #         contours.append(char["contour"])
 
-        cv2.drawContours(imgContours, contours, -1, color)
+    #     cv2.drawContours(imgContours, contours, -1, color)
 
-    # cv2.imshow("contours", imgContours)
-    # cv2.imwrite("imgcontour.jpg", imgContours)
+    # cv2.imshow("Listcontours", imgContours)
     # cv2.waitKey(0)
     #End draw contours
 
@@ -537,19 +534,21 @@ def detectPlateMain(fileImg):
     # print ("Len list plate:", len(listPlates))
     # logging.info("Len list plate: %s", len(listPlates))
     # print len(listPlates)
-    for i in range(0, len(listPlates)):
-        location = ((listPlates[i]["rrLocation"][0], listPlates[i]["rrLocation"][1]), (listPlates[i]["rrLocation"][2], listPlates[i]["rrLocation"][3]), listPlates[i]["rrLocation"][4])
-        p2fRectPoints = cv2.boxPoints(location)
+    # for i in range(0, len(listPlates)):
+    #     location = ((listPlates[i]["location"][0], listPlates[i]["location"][1]), (listPlates[i]["location"][2], listPlates[i]["location"][3]), listPlates[i]["location"][4])
+    #     p2fRectPoints = cv2.boxPoints(location)
 
-        cv2.line(imgContours, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), (0,255,255), 2)
-        cv2.line(imgContours, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), (0,255,255), 2)
-        cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), (0,255,255), 2)
-        cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), (0,255,255), 2)
+    #     cv2.line(imgContours, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), (0,255,255), 2)
+    #     cv2.line(imgContours, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), (0,255,255), 2)
+    #     cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), (0,255,255), 2)
+    #     cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), (0,255,255), 2)
 
-        # cv2.imshow("4a contours2 ", imgContours)
+    #     cv2.imshow("4a contours2 ", imgContours)
+    #     cv2.imwrite("DrawplateCrop.jpg", imgContours)
 
-        # cv2.imshow("4b plate", listPlates[i]["img"])
-
+    #     cv2.imshow("4b plate", listPlates[i]["img"])
+    #     cv2.imwrite("plateRotato.jpg", listPlates[i]["img"])
+    #     cv2.waitKey(0)
 
     # 15/10
     
