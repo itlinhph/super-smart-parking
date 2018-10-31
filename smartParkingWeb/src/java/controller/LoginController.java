@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,27 +44,34 @@ public class LoginController {
         
         
         return "jsp/login" ;
-    };
+    }
     
     
-    @RequestMapping(value="registerUser", method=RequestMethod.POST)
-    public String registerUser (HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+    @RequestMapping(value="/registerUser", method=RequestMethod.POST)
+    public String registerUser (HttpServletRequest request, HttpServletResponse response, ModelMap mm) throws IOException {
         String urlRedirict = request.getContextPath() + "/index.html";
         
         try {
             request.setCharacterEncoding("UTF-8");
-            String username = request.getParameter("su-username");
-            String email = request.getParameter("su-email");
-            String password = request.getParameter("su-password");
-            String fullname = request.getParameter("su-fullname");
-            String phoneStr = request.getParameter("su-phone");
+            String username = request.getParameter("username");
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+            String fullname = request.getParameter("fullname");
+            
+            String phoneStr = request.getParameter("phone");
+            
             int phone = Integer.parseInt(phoneStr);
             
-         
+            if(User.checkUserExist(username)){
+                mm.put("message", "Username đã tồn tại! Vui lòng chọn username khác!");
+                System.out.println(username + "exist!");
+            }
+            System.out.println(phone + email+ password);
             
         } catch (Exception e) {
+            System.out.println("Exeption"+ e.getMessage());
         }
-        
+        response.sendRedirect(urlRedirict);
         return "jsp/login" ;
     }
     

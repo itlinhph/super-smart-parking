@@ -10,7 +10,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         
-        <img src="resources/images/logoBK.png" alt="logo" class="logo img-responsive" width="30px" height="45px">
+        <img src="resources/images/logoB.png" alt="logo" class="logo img-responsive" width="30px" height="45px">
         <div class="navbar-header">
             
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navCollapse" >

@@ -58,7 +58,17 @@ public class User implements Serializable {
         
     }
     
-    
+    public static boolean checkUserExist(String username) throws SQLException, ClassNotFoundException {
+        DbConnect connect = new DbConnect();
+        String sql = "SELECT id FROM user WHERE username = '" + username + "'";
+        
+        ResultSet rs = connect.st.executeQuery(sql);
+        if(rs.next()) {
+            return true;
+        }
+        
+        return false;
+    }
     
     public int getUserId() {
         return userId;
@@ -139,11 +149,10 @@ public class User implements Serializable {
     public void setCreated(String created) {
         this.created = created;
     }
-    
+
 //    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        User user = new User(1) ;
-//        System.out.println(user.fullname);
-//    }
-//    
-    
+////        User user = new User(1) ;
+//        boolean exist = checkUserExist("linhph");
+//        System.out.println(exist);
+//    }  
 }

@@ -26,6 +26,7 @@
         <!-- Header -->
         <jsp:include page="partition/header.jsp"></jsp:include>
         <!-- End header -->
+        <jsp:include page="partition/message.jsp"></jsp:include>
         <!-- Sign Up/Login Tab -->
         <div id="signupLoginTab" class="well">
             <ul class="nav nav-tabs nav-pills nav-justified">
@@ -34,7 +35,7 @@
             </ul>
             <div class="tab-content">
                 <div id="signup" class="signupTab tab-pane fade">
-                    <form action="/login/registerUser" method="POST" role="form">
+                    <form action="login/registerUser" method="POST" role="form">
 
                         <br> <br>
                         <div class="form-group">
@@ -63,15 +64,15 @@
 
                 <div id="login" class=" loginTab tab-pane fade in active">
                     <br> <br>
-                    <form action="/login/loginForm" method="POST" role="form">
+                    <form action="login/loginForm" method="POST" role="form">
 
                         <div class="form-group">
                             <label for="">Username</label>
-                            <input type="text" class="form-control" id="" placeholder="Your username" required="required" name="username">
+                            <input type="text" class="form-control" id="lo-username"  placeholder="Your username" required="required" name="username">
                         </div>
                         <div class="form-group">
                             <label for="">Password</label>
-                            <input type="password" class="form-control" id="" placeholder="Password" required="required" name="password">
+                            <input type="password" class="form-control" id="lo-password" placeholder="Password" required="required" name="password">
                         </div>
                         <br>
                         <button id="loginBtn" type="submit" class="btn btn-success">Log In</button>
@@ -84,7 +85,7 @@
 
 
     <script>
-        var isLogin = ${isLogin}
+        var isLogin = ${isLogin};
         if(!isLogin) {
             $('#signup').addClass("in");
             $('#login').removeClass("in");
