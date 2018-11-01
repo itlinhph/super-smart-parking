@@ -16,7 +16,7 @@
                 </div>
                 <div class="modal-body">
                     <p id="modalMessage">
-                        ${message}
+                       Có lẽ có 1 thông báo nào đấy!
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -28,14 +28,16 @@
     <!-- End Message modal -->
 
     <script>
-        var message = $("#modalMessage").val() ;
-        if(message.length > 0) {
-            $('#modal-message').modal('show');
-            setTimeout(function () {
-                $('#modal-message').modal('hide');
-            }, 3000);
-        }
-        console.log(message, message.length);
+        function showMessage() {
+            var message = $("#modalMessage").text() ;
+            if(message.length > 0) {
+                $('#modal-message').modal('show');
+                setTimeout(function () {
+                    $('#modal-message').modal('hide');
+                }, 10000);
+            }
+            console.log(message, message.length);
+        };
         
     </script>
 

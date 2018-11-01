@@ -14,10 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author linhph
  */
 @Controller
-@RequestMapping(value="/index")
+@RequestMapping(value="/")
 public class IndexController {
 
-@RequestMapping(value="", method=RequestMethod.GET)
+    @RequestMapping(value="", method=RequestMethod.GET)
+    public String rootPage() {
+
+        return "jsp/index";
+    }
+    
+    @RequestMapping(value="/index", method=RequestMethod.GET)
 
     public String index() {
 

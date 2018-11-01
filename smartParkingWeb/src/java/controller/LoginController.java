@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -48,9 +49,10 @@ public class LoginController {
     
     
     @RequestMapping(value="/registerUser", method=RequestMethod.POST)
+    @ResponseBody
     public String registerUser (HttpServletRequest request, HttpServletResponse response, ModelMap mm) throws IOException {
-        String urlRedirict = request.getContextPath() + "/index.html";
-        
+        String urlRedirict = request.getContextPath() + "/login?param=login";
+        String message = "No thing!";
         try {
             request.setCharacterEncoding("UTF-8");
             String username = request.getParameter("username");
@@ -61,20 +63,21 @@ public class LoginController {
             String phoneStr = request.getParameter("phone");
             
             int phone = Integer.parseInt(phoneStr);
-            
+            message = fullname;
             if(User.checkUserExist(username)){
-                mm.put("message", "Username đã tồn tại! Vui lòng chọn username khác!");
+                message = "Username exist!";
+//                mm.put("message", message);
                 System.out.println(username + "exist!");
             }
-            System.out.println(phone + email+ password);
+            System.out.println(fullname+ password);
             
         } catch (Exception e) {
             System.out.println("Exeption"+ e.getMessage());
+            message = e.getMessage();
         }
-        response.sendRedirect(urlRedirict);
-        return "jsp/login" ;
+//        response.sendRedirect(urlRedirict);
+        return message ;
     }
-    
     
     
 }

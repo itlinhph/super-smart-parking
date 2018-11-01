@@ -35,7 +35,7 @@
             </ul>
             <div class="tab-content">
                 <div id="signup" class="signupTab tab-pane fade">
-                    <form action="login/registerUser" method="POST" role="form">
+                    <form action="" id="registerUserForm">
 
                         <br> <br>
                         <div class="form-group">
@@ -85,6 +85,7 @@
 
 
     <script>
+        showMessage();
         var isLogin = ${isLogin};
         if(!isLogin) {
             $('#signup').addClass("in");
@@ -92,6 +93,29 @@
             $('.signupTab').addClass("active");
             $('.loginTab').removeClass("active");
         }
+        
+        $("#registerUserForm").submit(function(e){
+        e.preventDefault();    
+        var message = "No change!";
+            
+            var dataSend = $("#registerUserForm").serialize();
+            console.log(dataSend);
+            
+            $.ajax({
+                method: "POST",
+                url: "login/registerUser",
+                async: false,
+                data: dataSend,
+                success: function (data) { 
+                    message = data; 
+                    console.log(message);
+                    $("#modalMessage").text(message);
+                    showMessage();
+                }
+//           
+            });
+
+        });
         
     </script>
 
