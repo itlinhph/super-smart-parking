@@ -12,12 +12,10 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>Thông báo từ My Parking:</h4>
+                    <h4>Message from My Parking:</h4>
                 </div>
                 <div class="modal-body">
-                    <p id="modalMessage">
-                       Có lẽ có 1 thông báo nào đấy!
-                    </p>
+                    <p id="modalMessage">${message}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -28,15 +26,17 @@
     <!-- End Message modal -->
 
     <script>
+        showMessage();
         function showMessage() {
             var message = $("#modalMessage").text() ;
             if(message.length > 0) {
                 $('#modal-message').modal('show');
                 setTimeout(function () {
                     $('#modal-message').modal('hide');
-                }, 10000);
+                    if(message =="Register Success!")
+                        window.location = "/smartParkingWeb/index";
+                }, 3000);
             }
-            console.log(message, message.length);
         };
         
     </script>

@@ -15,11 +15,11 @@
         <meta name="viewport" content="width=device-width initial-scale=1">
         <title>SignUp/Login</title>
 
-        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="resources/css/style.css" rel="stylesheet" type="text/css">
-        <script src="resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-        <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="resources/js/script.js" type="text/javascript"></script>
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
+        <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
 
     </head>
     <body>
@@ -64,7 +64,7 @@
 
                 <div id="login" class=" loginTab tab-pane fade in active">
                     <br> <br>
-                    <form action="login/loginForm" method="POST" role="form">
+                    <form action="${pageContext.request.contextPath}/login/loginForm" method="POST" role="form">
 
                         <div class="form-group">
                             <label for="">Username</label>
@@ -85,9 +85,8 @@
 
 
     <script>
-        showMessage();
-        var isLogin = ${isLogin};
-        if(!isLogin) {
+        var isLoginPage = ${isLogin};
+        if(!isLoginPage) {
             $('#signup').addClass("in");
             $('#login').removeClass("in");
             $('.signupTab').addClass("active");
@@ -103,7 +102,7 @@
             
             $.ajax({
                 method: "POST",
-                url: "login/registerUser",
+                url: "${pageContext.request.contextPath}/login/registerUser",
 //                async: false,
                 data: dataSend,
                 success: function (data) { 
@@ -116,6 +115,7 @@
             });
 
         });
+        ${script}
         
     </script>
 

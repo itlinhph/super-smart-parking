@@ -40,7 +40,7 @@
         <!-- Nav right -->
             <ul class="nav navbar-nav navbar-right navbar-collapse collapse navCollapse">
                 <li style="display:aa"><a href="login.html?action=signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li style="display:aaa"><a href="login.html?action=login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li style="display:aaa"><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 <li style="display:none"><a href="#">Hi: Lĩnh Phan</a></li>
                 <li class="dropdown" style="display:none"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> My Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">

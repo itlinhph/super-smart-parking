@@ -10,18 +10,18 @@
         <title>Home Page</title>
         
         
-        <link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="resources/css/style.css" rel="stylesheet" type="text/css">
-        <script src="resources/js/jquery-3.1.1.min.js" type="text/javascript"> </script>
-        <script src="resources/bootstrap/js/bootstrap.min.js" type="text/javascript"> </script>
-        <script src="resources/js/script.js" type="text/javascript"></script>
+        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
+        <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"> </script>
+        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"> </script>
+        <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
     
     </head>
 <body>
 <!-- Header -->
 <jsp:include page="partition/header.jsp"></jsp:include>
 <!-- End header -->
-
+<jsp:include page="partition/message.jsp"></jsp:include>
     <!-- Content -->
     <div class="content container">
 

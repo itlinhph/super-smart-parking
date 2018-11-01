@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.User;
+import model.UserData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +36,13 @@ public class LoginController {
             String action = request.getParameter("action");
             
             int isLogin = 1;
-            if(action.equals("signup")) {
+            if(action !=null && action.equals("signup")) {
                 isLogin = 0;
             }
             mm.put("isLogin", isLogin);
             
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             response.sendRedirect(request.getContextPath()+"/index.html");
         }
         
@@ -47,12 +50,39 @@ public class LoginController {
         return "jsp/login" ;
     }
     
+    @RequestMapping(value="/loginForm", method=RequestMethod.POST)
+    public String loginForm( HttpServletRequest request,HttpServletResponse response, ModelMap mm) throws IOException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+//            System.out.println(username + password);
+            User user = UserData.checkValidLogin(username, password);
+            if(user != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user); 
+                response.sendRedirect(request.getContextPath()+"/index.html"); 
+            }
+            else {
+                
+                
+                mm.put("message", "Login false, wrong username or password!");
+            }
+            
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+            response.sendRedirect(request.getContextPath()+"/index.html");
+        }
+        
+        return "jsp/login";
+    }
     
     @RequestMapping(value="/registerUser", method=RequestMethod.POST)
     @ResponseBody
-    public String registerUser (HttpServletRequest request, HttpServletResponse response, ModelMap mm) throws IOException {
-        String urlRedirict = request.getContextPath() + "/login?param=login";
-        String message = "No thing!";
+    public String registerUser (HttpServletRequest request) {
+        
+        String message = "";
         try {
             request.setCharacterEncoding("UTF-8");
             String username = request.getParameter("username");
@@ -60,22 +90,24 @@ public class LoginController {
             String password = request.getParameter("password");
             String fullname = request.getParameter("fullname");
             
-            String phoneStr = request.getParameter("phone");
+            String phone = request.getParameter("phone");
             
-            int phone = Integer.parseInt(phoneStr);
-            message = fullname;
+            
             if(User.checkUserExist(username)){
                 message = "Username exist!";
-//                mm.put("message", message);
-                System.out.println(username + "exist!");
             }
-            System.out.println(fullname+ password);
+            else {
+                boolean addUserResult = UserData.addUser(username, email, password, fullname, phone);
+                if(addUserResult)
+                    message = "Register Success!";
+                else
+                    message = "Register False!";
+            }
             
         } catch (Exception e) {
-            System.out.println("Exeption"+ e.getMessage());
+            System.out.println("Exeption: "+ e.getMessage());
             message = e.getMessage();
         }
-//        response.sendRedirect(urlRedirict);
         return message ;
     }
     
