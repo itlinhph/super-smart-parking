@@ -78,6 +78,14 @@ public class LoginController {
         return "jsp/login";
     }
     
+    @RequestMapping(value="/logout", method=RequestMethod.GET)
+    public void logOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        response.sendRedirect(request.getContextPath());
+
+    }
+    
     @RequestMapping(value="/registerUser", method=RequestMethod.POST)
     @ResponseBody
     public String registerUser (HttpServletRequest request) {
