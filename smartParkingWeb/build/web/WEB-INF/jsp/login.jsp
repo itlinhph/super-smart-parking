@@ -104,7 +104,7 @@
             $.ajax({
                 method: "POST",
                 url: "login/registerUser",
-                async: false,
+//                async: false,
                 data: dataSend,
                 success: function (data) { 
                     message = data; 

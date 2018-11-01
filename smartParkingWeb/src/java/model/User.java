@@ -21,7 +21,7 @@ public class User implements Serializable {
     private int status;
     private String fullname;
     private String email;
-    private int phone;
+    private String phone;
     private int coin_remain;
     private String note;
     private String created;
@@ -31,7 +31,7 @@ public class User implements Serializable {
         
     }
 
-    public User(String username, String password, String fullname, String email, int phone) {
+    public User(String username, String password, String fullname, String email, String phone) {
         this.username = username;
         this.password = password;
         this.fullname = fullname;
@@ -51,7 +51,7 @@ public class User implements Serializable {
         this.status = rs.getInt("status");
         this.fullname = rs.getString("fullname");
         this.email = rs.getString("email");
-        this.phone = rs.getInt("phone");
+        this.phone = rs.getString("phone");
         this.coin_remain = rs.getInt("coin_remain");
         this.note = rs.getString("note");
         this.created = rs.getString("created");
@@ -118,11 +118,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
