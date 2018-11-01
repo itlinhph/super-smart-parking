@@ -40,13 +40,13 @@
   
             <div class="carousel-inner carousel-slide">
               <div class="item active">
-                <img src="resources/images/slide1.jpg" width="100%" class="center-block">
+                <img src="${pageContext.request.contextPath}/resources/images/slide1.jpg" width="100%" class="center-block">
               </div>
               <div class="item">
-                <img src="resources/images/slide22.png" width="100%" class="center-block">
+                <img src="${pageContext.request.contextPath}/resources/images/slide22.png" width="100%" class="center-block">
               </div>
               <div class="item">
-                <img src="resources/images/slide33.png" width="100%" class="center-block">
+                <img src="${pageContext.request.contextPath}/resources/images/slide33.png" width="100%" class="center-block">
               </div>
             </div>
             <a class="left carousel-control" href="#carousel-id" data-slide="prev"><span class="glyphicon glyphicon-chevron-left "></span></a>

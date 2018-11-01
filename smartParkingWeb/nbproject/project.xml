@@ -28,7 +28,7 @@
             </test-roots>
         </data>
         <libraries xmlns="http://www.netbeans.org/ns/ant-project-libraries/1">
-            <definitions>/home/linhph/Dropbox/SmartParking/lib/nblibraries.properties</definitions>
+            <definitions>./lib/nblibraries.properties</definitions>
         </libraries>
         <spring-data xmlns="http://www.netbeans.org/ns/spring-data/1">
             <config-files>
