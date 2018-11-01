@@ -14,10 +14,12 @@
             user = (User) session.getAttribute("user");
         }
  %>
+ 
+ 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         
-        <img src="resources/images/logoB.png" alt="logo" class="logo img-responsive" width="30px" height="45px">
+        <img src="${pageContext.request.contextPath}/resources/images/logoParking.jpg" alt="logo" class="logo img-responsive" width="50px" height="45px">
         <div class="navbar-header">
             
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navCollapse" >
@@ -27,7 +29,7 @@
                 <span class="icon-bar"></span>
             </button>
             
-            <a class="navbar-brand" href="index.html">My Parking</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/index.html">My Parking</a>
         </div>
         <ul class="nav navbar-nav navbar-collapse collapse navCollapse">
             <li><a href="#">About</a></li>
@@ -47,8 +49,8 @@
         <!-- Nav right -->
             <ul class="nav navbar-nav navbar-right navbar-collapse collapse navCollapse">
                 <% if(user ==null) { %>
-                <li><a href="login.html?action=signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="${pageContext.request.contextPath}/login.html?action=signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="${pageContext.request.contextPath}/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 
                 <% } else { %>
                 <li><a href="#">Hi: ${user.getFullname()}</a></li>

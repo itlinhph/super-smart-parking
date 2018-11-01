@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<!DOCTYPE html>
 
 <html>
     <head>
@@ -23,9 +22,9 @@
 
     </head>
     <body>
-        <!-- Header -->
-        <jsp:include page="partition/header.jsp"></jsp:include>
-        <!-- End header -->
+        <!-- navbar -->
+        <jsp:include page="partition/navbar.jsp"></jsp:include>
+        <!-- End navbar -->
         <jsp:include page="partition/message.jsp"></jsp:include>
         <!-- Sign Up/Login Tab -->
         <div id="signupLoginTab" class="well">
@@ -77,6 +76,8 @@
                         <br>
                         <button id="loginBtn" type="submit" class="btn btn-success">Log In</button>
                     </form>
+                <br>
+                <p align="center"> If you are Admin/Staff <a href="adminlogin.html">click here</a> to login </p>
                 </div>
             </div>
         </div>
@@ -102,7 +103,7 @@
             
             $.ajax({
                 method: "POST",
-                url: "${pageContext.request.contextPath}/login/registerUser",
+                url: "login/registerUser",
 //                async: false,
                 data: dataSend,
                 success: function (data) { 

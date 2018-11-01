@@ -73,7 +73,21 @@
 
             <div class="row">
                  <!-- Nav left  -->
-                <%- include('partition/navLeft.ejs') %>
+                 <div class="col-xs-4 col-sm-2 col-md-3 col-lg-3 well navLeft">
+                    <h3> My Account</h3>
+                    <hr>
+                    <ul class="nav nav-pills nav-stacked selectCategoryMenu">
+                        <!-- FrontEnd said : add class .active to active menu you choose -->
+                        <li id="sellNewProduct" class="selectCategory"> <a href="/sellNewProduct" class="glyphicon glyphicon-open cName"> Sell New Product</a></li>
+                        <li id="userInfo" class="selectCategory"> <a href="/userInfo" class="glyphicon glyphicon-cog cName"> Personal Setting</a></li>
+                        <li id="manageSales" class="selectCategory"> <a href="manageSales" class="glyphicon glyphicon-tag cName"> Manage Sales</a></li>
+                        <li id="managePurchases" class="selectCategory"> <a href="/managePurchases" class="glyphicon glyphicon-shopping-cart cName"> Manage Purchases</a></li>
+                        <li class="selectCategory"> <a href="#" class="glyphicon glyphicon-envelope cName"> Contact Admin </a></li>
+                
+                    </ul>
+                </div>
+                <!-- END NAV LEFT -->
+                
 
                 <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8 contentRight">
                     <h2>Public Profile</h2>
@@ -83,42 +97,39 @@
                             
                             <form  action="/api/user/updateProfile" method="POST" role="form">
                                 <div class="form-group">
-                                    <label for="">Username</label>
-                                    <span class="form-control disabled"><%= user.username %></span>
+                                    <label for="">Username <span class="glyphicon glyphicon-lock"></span></label>
+                                    <span class="form-control disabled">username</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Status <span class="glyphicon glyphicon-lock"></span></label>
+                                    <span class="form-control disabled">Active</span>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label for="">Name</label>
-                                    <input type="text" name='name' class="form-control" required="required" value="<%= user.name %>">
+                                    <label for="">Full Name</label>
+                                    <input type="text" name='name' class="form-control" required="required" value="name">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="">Email <span class="glyphicon glyphicon-lock"></span></label>
-                                    <input type="email" name='email' class="form-control" required="required" value="<%= user.email %>">
+                                    <label for="">Email</label>
+                                    <input type="email" name='email' class="form-control" required="required" value="email">
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Gender</label>
-                                    <select class="form-control" name="gender">
-                                        <option  value="<%= user.gender? 'Male': 'Female' %>"><%= user.gender? 'Male': 'Female' %></option>
-                                        <option  value="<%= user.gender? 'Female': 'Male' %>"><%= user.gender? 'Female': 'Male' %></option>
-                                    </select>
+                                    <label for="">Phone </label>
+                                    <input type="number" name='phone' class="form-control" required="required" value="phone">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="">Coin Remain <span class="glyphicon glyphicon-lock"></span></label>
+                                    <span class="form-control disabled">100</span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Phone <span class="glyphicon glyphicon-lock"></span></label>
-                                    <input type="number" name='phone' class="form-control" required="required" value="<%= user.phone %>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Address </label>
-                                    <input type="text" name='address' class="form-control" value="<%= user.address %>">
+                                    <label for="">Created <span class="glyphicon glyphicon-lock"></span></label>
+                                    <span class="form-control disabled">2018-11-01 10:21:00</span>
                                 </div>
 
-                                <div class="form-group">
-                                    <label>About me</label>
-                                    <br>
-                                    <textarea class="form-control" name="aboutme" rows="5" placeholder="Tell us a little bit about yourself..." ><%= user.aboutme %></textarea>
-                                    <span>There information will show in <a href="/userProfile?username=<%=user.username%>">your profile</a></span>
-                                </div>
+                            
 
                                 <button type="submit" class="btn btn-lg btn-primary">Update Profile</button>
                                
@@ -147,19 +158,7 @@
                                 
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <h4><B>Profile Picture</B> </h4>
-                            <div class="table-bordered">
-                                <img src="<%- user.image %>" onerror="this.src='resources/images/defaultAvata.jpg'" class="img-responsive img-display" alt="avata">
-                            </div>
-                            <br>
-                            <form action="/api/user/updateAvatar" method="POST" role="form">
-                                <input type="link" class="form-control" name="avatar" id="my-button" value="<%- user.image %>" required="required" style="width: 100%;">
-                                <br>
-                                <button type="submit" class="btn btn-info" style="width: 100%;">Upload new profile picture</button>
-                            </form>
-                            
-                        </div>
+                        
                     </div>
                 </div>
             </div>
