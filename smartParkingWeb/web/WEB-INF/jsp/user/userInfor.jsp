@@ -4,7 +4,10 @@
     Author     : linhph
 --%>
 
+<%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,83 +25,68 @@
     <body>
 
 
-<!-- navbar -->
-<jsp:include page="partition/navbar.jsp"></jsp:include>
-<!-- End message -->
-<jsp:include page="partition/message.jsp"></jsp:include>
+        <!-- navbar -->
+        <jsp:include page="../partition/navbar.jsp"></jsp:include>
+            <!-- End message -->
+        <jsp:include page="../partition/message.jsp"></jsp:include>
 
-        
-        <div class="content container">
+            <div class="content container">
 
-            <div class="row">
-                 <!-- Nav left  -->
-                 <div class="col-xs-4 col-sm-2 col-md-3 col-lg-3 well navLeft">
-                    <h3> My Account</h3>
-                    <hr>
-                    <ul class="nav nav-pills nav-stacked selectCategoryMenu">
-                        <!-- FrontEnd said : add class .active to active menu you choose -->
-                        <li id="sellNewProduct" class="selectCategory"> <a href="/sellNewProduct" class="glyphicon glyphicon-open cName"> Sell New Product</a></li>
-                        <li id="userInfo" class="selectCategory"> <a href="/userInfo" class="glyphicon glyphicon-cog cName"> Personal Setting</a></li>
-                        <li id="manageSales" class="selectCategory"> <a href="manageSales" class="glyphicon glyphicon-tag cName"> Manage Sales</a></li>
-                        <li id="managePurchases" class="selectCategory"> <a href="/managePurchases" class="glyphicon glyphicon-shopping-cart cName"> Manage Purchases</a></li>
-                        <li class="selectCategory"> <a href="#" class="glyphicon glyphicon-envelope cName"> Contact Admin </a></li>
-                
-                    </ul>
-                </div>
-                <!-- END NAV LEFT -->
-                
+                <div class="row">
+                <jsp:include page="../partition/navLeft.jsp"></jsp:include>
 
-                <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8 contentRight">
-                    <h2>Public Profile</h2>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-7">
-                            
-                            <form  action="/api/user/updateProfile" method="POST" role="form">
-                                <div class="form-group">
-                                    <label for="">Username <span class="glyphicon glyphicon-lock"></span></label>
-                                    <span class="form-control disabled">username</span>
+                    <div class="col-xs-7 col-sm-7 col-md-8 col-lg-8 contentRight">
+                        <h2>Public Profile</h2>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-7">
+
+                            <form role="form" id="editUserInfor">
+                                    <div class="form-group">
+                                        <label for="">Username <span class="glyphicon glyphicon-lock"></span></label>
+                                        <span class="form-control disabled">${user.getUsername()}</span>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Status <span class="glyphicon glyphicon-lock"></span></label>
-                                    <span class="form-control disabled">Active</span>
+                                    <span class="form-control disabled">${user.getStatus()}</span>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label for="">Full Name</label>
-                                    <input type="text" name='name' class="form-control" required="required" value="name">
+                                    <input type="text" name='fullname' class="form-control" required="required" value="${user.getFullname()}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="">Email</label>
-                                    <input type="email" name='email' class="form-control" required="required" value="email">
+                                    <input type="email" name='email' class="form-control" required="required" value="${user.getEmail()}">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="">Phone </label>
-                                    <input type="number" name='phone' class="form-control" required="required" value="phone">
+                                    <input type="number" name='phone' class="form-control" required="required" value="${user.getPhone()}">
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label for="">Coin Remain <span class="glyphicon glyphicon-lock"></span></label>
-                                    <span class="form-control disabled">100</span>
+                                <label for="">Coin Remain <span class="glyphicon glyphicon-lock"></span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <span type="number" class="form-control disabled" >${user.getCoin_remain()}</span>
+                                    
                                 </div>
+                                <br>
                                 <div class="form-group">
                                     <label for="">Created <span class="glyphicon glyphicon-lock"></span></label>
-                                    <span class="form-control disabled">2018-11-01 10:21:00</span>
+                                    <span class="form-control disabled">${user.getCreated()}</span>
                                 </div>
 
-                            
-
                                 <button type="submit" class="btn btn-lg btn-primary">Update Profile</button>
-                               
+
                             </form>
                             <hr><hr>
                             <div>
                                 <h3> Change Your Password:</h3>
-                                
-                                <form action="/api/user/changePassword" method="POST" role="form">
-                                
+
+                                <form action="" method="POST" role="form">
+
                                     <div class="form-group">
                                         <label for="">Old Password</label>
                                         <input type="password" class="form-control" id="" name='oldPassword' required="required" placeholder="Old password">
@@ -111,19 +99,43 @@
                                         <label for="">Confirm Password</label>
                                         <input type="password" class="form-control" id="" name='confirmPassword' required="required" placeholder="Confirm password">
                                     </div>
-                                
+
                                     <button type="submit" class="btn btn-danger">Change Password</button>
                                 </form>
-                                
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
-           
-                
+
+
         </div>
-    <!-- End container -->
+        <!-- End container -->
     </body>
+    <script>
+         $("#editUserInfor").submit(function(e){
+        e.preventDefault();    
+        var message = "No change!";
+            
+            var dataSend = $("#editUserInfor").serialize();
+            console.log(dataSend);
+            
+            $.ajax({
+                method: "POST",
+                url: "editProfile",
+//                async: false,
+                data: dataSend,
+                success: function (data) { 
+                    message = data; 
+                    console.log(message);
+                    $("#modalMessage").text(message);
+                    showMessage();
+                }
+//           
+            });
+
+        });
+    </script>
 </html>

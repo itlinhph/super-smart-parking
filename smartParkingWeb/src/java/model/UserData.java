@@ -55,17 +55,31 @@ public class UserData {
         return null;
     }
     
-//    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        try {
-//            User user = checkValidLogin("linh phan", "111");
-//            System.out.println("Username: "+ user.getFullname());
-//            
-//        } catch (Exception e) {
-//            System.out.println("Error: "+ e.getMessage());
-//        }
-//        
-//    }
-    
-}
 
+    public static User editUserInfor(int userid, String email, String fullname, String phone) {
+        System.out.println(fullname+ userid+ email+ phone);
+        try {
+            DbConnect connect = new DbConnect();
+//            String query = "UPDATE user SET fullname = N?, email = N?, phone = N? WHERE id = ?" ;
+            String query = "UPDATE user SET phone = '"  +phone+  "', email= N'"  +email+"',  fullname = N'" +fullname+"'  WHERE (id='"+userid+"')" ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+//            statement.setString(1, fullname);
+//            statement.setString(2, email);
+//            statement.setString(3, phone);
+//            statement.setInt(4, userid);
+//            System.out.println(statement);
+            int rs = connect.st.executeUpdate(query);
+            
+            User user = new User(userid);
+            
+            connect.con.close();
+            return user;
+        } catch (Exception e) {
+            System.out.println("Exeption editUserInfor: "+ e.getMessage());
+            return null;
+        }
+        
+    }
+
+}
     

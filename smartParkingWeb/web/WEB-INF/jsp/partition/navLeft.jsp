@@ -11,12 +11,11 @@
     <h3> My Account</h3>
     <hr>
     <ul class="nav nav-pills nav-stacked selectCategoryMenu">
-        <!-- FrontEnd said : add class .active to active menu you choose -->
-        <li id="sellNewProduct" class="selectCategory"> <a href="/sellNewProduct" class="glyphicon glyphicon-open cName"> Sell New Product</a></li>
-        <li id="userInfo" class="selectCategory"> <a href="/userInfo" class="glyphicon glyphicon-cog cName"> Personal Setting</a></li>
-        <li id="manageSales" class="selectCategory"> <a href="manageSales" class="glyphicon glyphicon-tag cName"> Manage Sales</a></li>
-        <li id="managePurchases" class="selectCategory"> <a href="/managePurchases" class="glyphicon glyphicon-shopping-cart cName"> Manage Purchases</a></li>
-        <li class="selectCategory"> <a href="#" class="glyphicon glyphicon-envelope cName"> Contact Admin </a></li>
+        <li id="ticketmenu" class="selectCategory"> <a href="#" class="glyphicon glyphicon-tag cName"> Manager Ticket</a></li>
+        <li id="vehiclemenu" class="selectCategory"> <a href="#" class="glyphicon glyphicon glyphicon-bed cName"> Manage Vehicle</a></li>
+        <li id="userInformenu" class="selectCategory"> <a href="${pageContext.request.contextPath}/user/userInfor" class="glyphicon glyphicon-cog cName"> Personal Setting</a></li>
+        <li id="parkmenu" class="selectCategory"> <a href="#" class="glyphicon glyphicon glyphicon-info-sign cName"> Parking Information</a></li>
+        <li id="reportmenu" class="selectCategory"> <a href="#" class="glyphicon glyphicon glyphicon-bullhorn cName"> Report </a></li>
 
     </ul>
 </div>
@@ -24,6 +23,6 @@
 
 <script>
     
-    $('#menu').addClass('active');
+    $('#${menuitem}').addClass('active');
     
 </script>

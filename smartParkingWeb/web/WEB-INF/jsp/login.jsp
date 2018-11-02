@@ -21,6 +21,7 @@
         <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
 
     </head>
+
     <body>
         <!-- navbar -->
         <jsp:include page="partition/navbar.jsp"></jsp:include>

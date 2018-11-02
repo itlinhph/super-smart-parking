@@ -35,6 +35,9 @@
                     $('#modal-message').modal('hide');
                     if(message =="Register Success!")
                         window.location = "/smartParkingWeb/index";
+                    else if(message == "Edit profile success!"):
+                        window.location = "/smartParkingWeb/user/userInfor";
+                        
                 }, 3000);
             }
         };

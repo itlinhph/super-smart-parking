@@ -18,7 +18,7 @@ public class User implements Serializable {
     private int userId;
     private String username;
     private String password;
-    private int status;
+    private String status;
     private String fullname;
     private String email;
     private String phone;
@@ -48,7 +48,7 @@ public class User implements Serializable {
         this.userId = userId;
         this.username = rs.getString("username");
         this.password = rs.getString("password");
-        this.status = rs.getInt("status");
+        this.status = rs.getString("status");
         this.fullname = rs.getString("fullname");
         this.email = rs.getString("email");
         this.phone = rs.getString("phone");
@@ -94,11 +94,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
