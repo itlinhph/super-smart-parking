@@ -85,19 +85,19 @@
                             <div>
                                 <h3> Change Your Password:</h3>
 
-                                <form action="" method="POST" role="form">
+                                <form action="" role="form" id="changePassForm">
 
                                     <div class="form-group">
                                         <label for="">Old Password</label>
-                                        <input type="password" class="form-control" id="" name='oldPassword' required="required" placeholder="Old password">
+                                        <input type="password" class="form-control" name='oldPass' required="required" placeholder="Old password">
                                     </div>
                                     <div class="form-group">
                                         <label for="">New Password</label>
-                                        <input type="password" class="form-control" id="" name='newPassword' required="required" placeholder="New password">
+                                        <input type="password" class="form-control" name='newPass' required="required" placeholder="New password">
                                     </div>
                                     <div class="form-group">
                                         <label for="">Confirm Password</label>
-                                        <input type="password" class="form-control" id="" name='confirmPassword' required="required" placeholder="Confirm password">
+                                        <input type="password" class="form-control" name='confirmPass' required="required" placeholder="Confirm password">
                                     </div>
 
                                     <button type="submit" class="btn btn-danger">Change Password</button>
@@ -115,27 +115,32 @@
         <!-- End container -->
     </body>
     <script>
-         $("#editUserInfor").submit(function(e){
-        e.preventDefault();    
-        var message = "No change!";
-            
-            var dataSend = $("#editUserInfor").serialize();
-            console.log(dataSend);
-            
+        
+        function formSubmit(dataSend, url) {
             $.ajax({
                 method: "POST",
-                url: "editProfile",
+                url: url,
 //                async: false,
                 data: dataSend,
                 success: function (data) { 
-                    message = data; 
+                    var message = data; 
                     console.log(message);
                     $("#modalMessage").text(message);
                     showMessage();
                 }
 //           
             });
-
+        }
+        $("#editUserInfor").submit(function(e){
+            e.preventDefault();
+            var dataSend = $("#editUserInfor").serialize();
+            formSubmit(dataSend,"editProfile");
+        });
+        
+        $("#changePassForm").submit(function(e){
+            e.preventDefault();    
+            var dataSend = $("#changePassForm").serialize();
+            formSubmit(dataSend, "changePass");
         });
     </script>
 </html>

@@ -38,12 +38,16 @@ public class UserController {
         String message = "Edit profile false!";
         try {
             HttpSession session = request.getSession();
-            User userSession = (User) session.getAttribute("user");
-            int userid = userSession.getUserId();
+            User us = (User) session.getAttribute("user");
+            int userid = us.getUserId();
             request.setCharacterEncoding("UTF-8");
             String email = request.getParameter("email");
             String fullname = request.getParameter("fullname");
             String phone = request.getParameter("phone");
+            
+            if(email.equals(us.getEmail()) && fullname.equals(us.getFullname()) && phone.equals(us.getPhone()))
+                return "Nothing to change!";
+                
             
             User userNew = UserData.editUserInfor(userid, email, fullname, phone);
             if(userNew != null) {
@@ -57,6 +61,37 @@ public class UserController {
             message = "Edit profile false: "+ e.getMessage();
             System.out.println(message);
         }
+        return message;
+    }
+    
+    
+    @RequestMapping(value="/changePass", method=RequestMethod.POST)
+    @ResponseBody
+    public String changePass(HttpServletRequest request) {
+        String message = "Your old password is wrong or something else!";
+        try {
+            
+            request.setCharacterEncoding("UTF-8");
+            String oldPass = request.getParameter("oldPass");
+            String newPass = request.getParameter("newPass");
+            String confirmPass = request.getParameter("confirmPass");
+            if(!newPass.equals(confirmPass)) {
+                return "Your confirm password isn't equal with new pass!" ;
+            }
+            else if(newPass.equals(oldPass)) {
+                return "Nothing to change!";
+            }
+            
+            HttpSession session = request.getSession();
+            User us = (User) session.getAttribute("user");
+            int userid = us.getUserId();
+            boolean result = UserData.editPassword(userid, oldPass, newPass);
+            if(result)
+                message = "Change Password success!";
+        } catch (Exception e) {
+            System.out.println("Exeption: "+ e.getMessage());
+        }
+        
         return message;
     }
 }

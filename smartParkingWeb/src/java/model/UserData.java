@@ -57,18 +57,17 @@ public class UserData {
     
 
     public static User editUserInfor(int userid, String email, String fullname, String phone) {
-        System.out.println(fullname+ userid+ email+ phone);
+//        System.out.println(fullname+ userid+ email+ phone);
         try {
             DbConnect connect = new DbConnect();
-//            String query = "UPDATE user SET fullname = N?, email = N?, phone = N? WHERE id = ?" ;
-            String query = "UPDATE user SET phone = '"  +phone+  "', email= N'"  +email+"',  fullname = N'" +fullname+"'  WHERE (id='"+userid+"')" ;
+            String query = "UPDATE user SET fullname = ?, email = ?, phone = ? WHERE id = ?" ;
             PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
-//            statement.setString(1, fullname);
-//            statement.setString(2, email);
-//            statement.setString(3, phone);
-//            statement.setInt(4, userid);
+            statement.setString(1, fullname);
+            statement.setString(2, email);
+            statement.setString(3, phone);
+            statement.setInt(4, userid);
 //            System.out.println(statement);
-            int rs = connect.st.executeUpdate(query);
+            int rs = statement.executeUpdate();
             
             User user = new User(userid);
             
@@ -79,6 +78,30 @@ public class UserData {
             return null;
         }
         
+    }
+
+    public static boolean editPassword(int userid, String oldPass, String newPass) {
+        
+        try {
+            
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE user SET password = md5(?) WHERE (id = ? and password = md5(?))" ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setString(1, newPass);
+            statement.setInt(2, userid);
+            statement.setString(3, oldPass);
+//            System.out.println(statement);
+            int rs = statement.executeUpdate();
+            if(rs > 0) {
+                System.out.println(rs);
+                connect.con.close();
+                return true;
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Exeption editPassword: "+ e.getMessage());
+        }
+        return false;
     }
 
 }
