@@ -32,6 +32,7 @@ public class UserController {
     
     @RequestMapping(value="/vehicle", method = RequestMethod.GET)
     public String userVehiclePage(ModelMap mm) {
+        mm.put("menuitem", "vehiclemenu");
         return "jsp/user/userVehicle";
     }
     

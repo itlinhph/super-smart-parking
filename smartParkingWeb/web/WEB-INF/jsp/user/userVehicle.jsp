@@ -38,51 +38,33 @@
                     <div class="col-md-9 contentRight">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <h3>Selling Items</h3>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <a href="/sellNewProduct" class="btn btn-info btn-lg">Sell New Product</a>
-                                    </div>
-                                </div>
+                                <h3>Registered Vehicle</h3>
                             </div>
                             <div class="panel-body">
-                                <p>You have
-                                    2 plate are register in My Parking:</p>
-                                <div class="row">
+                                <p>You have 1 plate are registered in My Parking:</p>
                                     <!-- For each here -->
+                                <div class="row">
                                     
-                                        <div class="col-sm-6 col-md-4 col-lg-4">
-                                            <div class="table-bordered productPreview">
-                                                <img src="http://i.ebayimg.com/images/g/EowAAOSwSclXMEe4/s-l1600.jpg" alt="" class="img-display table-bordered img-responsive">
-                                                <div class="caption">
-                                                    <a href="#">
-                                                        <h4 class="textPreview">
-                                                           29S2-12345
-                                                        </h4>
-                                                    </a>
-                                                    <div class="bidTimePreview">
-                                                        <h4> Price:
-                                                            100$ </h4>
-                                                        <div id="StartTime"> Start Time:
-                                                            20-11-2018
-                                                        </div>
-                                                        <div id="EndTime"> End Time:
-                                                            21-11-2018
-                                                        </div>
+                                    <div class="col-sm-6 col-md-5 col-lg-5">
+                                        <div class="table-bordered productPreview">
+                                            <img src="${pageContext.request.contextPath}/resources/images/xemay3.jpg"  alt="" class="img-display table-bordered img-responsive">
+                                            <div class="caption">
+                                                <a href="#"><h4 class="textPreview">47E122222</h4></a>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <a href="#" data-toggle="modal" class="btn btn-danger btnEdit">Delete</a>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <a href="#" data-toggle="modal" class="btn btn-danger btnEdit">Delete</a>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <a href="#" class="btn btn-primary btnEdit">Edit Info</a>
-                                                        </div>
+                                                    <div class="col-md-6">
+                                                        <a href="#" class="btn btn-primary btnEdit">Edit Info</a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-sm-6 col-md-5 col-lg-5">
+                                        
+                                    </div>
                                         
                                 </div>
                                 <!-- ./row -->
@@ -136,11 +118,11 @@
                                     
                                         <div class="col-sm-6 col-md-4 col-lg-4">
                                             <div class="table-bordered productPreview">
-                                                <img src="http://i.ebayimg.com/images/g/EowAAOSwSclXMEe4/s-l1600.jpg" alt="" class="img-display table-bordered img-responsive">
+                                                <img src="${pageContext.request.contextPath}/resources/images/xemay2.jpg" alt="" class="img-display table-bordered img-responsive">
                                                 <div class="caption">
                                                     <a href="/detail?id=111">
                                                         <h4 class="textPreview">
-                                                            xxx
+                                                            63B99999
                                                         </h4>
                                                     </a>
                                                     <div class="bidTimePreview">
