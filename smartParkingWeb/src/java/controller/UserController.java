@@ -30,6 +30,11 @@ public class UserController {
         return "jsp/user/userInfor" ;
     }
     
+    @RequestMapping(value="/vehicle", method = RequestMethod.GET)
+    public String userVehiclePage(ModelMap mm) {
+        return "jsp/user/userVehicle";
+    }
+    
     
     @RequestMapping(value="/editProfile", method = RequestMethod.POST)
     @ResponseBody
