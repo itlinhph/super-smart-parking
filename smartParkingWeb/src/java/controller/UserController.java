@@ -95,9 +95,12 @@ public class UserController {
             if(result)
                 message = "Change Password success!";
         } catch (Exception e) {
-            System.out.println("Exeption: "+ e.getMessage());
+            System.out.println("Exeption changePass: "+ e.getMessage());
         }
         
         return message;
     }
+    
+    
+    
 }

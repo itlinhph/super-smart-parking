@@ -6,8 +6,10 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import otherAddOn.DbConnect;
 
 /**
@@ -25,12 +27,13 @@ public class User implements Serializable {
     private int coin_remain;
     private String note;
     private String created;
+    private ArrayList<Vehicle> listVehicle;
     
     
     public User() {
         
     }
-
+    
     public User(String username, String email, String password, String fullname, String phone) {
         this.username = username;
         this.password = password;
@@ -42,8 +45,10 @@ public class User implements Serializable {
 //    get user by id from database
     public User(int userId) throws SQLException, ClassNotFoundException {
         DbConnect connect = new DbConnect();
-        String query = "Select username, password, status, fullname, email, phone, coin_remain, note, created From user where id="+ userId;
-        ResultSet rs = connect.st.executeQuery(query) ;
+        String query = "Select username, password, status, fullname, email, phone, coin_remain, note, created From user where id=?";
+        PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
+        st.setInt(1,userId);
+        ResultSet rs = st.executeQuery();
         rs.next();
         this.userId = userId;
         this.username = rs.getString("username");
@@ -56,13 +61,17 @@ public class User implements Serializable {
         this.note = rs.getString("note");
         this.created = rs.getString("created");
         
+        this.listVehicle = VehicleData.getListVehicleByUserid(userId);
+        
     }
     
     public static boolean checkUserExist(String username) throws SQLException, ClassNotFoundException {
         DbConnect connect = new DbConnect();
-        String sql = "SELECT id FROM user WHERE username = '" + username + "'";
+        String query = "SELECT id FROM user WHERE username =?";
+        PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
+        st.setString(1,username);
+        ResultSet rs = st.executeQuery();
         
-        ResultSet rs = connect.st.executeQuery(sql);
         if(rs.next()) {
             return true;
         }
@@ -150,9 +159,25 @@ public class User implements Serializable {
         this.created = created;
     }
 
+    public ArrayList<Vehicle> getListVehicle() {
+        return listVehicle;
+    }
+
+    public void setListVehicle(ArrayList<Vehicle> listVehicle) {
+        this.listVehicle = listVehicle;
+    }
+    
+    public ArrayList<Vehicle> getVehicleByUserId(int userid) {
+        ArrayList<Vehicle> listVehicle = null;
+        
+        
+        return listVehicle;
+    }
+    
+
 //    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-////        User user = new User(1) ;
-//        boolean exist = checkUserExist("linhph");
-//        System.out.println(exist);
+//        User user = new User() ;
+////        boolean exist = checkUserExist("linhph");
+//        System.out.println(user.getListVehicle());
 //    }  
 }

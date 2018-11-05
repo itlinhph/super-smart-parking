@@ -42,13 +42,9 @@
                             <div class="col-md-7">
 
                             <form role="form" id="editUserInfor">
-                                    <div class="form-group">
-                                        <label for="">Username <span class="glyphicon glyphicon-lock"></span></label>
-                                        <span class="form-control disabled">${user.getUsername()}</span>
-                                </div>
                                 <div class="form-group">
-                                    <label for="">Status <span class="glyphicon glyphicon-lock"></span></label>
-                                    <span class="form-control disabled">${user.getStatus()}</span>
+                                    <label for="">Username <span class="glyphicon glyphicon-lock"></span></label>
+                                    <span class="form-control disabled">${user.getUsername()}</span>
                                 </div>
 
                                 <div class="form-group">

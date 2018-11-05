@@ -45,9 +45,9 @@
                                     <!-- For each here -->
                                 <div class="row">
                                     
-                                    <div class="col-sm-6 col-md-5 col-lg-5">
+                                    <div class="col-sm-6 col-md-4 col-lg-4">
                                         <div class="table-bordered productPreview">
-                                            <img src="${pageContext.request.contextPath}/resources/images/xemay3.jpg"  alt="" class="img-display table-bordered img-responsive">
+                                            <img src="${pageContext.request.contextPath}/resources/images/xemay33.jpg"  alt="" class="img-display table-bordered img-responsive">
                                             <div class="caption">
                                                 <a href="#"><h4 class="textPreview">47E122222</h4></a>
 
@@ -62,15 +62,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-5 col-lg-5">
+                                    <div class="col-sm-6 col-md-8 col-lg-8">
                                         
                                     </div>
                                         
                                 </div>
                                 <!-- ./row -->
 
-
-                               
                                     <div class="modal fade" id="deletemodal">
                                         <form role="form" method="POST" action="/api/product/deleteProduct">
                                             <div class="modal-dialog">
@@ -118,7 +116,7 @@
                                     
                                         <div class="col-sm-6 col-md-4 col-lg-4">
                                             <div class="table-bordered productPreview">
-                                                <img src="${pageContext.request.contextPath}/resources/images/xemay2.jpg" alt="" class="img-display table-bordered img-responsive">
+                                                <img src="${pageContext.request.contextPath}/resources/images/xemay22.jpg" alt="" class="img-display table-bordered img-responsive">
                                                 <div class="caption">
                                                     <a href="/detail?id=111">
                                                         <h4 class="textPreview">

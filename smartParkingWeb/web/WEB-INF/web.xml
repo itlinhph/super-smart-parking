@@ -27,4 +27,7 @@
     <welcome-file-list>
         <welcome-file>redirect.jsp</welcome-file>
     </welcome-file-list>
+    <error-page>
+        <location>/errors</location>
+    </error-page>
 </web-app>
