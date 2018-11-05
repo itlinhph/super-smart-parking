@@ -4,6 +4,7 @@
     Author     : linkpp
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -41,15 +42,17 @@
                                 <h3>Registered Vehicle</h3>
                             </div>
                             <div class="panel-body">
-                                <p>You have 1 plate are registered in My Parking:</p>
+                                <p>You have ${user.getListVehicle().size()} plate are registered in My Parking:</p>
                                     <!-- For each here -->
+                                
+                                <c:forEach var="vehicle" items="${user.getListVehicle()}">
                                 <div class="row">
                                     
                                     <div class="col-sm-6 col-md-4 col-lg-4">
                                         <div class="table-bordered productPreview">
-                                            <img src="${pageContext.request.contextPath}/resources/images/xemay33.jpg"  alt="" class="img-display table-bordered img-responsive">
+                                            <img src="${pageContext.request.contextPath}/${vehicle.img}"  alt="" class="img-display table-bordered img-responsive">
                                             <div class="caption">
-                                                <a href="#"><h4 class="textPreview">47E122222</h4></a>
+                                                <a href="#"><h4 class="textPreview">${vehicle.getPlate()}</h4></a>
 
                                                 <div class="row">
                                                     <div class="col-md-6">
@@ -63,9 +66,16 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-6 col-md-8 col-lg-8">
-                                        
+                                        id: ${vehicle.getId()}
+                                        <br>
+                                        Status: ${vehicle.getStatus()}
+                                        <br>
+                                        Plate: ${vehicle.getPlate()}
+                                        <br>
+                                        Model: ${vehicle.getDescription()}
+                                        <br>
                                     </div>
-                                        
+                                </c:forEach>   
                                 </div>
                                 <!-- ./row -->
 
