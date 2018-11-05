@@ -387,3 +387,20 @@ h1 {
 	margin-top: 5px;
 }
 /* End sell new product, selling product */
+
+
+
+.vehicleDescription {
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 28px;
+    height: 330px;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.btn-AddVehicle {
+    float: right;
+}
