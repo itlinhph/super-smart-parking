@@ -49,40 +49,63 @@
                             <!-- For each here -->
 
                             <c:forEach var="vehicle" items="${user.getListVehicle()}">
+                                <form role="form" action="/user/editVehicle" id="vehicle_${vehicle.getId()}">
                                 <div class="row">
 
                                     <div class="col-sm-6 col-md-4 col-lg-4">
+                                        
+                                        <div class="statusVehicle ${vehicle.getStatus()=="pendding"?"show":"hide"}">Pendding</div>
                                         <div class="table-bordered productPreview">
                                             <img src="${pageContext.request.contextPath}/${vehicle.img}"  alt="" class="img-display table-bordered img-responsive">
                                             <div class="caption">
-                                                <a href="#"><h4 class="textPreview">${vehicle.getPlate()}</h4></a>
+                                                <h4 class="textPreview">${vehicle.getPlate()}</h4>
+
 
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <a href="#" data-toggle="modal" class="btn btn-danger btnEdit">Deactive</a>
+                                                        <div class="form-group">
+                                                            <input type="file" name="Img" accept="image/x-png,image/gif,image/jpeg"> 
+                                                        </div>
                                                     </div>
                                                     
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6 col-md-7 col-lg-7">
-                                        <div class="table-bordered vehicleDescription">
-                                        id: ${vehicle.getId()}
-                                        <br>
-                                        Status: ${vehicle.getStatus()}
-                                        <br>
-                                        Plate: ${vehicle.getPlate()}
-                                        <br>
-                                        Model: ${vehicle.getModel()}
-                                        <br>
-                                        Description: ${vehicle.getDescription()}
-                                        <br>
-                                        </div>
+                                    <div class="col-sm-6 col-md-7 col-lg-7 ">
+                                        <div class="table-bordered vehicleDescription well">
                                         
+
+                                            <div class="input-group">
+                                              <span class="input-group-addon label-vehicle" >Status <span class="glyphicon glyphicon-lock"></span></span>
+                                              <input class="form-control"  disabled value="${vehicle.getStatus()}">
+                                            </div>
+                                            <div class="input-group">
+                                              <span class="input-group-addon label-vehicle" >Plate</span>
+                                              <input type="text" class="form-control" value="${vehicle.getPlate()}" required="required">
+                                            </div>
+                                            <div class="input-group">
+                                              <span class="input-group-addon label-vehicle" >Model</span>
+                                              <input type="text" class="form-control" value="${vehicle.getModel()}" required="required">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Description</label>
+                                                <br>
+                                                <textarea class="descriptionVehicle" name="description" placeholder="Description" required="required">${vehicle.getDescription()}</textarea>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <button type="submit" class="btn btn-info">Update Profile</button>
+                                                </div>
+                                                <div class="col-md-6" align="right">
+                                                    <a href="#" data-toggle="modal" class="btn btn-danger">Deactive</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    
                             </div>
+                            </form>
                             <hr>
                             </c:forEach>   
                             <!-- ./row -->
@@ -95,4 +118,8 @@
             </div>
         </div>
     </body>
+    
+    <script>
+        
+    </script>
 </html>

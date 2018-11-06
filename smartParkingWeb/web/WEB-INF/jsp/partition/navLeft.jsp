@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!-- NAV LEFT -->
-<div class="col-xs-4 col-sm-2 col-md-3 col-lg-3 well navLeft">
+<div class="col-xs-3 col-sm-2 col-md-3 col-lg-3 well navLeft">
     <h3> My Account</h3>
     <hr>
     <ul class="nav nav-pills nav-stacked selectCategoryMenu">
