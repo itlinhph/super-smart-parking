@@ -49,7 +49,7 @@
                             <!-- For each here -->
 
                             <c:forEach var="vehicle" items="${user.getListVehicle()}">
-                                <form role="form" action="/user/editVehicle" id="vehicle_${vehicle.getId()}">
+                                <form role="form" method="POST" action="editVehicle" id="vehicle_${vehicle.getId()}">
                                 <div class="row">
 
                                     <div class="col-sm-6 col-md-4 col-lg-4">
@@ -64,7 +64,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <div class="form-group">
-                                                            <input type="file" name="Img" accept="image/x-png,image/gif,image/jpeg"> 
+                                                            <input type="file" name="imgFile" accept="image/x-png,image/gif,image/jpeg"> 
                                                         </div>
                                                     </div>
                                                     
@@ -82,17 +82,18 @@
                                             </div>
                                             <div class="input-group">
                                               <span class="input-group-addon label-vehicle" >Plate</span>
-                                              <input type="text" class="form-control" value="${vehicle.getPlate()}" required="required">
+                                              <input type="text" class="form-control" name="plate" value="${vehicle.getPlate()}" required="required">
                                             </div>
                                             <div class="input-group">
                                               <span class="input-group-addon label-vehicle" >Model</span>
-                                              <input type="text" class="form-control" value="${vehicle.getModel()}" required="required">
+                                              <input type="text" class="form-control" name="model" value="${vehicle.getModel()}" required="required">
                                             </div>
                                             <div class="form-group">
                                                 <label>Description</label>
                                                 <br>
                                                 <textarea class="descriptionVehicle" name="description" placeholder="Description" required="required">${vehicle.getDescription()}</textarea>
                                             </div>
+                                            <input name="idvehicle" class="hide" value="${vehicle.getId()}">
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-6">

@@ -48,6 +48,30 @@ public class VehicleData {
         
     }
     
+    public static boolean editVehicle(int idvehicle, String plate, int userid, String model, String imgFile, String description) {
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE vehicle SET plate = ?, model = ?, img = ?, description =? WHERE (id = ? and user_id = ?)" ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setString(1, plate);
+            statement.setString(2, model);
+            statement.setString(3, imgFile);
+            statement.setString(4, description);
+            statement.setInt(5, idvehicle);
+            statement.setInt(6, userid);
+//            System.out.println(statement);
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption editUserInfor: "+ e.getMessage());
+            
+        }
+        
+        return false;
+    }
+    
     
 //    public static void main(String[] args) {
 //        ArrayList<Vehicle> listvehicle = getListVehicleByUserid(3);
@@ -56,4 +80,6 @@ public class VehicleData {
 //            System.out.println(v.getPlate());
 //        }
 //    }
+
+   
 }
