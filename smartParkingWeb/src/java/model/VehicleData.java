@@ -72,6 +72,26 @@ public class VehicleData {
         return false;
     }
     
+    public static boolean addVehicle(int userid, String plate, String model, String description, String image) {
+        try {
+                DbConnect connect = new DbConnect();
+                String query = "Insert into vehicle(plate, user_id, model, img, description) values (?, ?, ?, ?, ?)";
+                PreparedStatement statement = connect.con.prepareStatement(query);
+                statement.setString(1, plate);
+                statement.setInt(2, userid);
+                statement.setString(3, model);
+                statement.setString(4, image);
+                statement.setString(5, description);
+                int result = statement.executeUpdate();
+                if(result ==1)
+                    return true;
+            }
+            catch (Exception e) {
+                System.out.println("SQL Exeption: "+ e.getMessage());
+            }
+            return false;
+
+    }
     
 //    public static void main(String[] args) {
 //        ArrayList<Vehicle> listvehicle = getListVehicleByUserid(3);

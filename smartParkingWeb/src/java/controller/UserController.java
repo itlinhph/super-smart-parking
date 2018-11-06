@@ -122,7 +122,6 @@ public class UserController {
             String description = request.getParameter("description");
             int idvehicle = Integer.parseInt(request.getParameter("idvehicle")) ;
             
-//            System.out.println(userid +"-"+ imgFile + "-"+ plate + model + description);
             boolean result = VehicleData.editVehicle(idvehicle, plate, userid, model, imgFile, description);
             if(result) {
                 mm.put("message","Edit vehicle success!" );
@@ -139,5 +138,42 @@ public class UserController {
         }
         return "jsp/user/userVehicle";
     }
+    
+    @RequestMapping(value="/addVehicle", method=RequestMethod.POST)
+    public String addNewVehicle(HttpServletRequest request, ModelMap mm) {
+        String messages = "Edit Vehicle false!";
+        try {
+            HttpSession session = request.getSession();
+            User us = (User) session.getAttribute("user");
+            if(us == null)
+                return "jsp/index";
+            
+            int userid = us.getUserId();
+            
+            request.setCharacterEncoding("UTF-8");
+            String imgFile = request.getParameter("imgFile");
+            String plate = request.getParameter("plate");
+            String model = request.getParameter("model");
+            String description = request.getParameter("description");
+            
+            boolean result = VehicleData.addVehicle(userid, plate, model, description, imgFile);
+            if(result) {
+                mm.put("message","Add vehicle success!" );
+                ArrayList<Vehicle> listVehicle = VehicleData.getListVehicleByUserid(userid);
+                us.setListVehicle(listVehicle);
+                session.setAttribute("user", us);
+                
+            }
+            else
+                mm.put("message", "Add vehicle false!");
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        return "jsp/user/userVehicle";
+    }
+    
+    
+    
     
 }
