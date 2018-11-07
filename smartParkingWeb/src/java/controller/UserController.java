@@ -173,7 +173,36 @@ public class UserController {
         return "jsp/user/userVehicle";
     }
     
-    
+    @RequestMapping(value="/deactiveVehicle", method=RequestMethod.POST)
+    public String deactiveVehicle(HttpServletRequest request, ModelMap mm) {
+        String messages = "Deactive false!";
+        try {
+            HttpSession session = request.getSession();
+            User us = (User) session.getAttribute("user");
+            if(us == null)
+                return "jsp/index";
+            
+            int userid = us.getUserId();
+            
+            request.setCharacterEncoding("UTF-8");
+            int idVehicle = Integer.parseInt(request.getParameter("idDeactive")) ; 
+            
+            boolean result = VehicleData.deactiveVehicle(userid, idVehicle);
+            if(result) {
+                mm.put("message","Deactive vehicle success!" );
+                ArrayList<Vehicle> listVehicle = VehicleData.getListVehicleByUserid(userid);
+                us.setListVehicle(listVehicle);
+                session.setAttribute("user", us);
+                
+            }
+            else
+                mm.put("message", "Deactive vehicle false!");
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        return "jsp/user/userVehicle";
+    }
     
     
 }

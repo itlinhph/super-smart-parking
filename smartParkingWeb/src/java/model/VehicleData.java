@@ -20,7 +20,7 @@ public class VehicleData {
         
         try {
             DbConnect connect = new DbConnect();
-            String query = "Select id, plate, model, img, status, description from vehicle where user_id = ?" ;
+            String query = "Select id, plate, model, img, status, description from vehicle where user_id = ? and status !='deactive'" ;
             
             PreparedStatement statement = connect.con.prepareStatement(query);
             statement.setInt(1, userid);
@@ -49,16 +49,31 @@ public class VehicleData {
     }
     
     public static boolean editVehicle(int idvehicle, String plate, int userid, String model, String imgFile, String description) {
+
         try {
             DbConnect connect = new DbConnect();
-            String query = "UPDATE vehicle SET plate = ?, model = ?, img = ?, description =? WHERE (id = ? and user_id = ?)" ;
-            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
-            statement.setString(1, plate);
-            statement.setString(2, model);
-            statement.setString(3, imgFile);
-            statement.setString(4, description);
-            statement.setInt(5, idvehicle);
-            statement.setInt(6, userid);
+            String query = "";
+            PreparedStatement statement = null;
+            if (imgFile.isEmpty()) {
+                query = "UPDATE vehicle SET plate = ?, model = ?, description =? WHERE (id = ? and user_id = ?)" ;
+                statement = (PreparedStatement) connect.con.prepareStatement(query);
+                statement.setString(1, plate);
+                statement.setString(2, model);
+                statement.setString(3, description);
+                statement.setInt(4, idvehicle);
+                statement.setInt(5, userid);
+            } else {
+                imgFile = "resources/images/" + imgFile;
+                query = "UPDATE vehicle SET plate = ?, model = ?, description =?, img = ? WHERE (id = ? and user_id = ?)" ;
+                statement = (PreparedStatement) connect.con.prepareStatement(query);
+                statement.setString(1, plate);
+                statement.setString(2, model);
+                statement.setString(3, description);
+                statement.setString(4,imgFile );
+                statement.setInt(5, idvehicle);
+                statement.setInt(6, userid);
+            }
+
 //            System.out.println(statement);
             int rs = statement.executeUpdate();
             if(rs >0)
@@ -75,6 +90,10 @@ public class VehicleData {
     public static boolean addVehicle(int userid, String plate, String model, String description, String image) {
         try {
                 DbConnect connect = new DbConnect();
+                if (image.isEmpty())
+                    image = "resources/images/defaultImage.jpg";
+                else 
+                    image = "resources/images/" + image;
                 String query = "Insert into vehicle(plate, user_id, model, img, description) values (?, ?, ?, ?, ?)";
                 PreparedStatement statement = connect.con.prepareStatement(query);
                 statement.setString(1, plate);
@@ -83,6 +102,7 @@ public class VehicleData {
                 statement.setString(4, image);
                 statement.setString(5, description);
                 int result = statement.executeUpdate();
+                System.out.println(statement);
                 if(result ==1)
                     return true;
             }
@@ -92,7 +112,29 @@ public class VehicleData {
             return false;
 
     }
-    
+
+    public static boolean deactiveVehicle(int userid, int idVehicle) {
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE vehicle SET status ='deactive' WHERE (id = ? and user_id = ?)" ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setInt(1, idVehicle);
+            statement.setInt(2, userid);
+
+//            System.out.println(statement);
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption deactive vehicle: "+ e.getMessage());
+            
+        }
+        
+        return false;
+    }
+
+       
 //    public static void main(String[] args) {
 //        ArrayList<Vehicle> listvehicle = getListVehicleByUserid(3);
 //        for(Vehicle v: listvehicle) {
@@ -101,5 +143,5 @@ public class VehicleData {
 //        }
 //    }
 
-   
+    
 }

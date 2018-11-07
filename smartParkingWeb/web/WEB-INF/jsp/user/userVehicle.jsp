@@ -94,14 +94,15 @@
                                                     <br>
                                                     <textarea class="descriptionVehicle" name="description" placeholder="Description" required="required">${vehicle.getDescription()}</textarea>
                                                 </div>
-                                                <input name="idvehicle" class="hide" value="${vehicle.getId()}">
+                                                
                                                 <br>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <button type="submit" class="btn btn-info">Update Profile</button>
                                                     </div>
                                                     <div class="col-md-6" align="right">
-                                                        <a href="#" data-toggle="modal" class="btn btn-danger">Deactive</a>
+                                                        <a href="#delete_1" data-toggle="modal" class="btn btn-danger deactiveBtn">Deactive</a>
+                                                        <input name="idvehicle" class="hide" value="${vehicle.getId()}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -173,6 +174,28 @@
 
                 </div>
             </div>
+            <!-- modal-delete-->
+            <div class="modal fade" id="delete_1">
+                <form action="deactiveVehicle" method="POST" role="form">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">Are you sure want to deactive this vehicle?</h4>
+                            
+                      </div>
+                        
+                      <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <input type="hidden" name="idDeactive" value="" id="idVehicleDeactive">
+                        <button type="submit" class="btn btn-danger" >YES</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+            </div> <!-- End modal -->
+                                        
         </div>
     </body>
 
@@ -188,6 +211,12 @@
             $("#btnHide").addClass("hide");
             $("#btnAddVehicle").removeClass("hide");
 
+        });
+        
+        $(".deactiveBtn").click(function(){
+            var x= $(this).next().val();
+            $("#idVehicleDeactive").val(x);
+            
         });
     </script>
 </html>
