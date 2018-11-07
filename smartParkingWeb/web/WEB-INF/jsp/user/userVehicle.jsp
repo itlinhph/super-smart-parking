@@ -92,13 +92,13 @@
                                                 <div class="form-group">
                                                     <label>Description</label>
                                                     <br>
-                                                    <textarea class="descriptionVehicle" name="description" placeholder="Description" required="required">${vehicle.getDescription()}</textarea>
+                                                    <textarea class="descriptionVehicle" name="description" ${vehicle.getStatus()=="working"?"disabled":""} placeholder="Description" required="required">${vehicle.getDescription()}</textarea>
                                                 </div>
                                                 
                                                 <br>
                                                 <div class="row">
-                                                    <div class="col-md-6">
-                                                        <button type="submit" class="btn btn-info">Update Profile</button>
+                                                    <div class="col-md-6 ">
+                                                        <button type="submit" class="btn btn-info ${vehicle.getStatus()=="working"?"hide":""}">Update Vehicle</button>
                                                     </div>
                                                     <div class="col-md-6" align="right">
                                                         <a href="#delete_1" data-toggle="modal" class="btn btn-danger deactiveBtn">Deactive</a>

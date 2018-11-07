@@ -59,7 +59,7 @@
                         <li><a class="glyphicon glyphicon-tag" href="${pageContext.request.contextPath}/user/tiket"> TicketHistory</a></li>
                         <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/user/vehicle"> ManageVehicle</a></li>
                         <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/user/userInfor"> PersonalSetting</a></li>
-                        <li><a class="glyphicon glyphicon glyphicon-info-sign" href="#"> ParkingInfor</a></li>
+                        <li><a class="glyphicon glyphicon glyphicon-info-sign" href="${pageContext.request.contextPath}/user/parking"> ParkingInfor</a></li>
                         <li id="logout1"><a class="glyphicon glyphicon-log-out" href="${pageContext.request.contextPath}/login/logout"> LogOut</a></li>
                     </ul>
                 </li>
