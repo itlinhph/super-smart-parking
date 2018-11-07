@@ -54,7 +54,7 @@
 
                                         <div class="col-sm-6 col-md-4 col-lg-4">
 
-                                            <div class="statusVehicle ${vehicle.getStatus()=="pending"?"show":"hide"}">Pending</div>
+                                            <div class="statusVehicle ${vehicle.getStatus()=="working"?"hide":""}">${vehicle.getStatus()}</div>
                                             <div class="table-bordered productPreview">
                                                 <img src="${pageContext.request.contextPath}/${vehicle.img}"  alt="" class="img-display table-bordered img-responsive">
                                                 <div class="caption">
@@ -82,11 +82,11 @@
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon label-vehicle" >Plate</span>
-                                                    <input type="text" class="form-control" name="plate" value="${vehicle.getPlate()}" required="required">
+                                                    <input type="text" class="form-control" ${vehicle.getStatus()=="working"?"disabled":""} name="plate" value="${vehicle.getPlate()}" required="required">
                                                 </div>
                                                 <div class="input-group">
                                                     <span class="input-group-addon label-vehicle" >Model</span>
-                                                    <input type="text" class="form-control" name="model" value="${vehicle.getModel()}" required="required">
+                                                    <input type="text" class="form-control" name="model" value="${vehicle.getModel()}" ${vehicle.getStatus()=="working"?"disabled":""} required="required">
                                                 </div>
 
                                                 <div class="form-group">

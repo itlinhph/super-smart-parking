@@ -8,6 +8,8 @@ package controller;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import model.Ticket;
+import model.TicketData;
 import model.User;
 import model.UserData;
 import model.Vehicle;
@@ -37,6 +39,26 @@ public class UserController {
     public String userVehiclePage(ModelMap mm) {
         mm.put("menuitem", "vehiclemenu");
         return "jsp/user/userVehicle";
+    }
+    
+    
+    @RequestMapping(value="/tiket", method = RequestMethod.GET)
+    public String userTiketPage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        User us = (User) session.getAttribute("user");
+        if(us == null)
+            return "jsp/index";
+        int userid = us.getUserId();
+        
+        ArrayList<Ticket> listTicket = TicketData.getListTicketByUserId(userid);
+        
+        for(Ticket t: listTicket) {    
+            System.out.println(t.getCheckoutTime());
+        }
+        mm.put("menuitem", "tiketmenu");
+        mm.put("listTicket", listTicket);
+        
+        return "jsp/user/userTicket";
     }
     
     
