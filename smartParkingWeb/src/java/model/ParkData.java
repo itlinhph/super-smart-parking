@@ -15,10 +15,11 @@ import otherAddOn.DbConnect;
  * @author linkpp
  */
 public class ParkData {
+    
     public static ArrayList<Park> getListParkData() {
         
         ArrayList<Park> listPark = new ArrayList<Park>();
-         try {
+        try {
             DbConnect connect = new DbConnect();
             String query = 
                   "SELECT p.id, p.park_code, p.park_name, p.total_slots, count(if(t.status='working', 1, NULL)) as usingSlot, p.description "
@@ -45,6 +46,35 @@ public class ParkData {
         }
         
         return listPark;
+    }
+    
+    public static Park getParkByStaffId(int sid) {
+        try {
+            DbConnect connect = new DbConnect();
+            String query = 
+                  "SELECT p.id, p.park_code, p.park_name, p.total_slots, count(if(t.status='working', 1, NULL)) as usingSlot, p.description "
+                + "FROM park as p, ticket as t, staff as s where p.id = t.park_id and p.id = s.park_id and s.id =?;";
+            
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setInt(1, sid);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                Park p = new Park();
+                p.setId(rs.getInt("id"));
+                p.setParkCode(rs.getString("park_code"));
+                p.setParkName(rs.getString("park_name"));
+                p.setTotalSlot(rs.getInt("total_slots"));
+                p.setUsingSlot(rs.getInt("usingSlot"));
+                p.setDescription(rs.getString("description"));
+                
+                connect.con.close();
+                return p;
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Error getPark: "+ e.getMessage());
+        }
+        return null;
     }
     
 }

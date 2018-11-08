@@ -5,7 +5,6 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,20 +23,21 @@
 
 
         <!-- navbar -->
-        <jsp:include page="../partition/navbar.jsp"></jsp:include>
+        <jsp:include page="staffNav.jsp"></jsp:include>
             <!-- End message -->
         <jsp:include page="../partition/message.jsp"></jsp:include>
             <!-- Content -->
             <div class="content container">
 
             <div class="row">
-                <!-- NAV LEFT -->
-                <jsp:include page="../partition/navLeft.jsp"></jsp:include>
-                    <!-- END NAV LEFT -->
-                <div class="col-md-9">
-                    <br>
-                    Parking information:
+                <div class="col-md-12">
                     <hr>
+                    <div class="">
+                        You are staff of <b> ${park.getParkCode()}</b> Parking.
+                    <br>This park has <b> ${park.getTotalSlot()- park.getUsingSlot()} </b> remain slot!
+                    </div>
+                    
+                    
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
@@ -50,8 +50,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            
-                            <c:forEach var="park" items="${listPark}">
                                 <tr>
                                     <td>${park.getId()}</td>
                                     <td>${park.getParkCode()}</td>
@@ -60,13 +58,14 @@
                                     <td>${park.getUsingSlot()}</td>
                                     <td>${park.getDescription()}</td>
                                 </tr>
-                            </c:forEach> 
                            
                         </tbody>
                     </table>
                 </div>
+                
 
             </div>
+            <hr>
         </div> 
         <!-- End container -->
         <script>

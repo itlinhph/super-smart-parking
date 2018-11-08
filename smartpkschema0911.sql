@@ -117,7 +117,7 @@ DROP TABLE IF EXISTS `staff`;
 CREATE TABLE `staff` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `staff_code` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `staff_name` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `park_id` int(10) unsigned NOT NULL,
   `status` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'working' COMMENT '1: working, 0: deactive',
@@ -125,7 +125,7 @@ CREATE TABLE `staff` (
   PRIMARY KEY (`id`),
   KEY `park_id` (`park_id`),
   CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`park_id`) REFERENCES `park` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -134,6 +134,7 @@ CREATE TABLE `staff` (
 
 LOCK TABLES `staff` WRITE;
 /*!40000 ALTER TABLE `staff` DISABLE KEYS */;
+INSERT INTO `staff` VALUES (1,'S1001','202cb962ac59075b964b07152d234b70','Hà Anh Tuấn',1,'working','2018-11-09 00:00:27'),(2,'S1002','202cb962ac59075b964b07152d234b70','Nam Anh',2,'working','2018-11-09 00:46:19');
 /*!40000 ALTER TABLE `staff` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -150,6 +151,7 @@ CREATE TABLE `ticket` (
   `park_id` int(10) unsigned NOT NULL,
   `ticket_code` int(11) NOT NULL,
   `status` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'working' COMMENT '1: working, 0: expired',
+  `fee` int(11) NOT NULL DEFAULT '1',
   `checkin_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `checkout_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -166,7 +168,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (1,2,1,1203,'expired','2018-11-07 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired','2018-11-06 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'working','2018-11-07 07:30:21',NULL),(17,3,1,5566,'working','2018-11-06 07:45:12',NULL),(18,2,2,5467,'working','2018-11-06 07:45:12',NULL);
+INSERT INTO `ticket` VALUES (1,2,1,1203,'expired',1,'2018-11-07 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired',1,'2018-11-06 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'working',1,'2018-11-07 07:30:21',NULL),(17,3,1,5566,'working',1,'2018-11-06 07:45:12',NULL),(18,2,2,5467,'working',1,'2018-11-06 07:45:12',NULL);
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,4 +244,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-08  1:11:49
+-- Dump completed on 2018-11-09  1:04:31
