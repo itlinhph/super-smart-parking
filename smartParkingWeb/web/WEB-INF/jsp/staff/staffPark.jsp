@@ -1,6 +1,6 @@
 <%-- 
-    Document   : userTiket
-    Created on : Nov 7, 2018, 8:37:31 PM
+    Document   : staffPark
+    Created on : Nov 8, 2018, 8:49:23 PM
     Author     : linhph
 --%>
 
@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width initial-scale=1">
-        <title>Ticket</title>
+        <title>Parking information</title>
 
         <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
@@ -36,33 +36,29 @@
                     <!-- END NAV LEFT -->
                 <div class="col-md-9">
                     <br>
-                    Your ticket history over alltime:
+                    Parking information:
                     <hr>
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
                                 <th>#No</th>
-                                <th>Plate</th>
-                                <th>Park</th>
-                                <th>Ticket Code</th>
-                                <th>Status</th>
-                                <th>Fee</th>
-                                <th>Checkin time</th>
-                                <th>Checkout time</th>
+                                <th>Park Code</th>
+                                <th>Park Name</th>
+                                <th>Total Slot</th>
+                                <th>Using Slot</th>
+                                <th>Description</th>
                             </tr>
                         </thead>
                         <tbody>
                             
-                            <c:forEach var="ticket" items="${listTicket}">
+                            <c:forEach var="park" items="${listPark}">
                                 <tr>
-                                    <td>${ticket.getTicketid()}</td>
-                                    <td>${ticket.getPlate()}</td>
-                                    <td>${ticket.getPark()}</td>
-                                    <td>${ticket.getTicketCode()}</td>
-                                    <td class="statusTicket">${ticket.getStatus()}</td>
-                                    <td>${ticket.getFee()}</td>
-                                    <td>${ticket.getCheckinTime()}</td>
-                                    <td>${ticket.getCheckoutTime()}</td>
+                                    <td>${park.getId()}</td>
+                                    <td>${park.getParkCode()}</td>
+                                    <td>${park.getParkName()}</td>
+                                    <td class="totalSlot">${park.getTotalSlot()}</td>
+                                    <td>${park.getUsingSlot()}</td>
+                                    <td>${park.getDescription()}</td>
                                 </tr>
                             </c:forEach> 
                            
@@ -74,9 +70,23 @@
         </div> 
         <!-- End container -->
         <script>
-            $(".statusTicket:contains('working')").parent().css("color", "red");
+            
+            $(".totalSlot").each(function() {
+                var totalSlot = $(this).html();
+                var usingSlot = $(this).next().html();
+                var remainSlot = totalSlot - usingSlot;
+                if(remainSlot < 10) {
+                   $(this).parent().css("color", "red").css("font-weight", "bold");
+                   $(this).next().css("font-size","120%");
+                    
+                }
+               else
+                   $(this).parent().css("color", "blue");
+            });
+            
         </script>
 
 
     </body>
 </html>
+

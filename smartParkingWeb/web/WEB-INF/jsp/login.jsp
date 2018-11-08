@@ -63,9 +63,20 @@
                 </div> 
 
                 <div id="login" class=" loginTab tab-pane fade in active">
-                    <br> <br>
+                    
                     <form action="${pageContext.request.contextPath}/login/loginForm" method="POST" role="form">
+                        <br>
+                        <div class="radioBtn row col-md-12">
 
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <label class="radio-inline"><input type="radio" name="accountType" checked="checked" value="user">Login As User</label>
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                                <label class="radio-inline"><input type="radio" name="accountType" value="staff">Login As Staff</label>
+                            </div>
+
+                        </div>
+                        <br><br>
                         <div class="form-group">
                             <label for="">Username</label>
                             <input type="text" class="form-control" id="lo-username"  placeholder="Your username" required="required" name="username">
@@ -78,8 +89,8 @@
                         <button id="loginBtn" type="submit" class="btn btn-success">Log In</button>
                     </form>
                 <br>
-                <p align="center"> If you are Admin/Staff <a href="adminlogin.html">click here</a> to login </p>
                 </div>
+                
             </div>
         </div>
         <!-- End Tab -->
@@ -118,7 +129,9 @@
 
         });
         ${script}
-        
+        $("#adminLogin").click(function(){
+            
+        });
     </script>
 
 

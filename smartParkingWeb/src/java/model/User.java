@@ -6,11 +6,7 @@
 package model;
 
 import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import otherAddOn.DbConnect;
 
 /**
  *
@@ -40,43 +36,6 @@ public class User implements Serializable {
         this.fullname = fullname;
         this.email = email;
         this.phone = phone;
-    }
-    
-//    get user by id from database
-    public User(int userId) throws SQLException, ClassNotFoundException {
-        DbConnect connect = new DbConnect();
-        String query = "Select username, password, status, fullname, email, phone, coin_remain, note, created From user where id=?";
-        PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
-        st.setInt(1,userId);
-        ResultSet rs = st.executeQuery();
-        rs.next();
-        this.userId = userId;
-        this.username = rs.getString("username");
-        this.password = rs.getString("password");
-        this.status = rs.getString("status");
-        this.fullname = rs.getString("fullname");
-        this.email = rs.getString("email");
-        this.phone = rs.getString("phone");
-        this.coin_remain = rs.getInt("coin_remain");
-        this.note = rs.getString("note");
-        this.created = rs.getString("created");
-        
-        this.listVehicle = VehicleData.getListVehicleByUserid(userId);
-        
-    }
-    
-    public static boolean checkUserExist(String username) throws SQLException, ClassNotFoundException {
-        DbConnect connect = new DbConnect();
-        String query = "SELECT id FROM user WHERE username =?";
-        PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
-        st.setString(1,username);
-        ResultSet rs = st.executeQuery();
-        
-        if(rs.next()) {
-            return true;
-        }
-        
-        return false;
     }
     
     public int getUserId() {
@@ -167,17 +126,5 @@ public class User implements Serializable {
         this.listVehicle = listVehicle;
     }
     
-    public ArrayList<Vehicle> getVehicleByUserId(int userid) {
-        ArrayList<Vehicle> listVehicle = null;
-        
-        
-        return listVehicle;
-    }
-    
 
-//    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        User user = new User() ;
-////        boolean exist = checkUserExist("linhph");
-//        System.out.println(user.getListVehicle());
-//    }  
 }

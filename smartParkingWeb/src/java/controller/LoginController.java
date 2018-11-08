@@ -11,6 +11,8 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Staff;
+import model.StaffData;
 import model.User;
 import model.UserData;
 import org.springframework.stereotype.Controller;
@@ -56,19 +58,28 @@ public class LoginController {
             request.setCharacterEncoding("UTF-8");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
+            String accountType = request.getParameter("accountType");
 //            System.out.println(username + password);
+            if(accountType.equals("staff")) {
+                Staff staff = StaffData.checkValidLogin(username, password) ;
+                if(staff != null) {
+                    HttpSession session = request.getSession();
+                    session.setAttribute("staff", staff); 
+                    response.sendRedirect(request.getContextPath()+"/staff/parking"); 
+                }
+                else
+                    mm.put("message", "Login false, wrong username or password!");
+            return "jsp/login";
+            }
+            
             User user = UserData.checkValidLogin(username, password);
             if(user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user); 
                 response.sendRedirect(request.getContextPath()+"/index.html"); 
             }
-            else {
-                
-                
+            else
                 mm.put("message", "Login false, wrong username or password!");
-            }
-            
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
@@ -101,7 +112,7 @@ public class LoginController {
             String phone = request.getParameter("phone");
             
             
-            if(User.checkUserExist(username)){
+            if(UserData.checkUserExist(username)){
                 message = "Username exist!";
             }
             else {

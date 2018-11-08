@@ -15,11 +15,20 @@ public class Ticket {
     private String park;
     private String ticketCode;
     private String status;
+    private int fee;
     private String checkinTime;
     private String checkoutTime;
 
     public Ticket() {
     
+    }
+
+    public int getFee() {
+        return fee;
+    }
+
+    public void setFee(int fee) {
+        this.fee = fee;
     }
     
 

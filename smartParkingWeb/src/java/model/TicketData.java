@@ -23,7 +23,7 @@ public class TicketData {
             DbConnect connect = new DbConnect();
             String query = 
                   "SELECT ticket.id as id, vehicle.plate as plate, park.park_code as parkCode, ticket.ticket_code as ticketCode, "
-                + "ticket.status as status, ticket.checkin_time as checkinTime, ticket.checkout_time as checkoutTime "
+                + "ticket.status as status, ticket.fee as fee, ticket.checkin_time as checkinTime, ticket.checkout_time as checkoutTime "
                 + "FROM ticket, user, park, vehicle "
                 + "WHERE vehicle.user_id = user.id and vehicle.id = ticket.vehicle_id and park.id = ticket.park_id "
                 + "AND user.id = ? ORDER BY id desc;";
@@ -39,6 +39,7 @@ public class TicketData {
                 t.setPark(rs.getString("parkCode"));
                 t.setTicketCode(rs.getString("ticketCode"));
                 t.setStatus(rs.getString("status"));
+                t.setFee(rs.getInt("fee"));
                 t.setCheckinTime(rs.getString("checkinTime"));
                 t.setCheckoutTime(rs.getString("checkoutTime"));
                 listTicket.add(t);
