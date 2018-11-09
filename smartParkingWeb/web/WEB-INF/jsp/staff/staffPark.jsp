@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,9 +33,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <hr>
-                    <div class="">
-                        You are staff of <b> ${park.getParkCode()}</b> Parking.
-                    <br>This park has <b> ${park.getTotalSlot()- park.getUsingSlot()} </b> remain slot!
+                    <div class="titleParking">
+                        ${park.getParkCode()} has only ${park.getTotalSlot()- park.getUsingSlot()} remain slot!
                     </div>
                     
                     
@@ -61,12 +61,48 @@
                            
                         </tbody>
                     </table>
+                  <hr>
+                 <div id="tiketToday">
+                    <div class="titleParking">
+                    Ticket in Your Parking today:
+                    </div>
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>#No</th>
+                                <th>Plate</th>
+                                <th>Park</th>
+                                <th>Ticket Code</th>
+                                <th>Status</th>
+                                <th>Fee</th>
+                                <th>Checkin time</th>
+                                <th>Checkout time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <c:forEach var="ticket" items="${listTicket}">
+                                <tr>
+                                    <td>${ticket.getTicketid()}</td>
+                                    <td>${ticket.getPlate()}</td>
+                                    <td>${ticket.getPark()}</td>
+                                    <td>${ticket.getTicketCode()}</td>
+                                    <td class="statusTicket">${ticket.getStatus()}</td>
+                                    <td>${ticket.getFee()}</td>
+                                    <td>${ticket.getCheckinTime()}</td>
+                                    <td>${ticket.getCheckoutTime()}</td>
+                                </tr>
+                            </c:forEach> 
+                           
+                        </tbody>
+                    </table>
                 </div>
-                
+                     
 
             </div>
             <hr>
         </div> 
+            </div>
         <!-- End container -->
         <script>
             
@@ -83,6 +119,8 @@
                    $(this).parent().css("color", "blue");
             });
             
+            $(".statusTicket:contains('working')").parent().css("color", "red");
+
         </script>
 
 

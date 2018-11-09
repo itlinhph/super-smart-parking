@@ -5,11 +5,14 @@
  */
 package controller;
 
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import model.Park;
 import model.ParkData;
 import model.Staff;
+import model.Ticket;
+import model.TicketData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,8 +37,17 @@ public class StaffController {
         Park park = ParkData.getParkByStaffId(staff.getId());
         mm.put("park", park);
         
+        ArrayList<Ticket> listTicket = TicketData.getListTicketByStaffId(staff.getId());
+        mm.put("listTicket", listTicket);
+                
         return "jsp/staff/staffPark" ;
     }
     
+    @RequestMapping(value="/fixplate", method = RequestMethod.GET) 
+    public String fixWrongPlarePage(HttpServletRequest request, ModelMap mm) {
+        
+        
+        return "jsp/staff/fixWrongPlate" ;
+    }
     
 }

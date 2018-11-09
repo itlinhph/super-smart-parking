@@ -438,3 +438,10 @@ h1 {
     padding: 10px;
     border-radius: 10px;
 }
+
+.titleParking {
+    font-size: xx-large;
+    color: steelblue;
+    font-weight: bold;
+    margin: 35px 20px 10px 0px;
+}

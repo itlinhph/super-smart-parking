@@ -56,8 +56,49 @@ public class TicketData {
 
     }
     
+    
+    public static ArrayList<Ticket> getListTicketByStaffId(int staffid) {
+        ArrayList<Ticket> listTicket = new ArrayList<Ticket>();
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = 
+                "SELECT t.id, v.plate, p.park_code, t.ticket_code, t.status, t.fee, t.checkin_time, t.checkout_time " +
+                "FROM staff s, ticket t, park p, vehicle v " +
+                "WHERE s.park_id = p.id and p.id = t.park_id and v.id = t.vehicle_id " +
+                "and t.checkin_time > curdate() " +
+                "and s.id = ? order by status desc, checkin_time desc ;";
+            
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setInt(1, staffid);
+            
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                Ticket t = new Ticket();
+                t.setTicketid(rs.getInt("id"));
+                t.setPlate(rs.getString("plate"));
+                t.setPark(rs.getString("park_code"));
+                t.setTicketCode(rs.getString("ticket_code"));
+                t.setStatus(rs.getString("status"));
+                t.setFee(rs.getInt("fee"));
+                t.setCheckinTime(rs.getString("checkin_time"));
+                t.setCheckoutTime(rs.getString("checkout_time"));
+                listTicket.add(t);
+            }
+            
+            connect.con.close();
+        }
+        catch (Exception e) {
+            
+            System.out.println("Error getListTicketByStaffId: "+ e.getMessage());
+        }
+        
+        return listTicket;
+
+    }
+    
 //    public static void main(String[] args) {
-//        ArrayList<Ticket> l = getListTicketByUserId(3);
+//        ArrayList<Ticket> l = getListTicketByStaffId(1);
 //        for (Ticket t: l)
 //            System.out.println(t.getCheckoutTime());
 //    }
