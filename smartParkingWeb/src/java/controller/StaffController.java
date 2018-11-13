@@ -59,7 +59,17 @@ public class StaffController {
         return "jsp/staff/fixWrongPlate" ;
     }
     
-    
+    @RequestMapping(value="/checkout", method=RequestMethod.GET)
+    public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
+        
+        
+        return "jsp/staff/checkout";
+    }
     
     @RequestMapping(value="/editWrongPlate", method = RequestMethod.POST)
     public String editWrongPlate(HttpServletRequest request, ModelMap mm) {

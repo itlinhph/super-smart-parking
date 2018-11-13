@@ -56,10 +56,10 @@
                 <li><a href="#">Hi: ${user.getFullname()}</a></li>
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> My Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="glyphicon glyphicon-tag" href="${pageContext.request.contextPath}/user/tiket"> TicketHistory</a></li>
-                        <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/user/vehicle"> ManageVehicle</a></li>
-                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/user/userInfor"> PersonalSetting</a></li>
-                        <li><a class="glyphicon glyphicon glyphicon-info-sign" href="${pageContext.request.contextPath}/user/parking"> ParkingInfor</a></li>
+                        <li><a class="glyphicon glyphicon-tag" href="${pageContext.request.contextPath}/user/tiket"> Ticket History</a></li>
+                        <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/user/vehicle"> Manage Vehicle</a></li>
+                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/user/userInfor"> Personal Setting</a></li>
+                        <li><a class="glyphicon glyphicon glyphicon-info-sign" href="${pageContext.request.contextPath}/user/parking"> Parking Infor</a></li>
                         <li id="logout1"><a class="glyphicon glyphicon-log-out" href="${pageContext.request.contextPath}/login/logout"> LogOut</a></li>
                     </ul>
                 </li>

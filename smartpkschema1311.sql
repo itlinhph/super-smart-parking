@@ -113,7 +113,7 @@ CREATE TABLE `ticket` (
 
 /*Data for the table `ticket` */
 
-insert  into `ticket` values (1,2,1,1203,'expired',1,'2018-11-09 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired',1,'2018-11-09 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'working',1,'2018-11-09 07:30:21',NULL),(17,3,1,5566,'working',1,'2018-11-09 07:45:12',NULL),(18,2,2,5467,'working',1,'2018-11-09 07:45:12',NULL);
+insert  into `ticket` values (1,2,1,1203,'expired',1,'2018-11-09 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired',1,'2018-11-09 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'working',1,'2018-11-15 07:30:21',NULL),(17,3,1,5566,'working',1,'2018-11-15 07:45:12',NULL),(18,2,2,5467,'working',1,'2018-11-15 07:45:12',NULL);
 
 /*Table structure for table `user` */
 
@@ -172,9 +172,11 @@ CREATE TABLE `wrong_plate` (
   PRIMARY KEY (`id`),
   KEY `park_id` (`park_id`),
   CONSTRAINT `wrong_plate_ibfk_1` FOREIGN KEY (`park_id`) REFERENCES `park` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `wrong_plate` */
+
+insert  into `wrong_plate` values (1,'resources/images/wrong1.jpg','29S2-12345','pending',1,'2018-11-13 19:06:23'),(2,'resources/images/wrong3.jpg','59C2-11794','pending',1,'2018-11-13 19:08:10'),(3,'resources/images/wrong4.jpg','59P1-43138','pending',1,'2018-11-13 19:08:12');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

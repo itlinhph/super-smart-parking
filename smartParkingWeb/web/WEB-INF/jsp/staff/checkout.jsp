@@ -1,7 +1,7 @@
 <%-- 
-    Document   : fixWrongPlate
-    Created on : Nov 9, 2018, 8:35:57 PM
-    Author     : linhph
+    Document   : checkout
+    Created on : Nov 13, 2018, 10:58:45 PM
+    Author     : linkpp
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width initial-scale=1">
-        <title>Fix wrong plate</title>
+        <title>Checkout Vehicle</title>
 
         <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
@@ -32,36 +32,50 @@
             <!-- Content -->
             <div class="content container">
                 <div class="row">
-                <!-- For each here -->
-                <c:forEach var="wrongPlate" items="${listWrongPlate}">
-                    <form role="form" method="POST" action="editWrongPlate" id="vehicle_${vehicle.getId()}">
+                    <form role="form" method="POST" action="checkoutVehicle" id="vehicle_${vehicle.getId()}">
                         <div class="row">
 
                             <div class="col-sm-6 col-md-4 col-lg-4">
 
                                 <div class="table-bordered">
-                                    <img src="${pageContext.request.contextPath}/${wrongPlate.getImg()}"  alt="" class="img-display table-bordered img-responsive">
+                                    <img src="${pageContext.request.contextPath}/resources/images/true1.jpg" class="img-display table-bordered img-responsive">
                                     
                                 </div>
+                                <span class="labelImgCheckOut">Registered Image</span>
                             </div>
-                            <div class="col-sm-6 col-md-7 col-lg-7 ">
+                            <div class="col-sm-6 col-md-4 col-lg-4">
+
+                                <div class="table-bordered">
+                                    <img src="${pageContext.request.contextPath}/resources/images/true1.jpg" class="img-display table-bordered img-responsive">
+                                </div>
+                                <span class="labelImgCheckOut">Checkout Image</span>
+                            </div>
+                            <div class="col-sm-6 col-md-4 col-lg-4">
                                 <div class="table-bordered well">
                                     <div class="input-group">
-                                        <span class="input-group-addon label-vehicle" >Status <span class="glyphicon glyphicon-lock"></span></span>
-                                        <input class="form-control"  disabled value="${wrongPlate.getStatus()}">
+                                        <span class="input-group-addon label-vehicle" > Status</span>
+                                        <input class="form-control"  disabled value="working">
                                     </div>
                                     <div class="input-group">
-                                        <span class="input-group-addon label-vehicle" >Checkin</span>
-                                        <input class="form-control"  disabled value="${wrongPlate.getCheckinTime()}">
+                                        <span class="input-group-addon label-vehicle" > Checkin</span>
+                                        <input class="form-control"  disabled value="2018-11-14 07:12:56">
                                     </div>
                                     <div class="input-group">
-                                        <span class="input-group-addon label-vehicle" >Plate</span>
-                                        <input type="text" class="form-control" name="plate" value="${wrongPlate.getDetectedPlate()}" required="required">
+                                        <span class="input-group-addon label-vehicle" > Ticket</span>
+                                        <input class="form-control"  disabled value="9872">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon label-vehicle" > Model</span>
+                                        <input class="form-control"  disabled value="Wave Anfa">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon label-vehicle" > Plate</span>
+                                        <input type="text" class="form-control" name="plate" value="29S2-12345" required="required">
                                     </div>
                                     <br>
                                     <input type="text" class="hide" name="plate_id" value="${wrongPlate.getId()}" required="required">
                                     <div class="row">
-                                        <div class="col-md-6" style="height: 90px;">
+                                        <div class="col-md-6">
                                             <button type="submit" class="btn btn-info">Update</button>
                                         </div>
                                         <div class="col-md-6" align="right">
@@ -73,7 +87,6 @@
                         </div>
                     </form>
                     <hr>
-                </c:forEach>   
                 <!-- ./row -->
 
             </div>  
@@ -81,7 +94,4 @@
         </div>
     </body>
 
-    <script>
-        ${script}
-    </script>
 </html>
