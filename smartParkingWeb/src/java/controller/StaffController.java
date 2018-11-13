@@ -13,6 +13,8 @@ import model.ParkData;
 import model.Staff;
 import model.Ticket;
 import model.TicketData;
+import model.WrongPlate;
+import model.WrongPlateData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,9 +46,44 @@ public class StaffController {
     }
     
     @RequestMapping(value="/fixplate", method = RequestMethod.GET) 
-    public String fixWrongPlarePage(HttpServletRequest request, ModelMap mm) {
+    public String fixWrongPlatePage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
         
+        ArrayList<WrongPlate> listWrongPlate = WrongPlateData.getListWrongPlateByParkId(staff.getParkid());
+        mm.put("listWrongPlate",listWrongPlate);
         
+        return "jsp/staff/fixWrongPlate" ;
+    }
+    
+    
+    
+    @RequestMapping(value="/editWrongPlate", method = RequestMethod.POST)
+    public String editWrongPlate(HttpServletRequest request, ModelMap mm) {
+        
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
+        
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String plate = request.getParameter("plate");
+            String plate_id = request.getParameter("plate_id");
+            int plateId = Integer.parseInt(plate_id);
+            int parkid = staff.getParkid() ;
+            
+            boolean editFixedPlateResult = WrongPlateData.editFixPlate(plate, plateId, parkid);
+            
+            
+        } catch (Exception e) {
+            System.out.println("Exeption editWrongPlate: "+ e.getMessage());
+        }
+        mm.put("script", "window.location = 'fixplate';") ;
         return "jsp/staff/fixWrongPlate" ;
     }
     

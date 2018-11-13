@@ -33,14 +33,14 @@
             <div class="content container">
                 <div class="row">
                 <!-- For each here -->
-                <%--<c:forEach var="vehicle" items="${user.getListVehicle()}">--%>
-                    <form role="form" method="POST" action="editVehicle" id="vehicle_${vehicle.getId()}">
+                <c:forEach var="wrongPlate" items="${listWrongPlate}">
+                    <form role="form" method="POST" action="editWrongPlate" id="vehicle_${vehicle.getId()}">
                         <div class="row">
 
                             <div class="col-sm-6 col-md-4 col-lg-4">
 
                                 <div class="table-bordered">
-                                    <img src="${pageContext.request.contextPath}/resources/images/wrong1.jpg"  alt="" class="img-display table-bordered img-responsive">
+                                    <img src="${pageContext.request.contextPath}/${wrongPlate.getImg()}"  alt="" class="img-display table-bordered img-responsive">
                                     
                                 </div>
                             </div>
@@ -48,15 +48,20 @@
                                 <div class="table-bordered well">
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" >Status <span class="glyphicon glyphicon-lock"></span></span>
-                                        <input class="form-control"  disabled value="59U1-6141">
+                                        <input class="form-control"  disabled value="${wrongPlate.getStatus()}">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon label-vehicle" >Checkin</span>
+                                        <input class="form-control"  disabled value="${wrongPlate.getCheckinTime()}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" >Plate</span>
-                                        <input type="text" class="form-control" ${vehicle.getStatus()=="working"?"disabled":""} name="plate" value="${vehicle.getPlate()}" required="required">
+                                        <input type="text" class="form-control" name="plate" value="${wrongPlate.getDetectedPlate()}" required="required">
                                     </div>
                                     <br>
+                                    <input type="text" class="hide" name="plate_id" value="${wrongPlate.getId()}" required="required">
                                     <div class="row">
-                                        <div class="col-md-6" style="height: 120px;">
+                                        <div class="col-md-6" style="height: 90px;">
                                             <button type="submit" class="btn btn-info">Update</button>
                                         </div>
                                         <div class="col-md-6" align="right">
@@ -68,7 +73,7 @@
                         </div>
                     </form>
                     <hr>
-                <%--</c:forEach>--%>   
+                </c:forEach>   
                 <!-- ./row -->
 
             </div>  
@@ -77,6 +82,9 @@
     </body>
 
     <script>
+        
+        ${script}
+            
         $("#btnAddVehicle").click(function () {
             $("#addVehicle").removeClass("hide");
             $("#btnHide").removeClass("hide");

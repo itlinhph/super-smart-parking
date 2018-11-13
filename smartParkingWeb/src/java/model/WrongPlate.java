@@ -12,15 +12,24 @@ package model;
 public class WrongPlate {
     private int id;
     private String detectedPlate;
+    private String fixedPlate;
     private String img;
     private String status;
-    private String parkId;
+    private int parkId;
     private String checkinTime;
 
     public WrongPlate() {
     }
 
     
+    public String getFixedPlate() {
+        return fixedPlate;
+    }
+
+    public void setFixedPlate(String fixedPlate) {
+        this.fixedPlate = fixedPlate;
+    }
+
     
     public int getId() {
         return id;
@@ -54,11 +63,11 @@ public class WrongPlate {
         this.status = status;
     }
 
-    public String getParkId() {
+    public int getParkId() {
         return parkId;
     }
 
-    public void setParkId(String parkId) {
+    public void setParkId(int parkId) {
         this.parkId = parkId;
     }
 

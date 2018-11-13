@@ -97,6 +97,28 @@ public class TicketData {
 
     }
     
+    
+    public static boolean createTicket(int vehicleId, int parkId) {
+        
+        int ticketCode = (int )(Math.random() *8999  + 1000);
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "Insert into ticket(vehicle_id, park_id, ticket_code) values (?, ?, ?)";
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setInt(1, vehicleId);
+            statement.setInt(2, parkId);
+            statement.setInt(3, ticketCode);
+            int result = statement.executeUpdate();
+            if(result ==1)
+                return true;
+        }
+        catch (Exception e) {
+            System.out.println("SQL Exeption: "+ e.getMessage());
+        }
+        return false;
+    }
+    
 //    public static void main(String[] args) {
 //        ArrayList<Ticket> l = getListTicketByStaffId(1);
 //        for (Ticket t: l)
