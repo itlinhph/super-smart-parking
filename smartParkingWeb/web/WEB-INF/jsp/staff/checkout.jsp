@@ -32,25 +32,26 @@
             <!-- Content -->
             <div class="content container">
                 <div class="row">
-                    <form role="form" method="POST" action="checkoutVehicle" id="vehicle_${vehicle.getId()}">
+                   
                         <div class="row">
 
                             <div class="col-sm-6 col-md-4 col-lg-4">
 
                                 <div class="table-bordered">
-                                    <img src="${pageContext.request.contextPath}/resources/images/true1.jpg" class="img-display table-bordered img-responsive">
+                                    <img src="${pageContext.request.contextPath}/${vehicle.getImg()}" class="img-display table-bordered img-responsive">
                                     
                                 </div>
                                 <span class="labelImgCheckOut">Registered Image</span>
                             </div>
                             <div class="col-sm-6 col-md-4 col-lg-4">
-
+                                
                                 <div class="table-bordered">
-                                    <img src="${pageContext.request.contextPath}/resources/images/true1.jpg" class="img-display table-bordered img-responsive">
+                                    <img src="${pageContext.request.contextPath}/resources/images/${checkoutImg}" class="img-display table-bordered img-responsive">
                                 </div>
                                 <span class="labelImgCheckOut">Checkout Image</span>
                             </div>
                             <div class="col-sm-6 col-md-4 col-lg-4">
+                                <form role="form" method="POST" action="checkoutVehicle">
                                 <div class="table-bordered well">
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Status</span>
@@ -58,34 +59,29 @@
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Checkin</span>
-                                        <input class="form-control"  disabled value="2018-11-14 07:12:56">
+                                        <input class="form-control"  disabled value="${ticket.getCheckinTime()}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Ticket</span>
-                                        <input class="form-control"  disabled value="9872">
+                                        <input class="form-control"  disabled value="${ticket.getTicketCode()}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Model</span>
-                                        <input class="form-control"  disabled value="Wave Anfa">
+                                        <input class="form-control"  disabled value="${vehicle.getModel()}">
                                     </div>
+                                   
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Plate</span>
-                                        <input type="text" class="form-control" name="plate" value="29S2-12345" required="required">
+                                        <input type="text" class="form-control" name="plate" value="${vehicle.getPlate()}" required="required">
                                     </div>
                                     <br>
-                                    <input type="text" class="hide" name="plate_id" value="${wrongPlate.getId()}" required="required">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <button type="submit" class="btn btn-info">Update</button>
-                                        </div>
-                                        <div class="col-md-6" align="right">
-                                            
-                                        </div>
-                                    </div>
+                                    <input type="hidden" name="ticketid" value="${ticket.getTicketid()}" required="required">
+                                    <button type="submit" class="btn btn-info">Update</button>
                                 </div>
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    
                     <hr>
                 <!-- ./row -->
 

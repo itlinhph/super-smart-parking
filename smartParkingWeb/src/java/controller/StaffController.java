@@ -13,6 +13,8 @@ import model.ParkData;
 import model.Staff;
 import model.Ticket;
 import model.TicketData;
+import model.Vehicle;
+import model.VehicleData;
 import model.WrongPlate;
 import model.WrongPlateData;
 import org.springframework.stereotype.Controller;
@@ -59,17 +61,17 @@ public class StaffController {
         return "jsp/staff/fixWrongPlate" ;
     }
     
-    @RequestMapping(value="/checkout", method=RequestMethod.GET)
-    public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
-        
-        
-        return "jsp/staff/checkout";
-    }
+//    @RequestMapping(value="/checkout", method=RequestMethod.GET)
+//    public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
+//        HttpSession session = request.getSession();
+//        Staff staff = (Staff) session.getAttribute("staff");
+//        if(staff == null) {
+//            return "jsp/index";
+//        }
+//        
+//        
+//        return "jsp/staff/checkout";
+//    }
     
     @RequestMapping(value="/editWrongPlate", method = RequestMethod.POST)
     public String editWrongPlate(HttpServletRequest request, ModelMap mm) {
@@ -97,4 +99,32 @@ public class StaffController {
         return "jsp/staff/fixWrongPlate" ;
     }
     
+    
+    @RequestMapping(value="/checkoutAction", method= RequestMethod.GET)
+    public String checkoutAction(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String plate = request.getParameter("plate");
+            String img = request.getParameter("img");
+
+            Ticket t = TicketData.getTicketByPlate(plate);
+            Vehicle v = VehicleData.getVehicleByPlate(plate);
+            
+            mm.put("vehicle", v);
+            mm.put("ticket", t);
+            mm.put("checkoutImg", img);
+            
+            
+        } catch (Exception e) {
+            System.out.println("Exeption checkoutAction: "+ e.getMessage());
+        }
+//        mm.put("script", "window.location = 'checkout';") ;
+        
+        return "jsp/staff/checkout";
+    }
 }

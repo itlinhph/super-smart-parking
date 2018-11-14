@@ -134,6 +134,37 @@ public class VehicleData {
         return false;
     }
 
+    
+    public static Vehicle getVehicleByPlate(String plate) {
+    
+        Vehicle v = new Vehicle();
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "Select id, plate, model, img, status, description from vehicle where plate = ? ;" ;
+            
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setString(1, plate);
+            
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                v.setId(rs.getInt("id"));
+                v.setPlate(rs.getString("plate"));
+                v.setModel(rs.getString("model"));
+                v.setImg(rs.getString("img"));
+                v.setStatus(rs.getString("status"));
+                v.setDescription(rs.getNString("description"));
+            }
+            
+            connect.con.close();
+        }
+        catch (Exception e) {
+            
+            System.out.println("Error getVehicleByPlate: "+ e.getMessage());
+        }
+        
+        return v;
+    }
+
        
 //    public static void main(String[] args) {
 //        ArrayList<Vehicle> listvehicle = getListVehicleByUserid(3);
@@ -143,5 +174,6 @@ public class VehicleData {
 //        }
 //    }
 
+ 
     
 }

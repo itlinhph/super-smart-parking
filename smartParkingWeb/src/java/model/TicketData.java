@@ -119,10 +119,34 @@ public class TicketData {
         return false;
     }
     
-//    public static void main(String[] args) {
-//        ArrayList<Ticket> l = getListTicketByStaffId(1);
-//        for (Ticket t: l)
-//            System.out.println(t.getCheckoutTime());
-//    }
+
+    public static Ticket getTicketByPlate(String plate) {
+        Ticket t = new Ticket();
+        try {
+            DbConnect connect = new DbConnect();
+            String query = 
+                "SELECT t.status, t.checkin_time, t.ticket_code, v.plate " +
+                "FROM ticket t, vehicle v where t.vehicle_id = v.id and v.plate = ? and t.status='working' LIMIT 1;";
+            
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setString(1, plate);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                
+                t.setStatus(rs.getString("status"));
+                t.setCheckinTime(rs.getString("checkin_time"));
+                t.setTicketCode(rs.getString("ticket_code"));
+                t.setPlate(rs.getString("plate"));
+            }
+            
+            connect.con.close();
+        }
+        catch (Exception e) {
+            
+            System.out.println("Error getTicketByPlate: "+ e.getMessage());
+        }
+        
+        return t;
+    }
     
 }
