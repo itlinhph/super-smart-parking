@@ -165,6 +165,26 @@ public class VehicleData {
         return v;
     }
 
+    public static boolean checkoutVehicle(int ticketid) {
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE ticket t, vehicle v, user u " +
+            "SET t.status = 'expired' , u.coin_remain = u.coin_remain - 1, t.checkout_time = current_time() " +
+            "WHERE v.user_id = u.id and t.vehicle_id = v.id and t.id = ? ; " ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setInt(1, ticketid);
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption deactive vehicle: "+ e.getMessage());
+            
+        }
+        
+        return false;
+    }
        
 //    public static void main(String[] args) {
 //        ArrayList<Vehicle> listvehicle = getListVehicleByUserid(3);

@@ -54,9 +54,14 @@
                                 <form role="form" method="POST" action="checkoutVehicle">
                                 <div class="table-bordered well">
                                     <div class="input-group">
-                                        <span class="input-group-addon label-vehicle" > Status</span>
-                                        <input class="form-control"  disabled value="working">
+                                        <span class="input-group-addon label-vehicle" > User</span>
+                                        <input class="form-control"  disabled value="${user.getUsername()}">
                                     </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon label-vehicle" > Coin</span>
+                                        <input class="form-control"  disabled value="${user.getCoin_remain()}">
+                                    </div>
+                                    
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Checkin</span>
                                         <input class="form-control"  disabled value="${ticket.getCheckinTime()}">
@@ -65,18 +70,14 @@
                                         <span class="input-group-addon label-vehicle" > Ticket</span>
                                         <input class="form-control"  disabled value="${ticket.getTicketCode()}">
                                     </div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon label-vehicle" > Model</span>
-                                        <input class="form-control"  disabled value="${vehicle.getModel()}">
-                                    </div>
-                                   
+                                    
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Plate</span>
-                                        <input type="text" class="form-control" name="plate" value="${vehicle.getPlate()}" required="required">
+                                        <input type="text" class="form-control" disabled name="plate" value="${vehicle.getPlate()}" required="required">
                                     </div>
                                     <br>
                                     <input type="hidden" name="ticketid" value="${ticket.getTicketid()}" required="required">
-                                    <button type="submit" class="btn btn-info">Update</button>
+                                    <button type="submit" ${user.getCoin_remain()>0?"":"disabled"} class="btn btn-info">Checkout</button>
                                 </div>
                                 </form>
                             </div>

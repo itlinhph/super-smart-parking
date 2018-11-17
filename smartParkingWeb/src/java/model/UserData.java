@@ -144,5 +144,26 @@ public class UserData {
         return false;
     }
 
+    
+    public static User getUserByPlate(String plate) throws SQLException, ClassNotFoundException {
+        DbConnect connect = new DbConnect();
+        User user = new User();
+        String query = "Select u.id, u.username, u.status, u.fullname, u.coin_remain "
+                + "From user u, vehicle v where v.user_id = u.id and v.plate=?";
+        PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
+        st.setString(1,plate);
+        ResultSet rs = st.executeQuery();
+        if(rs.next()) {
+            user.setUserId(rs.getInt("id")) ;
+            user.setUsername(rs.getString("username"));
+            user.setStatus(rs.getString("status"));
+            user.setFullname(rs.getString("fullname"));
+            user.setCoin_remain(rs.getInt("coin_remain"));
+            
+        }
+        
+        return user;
+        
+    }
 }
     

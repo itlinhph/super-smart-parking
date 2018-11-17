@@ -13,6 +13,8 @@ import model.ParkData;
 import model.Staff;
 import model.Ticket;
 import model.TicketData;
+import model.User;
+import model.UserData;
 import model.Vehicle;
 import model.VehicleData;
 import model.WrongPlate;
@@ -61,6 +63,30 @@ public class StaffController {
         return "jsp/staff/fixWrongPlate" ;
     }
     
+    
+    @RequestMapping(value="/checkoutVehicle", method = RequestMethod.POST) 
+    public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
+        
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String plate = request.getParameter("plate");
+            int ticketId = Integer.parseInt(request.getParameter("ticketid")) ;
+            int parkid = staff.getParkid() ;
+            
+            boolean checkoutResult = VehicleData.checkoutVehicle(ticketId);
+
+        } catch (Exception e) {
+            System.out.println("Exeption checkoutVehicle: "+ e.getMessage());
+        }
+        
+        return "jsp/staff/checkout" ;
+    }
+    
 //    @RequestMapping(value="/checkout", method=RequestMethod.GET)
 //    public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
 //        HttpSession session = request.getSession();
@@ -90,8 +116,7 @@ public class StaffController {
             int parkid = staff.getParkid() ;
             
             boolean editFixedPlateResult = WrongPlateData.editFixPlate(plate, plateId, parkid);
-            
-            
+
         } catch (Exception e) {
             System.out.println("Exeption editWrongPlate: "+ e.getMessage());
         }
@@ -114,16 +139,17 @@ public class StaffController {
 
             Ticket t = TicketData.getTicketByPlate(plate);
             Vehicle v = VehicleData.getVehicleByPlate(plate);
+            User u = UserData.getUserByPlate(plate);
             
             mm.put("vehicle", v);
             mm.put("ticket", t);
+            mm.put("user", u);
             mm.put("checkoutImg", img);
             
             
         } catch (Exception e) {
             System.out.println("Exeption checkoutAction: "+ e.getMessage());
         }
-//        mm.put("script", "window.location = 'checkout';") ;
         
         return "jsp/staff/checkout";
     }

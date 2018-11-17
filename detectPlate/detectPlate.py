@@ -483,7 +483,9 @@ def recognizeChar(listCharImg):
     return plateStr
 
 
-def detectPlateMain(fileImg):
+def detectPlateMain(gearman_worker, gearman_job):
+    fileImg = gearman_job.data.encode("utf-8")
+    print("Detect in:", fileImg)
     imgOrigin = cv2.imread(fileImg)
     height, width, _ = imgOrigin.shape
     
@@ -500,30 +502,6 @@ def detectPlateMain(fileImg):
 
     imgContours = np.zeros((height, width, 3), np.uint8)
 
-
-    # DRAW CLUSTER CHAR
-    # colors = {
-    #     1: (0,255,255), 
-    #     2: (255,0,255),
-    #     3: (255,255,0),
-    #     4: (0,0,255),
-    #     5: (0,255,0)
-    # }
-
-    # for i,clusterChar in enumerate (listClusterChars):
-        
-    #     color = colors.get(i, (255,0,0))  
-        
-    #     contours = []
-    #     for char in clusterChar:
-    #         contours.append(char["contour"])
-
-    #     cv2.drawContours(imgContours, contours, -1, color)
-
-    # cv2.imshow("Listcontours", imgContours)
-    # cv2.waitKey(0)
-    #End draw contours
-
     listPlates = []
     for clusterChar in listClusterChars:
         plate = getPlateFromClusterChar(clusterChar)
@@ -531,26 +509,6 @@ def detectPlateMain(fileImg):
 
     #12/10
     listPlates = combinePlates(imgOrigin, listPlates)
-    # print ("Len list plate:", len(listPlates))
-    # logging.info("Len list plate: %s", len(listPlates))
-    # print len(listPlates)
-    # for i in range(0, len(listPlates)):
-    #     location = ((listPlates[i]["location"][0], listPlates[i]["location"][1]), (listPlates[i]["location"][2], listPlates[i]["location"][3]), listPlates[i]["location"][4])
-    #     p2fRectPoints = cv2.boxPoints(location)
-
-    #     cv2.line(imgContours, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), (0,255,255), 2)
-    #     cv2.line(imgContours, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), (0,255,255), 2)
-    #     cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), (0,255,255), 2)
-    #     cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), (0,255,255), 2)
-
-    #     cv2.imshow("4a contours2 ", imgContours)
-    #     cv2.imwrite("DrawplateCrop.jpg", imgContours)
-
-    #     cv2.imshow("4b plate", listPlates[i]["img"])
-    #     cv2.imwrite("plateRotato.jpg", listPlates[i]["img"])
-    #     cv2.waitKey(0)
-
-    # 15/10
     
     # logging.info("List Plate: %s", listPlates)
     if(len(listPlates) ==0):
@@ -563,9 +521,24 @@ def detectPlateMain(fileImg):
 
     # cv2.waitKey(0)
     cv2.destroyAllWindows()
+    return "Done!!!"
+
+def testGearman(gearman_worker, gearman_job):
+    data = gearman_job.data.encode("utf-8")
+
+    return data
 
 import time
-stime = time.time()
-detectPlateMain("testIMG/plate.jpg")
-etime = time.time()
-print ("ESTIMATE TIME: ", etime - stime)
+import gearman
+HOST_GEARMAN = 'localhost:4730'
+gm_worker = gearman.GearmanWorker([HOST_GEARMAN])
+print("start worker!")
+gm_worker.set_client_id('detect_plate')
+a = gm_worker.register_task('detect_plate', detectPlateMain)
+gm_worker.work()
+
+# stime = time.time()
+# detectPlateMain("testIMG/plate.jpg")
+# etime = time.time()
+# print ("ESTIMATE TIME: ", etime - stime)
+
