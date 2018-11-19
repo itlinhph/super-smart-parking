@@ -13,7 +13,7 @@ import java.util.Properties;
 
 /**
  *
- * @author linhphan
+ * @author linhph
  */
 public class DbConnect {
      //properties

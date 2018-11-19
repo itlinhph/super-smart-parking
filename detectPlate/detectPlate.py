@@ -521,7 +521,7 @@ def detectPlateMain(gearman_worker, gearman_job):
 
     # cv2.waitKey(0)
     cv2.destroyAllWindows()
-    return "Done!!!"
+    return listCharsInPlates[0]
 
 def testGearman(gearman_worker, gearman_job):
     data = gearman_job.data.encode("utf-8")
