@@ -63,6 +63,18 @@ public class StaffController {
         return "jsp/staff/fixWrongPlate" ;
     }
     
+    @RequestMapping(value="/checkinout", method=RequestMethod.GET)
+    public String checkoutInOutPage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
+        
+        
+        return "jsp/staff/checkinout";
+    }
+    
     
     @RequestMapping(value="/checkoutVehicle", method = RequestMethod.POST) 
     public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
@@ -84,20 +96,9 @@ public class StaffController {
             System.out.println("Exeption checkoutVehicle: "+ e.getMessage());
         }
         
-        return "jsp/staff/checkout" ;
+        return "jsp/staff/checkoutAction" ;
     }
     
-//    @RequestMapping(value="/checkout", method=RequestMethod.GET)
-//    public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
-//        HttpSession session = request.getSession();
-//        Staff staff = (Staff) session.getAttribute("staff");
-//        if(staff == null) {
-//            return "jsp/index";
-//        }
-//        
-//        
-//        return "jsp/staff/checkout";
-//    }
     
     @RequestMapping(value="/editWrongPlate", method = RequestMethod.POST)
     public String editWrongPlate(HttpServletRequest request, ModelMap mm) {
@@ -151,6 +152,6 @@ public class StaffController {
             System.out.println("Exeption checkoutAction: "+ e.getMessage());
         }
         
-        return "jsp/staff/checkout";
+        return "jsp/staff/checkoutAction";
     }
 }

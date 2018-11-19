@@ -109,11 +109,11 @@ CREATE TABLE `ticket` (
   KEY `park_id` (`park_id`),
   CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`),
   CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`park_id`) REFERENCES `park` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `ticket` */
 
-insert  into `ticket` values (1,2,1,1203,'expired',1,'2018-11-09 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired',1,'2018-11-09 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'working',1,'2018-11-15 07:30:21',NULL),(17,3,1,5566,'working',1,'2018-11-15 07:45:12',NULL),(18,2,2,5467,'working',1,'2018-11-15 07:45:12',NULL);
+insert  into `ticket` values (1,2,1,1203,'expired',1,'2018-11-09 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired',1,'2018-11-09 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'working',1,'2018-11-15 07:30:21',NULL),(17,3,1,5566,'working',1,'2018-11-15 07:45:12',NULL),(18,2,2,5467,'working',1,'2018-11-15 07:45:12',NULL),(19,5,1,8102,'working',1,'2018-11-13 21:11:56',NULL),(20,5,1,2815,'working',1,'2018-11-13 21:15:59',NULL),(21,5,1,1841,'working',1,'2018-11-13 21:17:24',NULL);
 
 /*Table structure for table `user` */
 
@@ -131,7 +131,7 @@ CREATE TABLE `user` (
   `note` varchar(60) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `user` */
 
@@ -156,7 +156,7 @@ CREATE TABLE `vehicle` (
 
 /*Data for the table `vehicle` */
 
-insert  into `vehicle` values (1,'63-B9 999.99',3,'SH Mode','resources/images/xemay2.jpg','working','Xe máy SH xin xò lắm à nha. hihi'),(2,'47-F1 222.22',3,'Wave RSX 2012','resources/images/xemay3.jpg','pending','Màu đỏ, đẹp, còn mới ưng'),(3,'29S2-12345',3,'SH Anfa','resources/images/xemay.jpg','deactive','Con tym băng giá.'),(4,'29S2-12345',3,'SH Anfa','resources/images/xemay.jpg','deactive','xxxx'),(5,'29S2-12345',3,'Wave Anfa','resources/images/xemay.jpg','pending','Ahihi đồ ngôk');
+insert  into `vehicle` values (1,'63-B9 999.99',3,'SH Mode','resources/images/xemay2.jpg','working','Xe máy SH xin xò lắm à nha. hihi'),(2,'47-F1 222.22',3,'Wave RSX 2012','resources/images/xemay3.jpg','pending','Màu đỏ, đẹp, còn mới ưng'),(3,'29S2-12345',3,'SH Anfa','resources/images/xemay.jpg','deactive','Con tym băng giá.'),(4,'29S2-12345',3,'SH Anfa','resources/images/xemay.jpg','deactive','xxxx'),(5,'29S2-12345',3,'Wave Anfa','resources/images/xemay.jpg','working','Ahihi đồ ngôk');
 
 /*Table structure for table `wrong_plate` */
 
@@ -166,6 +166,7 @@ CREATE TABLE `wrong_plate` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `img` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `detect_result` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `fixed_plate` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` varchar(30) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending',
   `park_id` int(10) unsigned NOT NULL,
   `checkin_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -176,7 +177,7 @@ CREATE TABLE `wrong_plate` (
 
 /*Data for the table `wrong_plate` */
 
-insert  into `wrong_plate` values (1,'resources/images/wrong1.jpg','29S2-12345','pending',1,'2018-11-13 19:06:23'),(2,'resources/images/wrong3.jpg','59C2-11794','pending',1,'2018-11-13 19:08:10'),(3,'resources/images/wrong4.jpg','59P1-43138','pending',1,'2018-11-13 19:08:12');
+insert  into `wrong_plate` values (1,'resources/images/wrong1.jpg','29S2-12345','29S2-12345','pending',1,'2018-11-13 19:06:23'),(2,'resources/images/wrong3.jpg','59C2-11794','29S2-12345','pending',1,'2018-11-13 19:08:10'),(3,'resources/images/wrong4.jpg','59P1-43138',NULL,'pending',1,'2018-11-13 19:08:12');
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

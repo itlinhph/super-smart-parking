@@ -36,12 +36,10 @@ public class GearmanConnect {
             while (!jobReturn.isEOF()) {
                 GearmanJobEvent event = jobReturn.poll();
                 switch (event.getEventType()) {
-                // success
                 case GEARMAN_JOB_SUCCESS: 
                     plate = new String(event.getData()) ;
                     break;
                     
-                // failure
                 case GEARMAN_SUBMIT_FAIL: 
                     System.out.println("Job submit fail!");
                 case GEARMAN_JOB_FAIL: 
@@ -49,7 +47,7 @@ public class GearmanConnect {
                 default:
                 }
             }
-            client.shutdown();
+//            client.shutdown();
             
         } catch (Exception e) {
             System.out.println("Exeption when get data from Gearman: "+ e.getMessage());

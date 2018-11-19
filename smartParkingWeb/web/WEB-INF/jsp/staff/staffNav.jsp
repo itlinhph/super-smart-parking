@@ -26,7 +26,7 @@
         <ul class="nav navbar-nav navbar-collapse collapse navCollapse">
             <li><a href="${pageContext.request.contextPath}/staff/parking">Parking Information</a></li>
             <li><a href="${pageContext.request.contextPath}/staff/fixplate">Fix wrong plate</a></li>
-            <li><a href="${pageContext.request.contextPath}/staff/checkout">Checkout Vehicle</a></li>
+            <li><a href="${pageContext.request.contextPath}/staff/checkinout">CheckIn/Out</a></li>
         </ul>
         <form class="navbar-form navbar-left navbar-collapse collapse navCollapse">
             <div class="input-group">
@@ -47,7 +47,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="glyphicon glyphicon-tag" href="${pageContext.request.contextPath}/staff/parking"> ParkingInfor</a></li>
                         <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/staff/fixplate"> WrongPlate</a></li>
-                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/staff/checkout"> CheckoutVehicle</a></li>
+                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/staff/checkinout"> CheckInOut</a></li>
                         <li id="logout1"><a class="glyphicon glyphicon-log-out" href="${pageContext.request.contextPath}/login/logout"> LogOut</a></li>
                     </ul>
                 </li>
