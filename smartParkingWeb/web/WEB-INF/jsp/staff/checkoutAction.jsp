@@ -46,7 +46,7 @@
                             <div class="col-sm-6 col-md-4 col-lg-4">
                                 
                                 <div class="table-bordered">
-                                    <img src="${pageContext.request.contextPath}/resources/images/${checkoutImg}" class="img-display table-bordered img-responsive">
+                                    <img src="${pageContext.request.contextPath}/resources/images/plate/${checkoutImg}" class="img-display table-bordered img-responsive">
                                 </div>
                                 <span class="labelImgCheckOut">Checkout Image</span>
                             </div>
@@ -73,7 +73,7 @@
                                     
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Plate</span>
-                                        <input type="text" class="form-control" disabled name="plate" value="${vehicle.getPlate()}" required="required">
+                                        <input type="text" class="form-control" name="plate" value="${vehicle.getPlate()}" required="required">
                                     </div>
                                     <br>
                                     <input type="hidden" name="ticketid" value="${ticket.getTicketid()}" required="required">

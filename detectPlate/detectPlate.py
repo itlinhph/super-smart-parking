@@ -485,7 +485,8 @@ def recognizeChar(listCharImg):
 
 def detectPlateMain(gearman_worker, gearman_job):
     fileImg = gearman_job.data.encode("utf-8")
-    print("Detect in:", fileImg)
+    fileImg = "../smartParkingWeb/build/web/resources/images/plate/" + fileImg
+    print("File image:", fileImg)
     imgOrigin = cv2.imread(fileImg)
     height, width, _ = imgOrigin.shape
     
@@ -521,12 +522,10 @@ def detectPlateMain(gearman_worker, gearman_job):
 
     # cv2.waitKey(0)
     cv2.destroyAllWindows()
-    return listCharsInPlates[0]
+    plate = listCharsInPlates[0][:4] + "-" + listCharsInPlates[0][4:]
+    print plate
+    return plate
 
-def testGearman(gearman_worker, gearman_job):
-    data = gearman_job.data.encode("utf-8")
-
-    return data
 
 import time
 import gearman

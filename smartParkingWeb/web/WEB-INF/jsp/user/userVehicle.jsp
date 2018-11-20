@@ -56,7 +56,7 @@
 
                                             <div class="statusVehicle ${vehicle.getStatus()=="working"?"hide":""}">${vehicle.getStatus()}</div>
                                             <div class="table-bordered productPreview">
-                                                <img src="${pageContext.request.contextPath}/${vehicle.img}"  alt="" class="img-display table-bordered img-responsive">
+                                                <img src="${pageContext.request.contextPath}/resources/images/plate/${vehicle.img}"  alt="" class="img-display table-bordered img-responsive">
                                                 <div class="caption">
                                                     <h4 class="textPreview">${vehicle.getPlate()}</h4>
 

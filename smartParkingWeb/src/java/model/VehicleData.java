@@ -7,6 +7,7 @@ package model;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import otherAddOn.DbConnect;
 
@@ -184,6 +185,21 @@ public class VehicleData {
         }
         
         return false;
+    }
+    
+    public static int checkPlateExist(String plate) throws SQLException, ClassNotFoundException {
+        
+        DbConnect connect = new DbConnect();
+        String query = "SELECT id FROM vehicle WHERE plate =? and status='working' ";
+        PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
+        st.setString(1,plate);
+        ResultSet rs = st.executeQuery();
+        
+        if(rs.next()) {
+            return rs.getInt("id");
+        }
+        return 0;
+        
     }
        
 //    public static void main(String[] args) {

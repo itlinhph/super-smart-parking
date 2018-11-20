@@ -7,6 +7,7 @@ package controller;
 
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Park;
 import model.ParkData;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import otherAddOn.GearmanConnect;
 
 /**
  *
@@ -153,5 +155,32 @@ public class StaffController {
         }
         
         return "jsp/staff/checkoutAction";
+    }
+    
+    @RequestMapping(value="/checkin", method =RequestMethod.POST)
+    public String checkin(HttpServletRequest request, HttpServletResponse response) {
+        
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String image = request.getParameter("imgCheckin");
+            String plate = GearmanConnect.getPlateByGearman(image) ;
+            System.out.println("plate: "+ plate);
+            int vehicleId = VehicleData.checkPlateExist(plate);
+            if(vehicleId ==0) { // wrong plate
+                WrongPlateData.addWrongPlate(image, plate, staff.getParkid());
+                response.sendRedirect(request.getContextPath()+"/staff/fixplate");
+            }
+            else {
+                TicketData.createTicket(vehicleId, staff.getParkid());
+                response.sendRedirect(request.getContextPath()+"/staff/parking");
+            }
+        } catch (Exception e) {
+        }
+        return "jsp/staff/checkinout";
     }
 }

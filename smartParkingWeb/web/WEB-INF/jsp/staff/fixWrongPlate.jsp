@@ -40,7 +40,7 @@
                             <div class="col-sm-6 col-md-4 col-lg-4">
 
                                 <div class="table-bordered">
-                                    <img src="${pageContext.request.contextPath}/${wrongPlate.getImg()}"  alt="" class="img-display table-bordered img-responsive">
+                                    <img src="${pageContext.request.contextPath}/resources/images/plate/${wrongPlate.getImg()}"  alt="" class="img-display table-bordered img-responsive">
                                     
                                 </div>
                             </div>

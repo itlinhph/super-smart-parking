@@ -40,7 +40,7 @@
                             <div class="row well">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="file" required="required" name="imgFile" accept="image/x-png,image/gif,image/jpeg"> 
+                                        <input type="file" required="required" name="imgCheckin" accept="image/x-png,image/gif,image/jpeg"> 
 
                                     </div>
                                 </div>

@@ -87,4 +87,24 @@ public class WrongPlateData {
         
         return false;
     }
+    
+    public static boolean addWrongPlate(String img, String detectResult, int parkid) {
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "Insert into wrong_plate(img, detect_result, park_id) values (?, ?, ?)";
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setString(1, img);
+            statement.setString(2, detectResult);
+            statement.setInt(3, parkid);
+            
+            int result = statement.executeUpdate();
+            if(result ==1)
+                return true;
+        }
+        catch (Exception e) {
+            System.out.println("SQL Exeption: "+ e.getMessage());
+        }
+        return false;
+    }
 }
