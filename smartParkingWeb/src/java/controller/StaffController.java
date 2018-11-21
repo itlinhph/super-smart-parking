@@ -79,7 +79,7 @@ public class StaffController {
     
     
     @RequestMapping(value="/checkoutVehicle", method = RequestMethod.POST) 
-    public String checkoutVehicle(HttpServletRequest request, ModelMap mm) {
+    public String checkoutVehicle(HttpServletRequest request, ModelMap mm, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Staff staff = (Staff) session.getAttribute("staff");
         if(staff == null) {
@@ -93,7 +93,7 @@ public class StaffController {
             int parkid = staff.getParkid() ;
             
             boolean checkoutResult = VehicleData.checkoutVehicle(ticketId);
-
+            response.sendRedirect(request.getContextPath()+"/staff/checkinout");
         } catch (Exception e) {
             System.out.println("Exeption checkoutVehicle: "+ e.getMessage());
         }
@@ -149,7 +149,6 @@ public class StaffController {
             mm.put("user", u);
             mm.put("checkoutImg", img);
             
-            
         } catch (Exception e) {
             System.out.println("Exeption checkoutAction: "+ e.getMessage());
         }
@@ -179,7 +178,43 @@ public class StaffController {
                 TicketData.createTicket(vehicleId, staff.getParkid());
                 response.sendRedirect(request.getContextPath()+"/staff/parking");
             }
+        
         } catch (Exception e) {
+            System.out.println("Exeption checkoutAction: "+ e.getMessage());
+        }
+        return "jsp/staff/checkinout";
+    }
+    
+    
+    @RequestMapping(value="/checkout", method =RequestMethod.POST)
+    public String checkout(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+        
+        HttpSession session = request.getSession();
+        Staff staff = (Staff) session.getAttribute("staff");
+        if(staff == null) {
+            return "jsp/index";
+        }
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String image = request.getParameter("imgCheckout");
+            String plate = request.getParameter("plate");
+            if(!image.equals("")) {
+                plate = GearmanConnect.getPlateByGearman(image) ;
+                System.out.println("plate: "+ plate);
+                
+            }
+            int vehicleId = VehicleData.checkPlateExist(plate);
+            if (vehicleId == 0) { // wrong plate
+                mm.put("message", "Plate not found!");
+                mm.put("detect_plate", plate);
+                mm.put("image_file", image);
+            }
+            else {
+                String redirectPage = request.getContextPath() + "/staff/checkoutAction?plate="+plate + "&img="+image;
+                response.sendRedirect(redirectPage);
+            }
+        } catch (Exception e) {
+            System.out.println("Exeption checkout: "+ e.getMessage());
         }
         return "jsp/staff/checkinout";
     }
