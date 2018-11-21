@@ -159,7 +159,7 @@ CREATE TABLE `ticket` (
   KEY `park_id` (`park_id`),
   CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`id`),
   CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`park_id`) REFERENCES `park` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +168,7 @@ CREATE TABLE `ticket` (
 
 LOCK TABLES `ticket` WRITE;
 /*!40000 ALTER TABLE `ticket` DISABLE KEYS */;
-INSERT INTO `ticket` VALUES (1,2,1,1203,'expired',1,'2018-11-09 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired',1,'2018-11-09 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'working',1,'2018-11-27 07:30:21',NULL),(17,3,1,5566,'working',1,'2018-11-27 07:45:12',NULL),(18,2,2,5467,'working',1,'2018-11-27 07:45:12',NULL),(19,5,1,8102,'working',1,'2018-11-27 21:11:56',NULL),(20,5,1,2815,'working',1,'2018-11-27 21:15:59',NULL),(21,5,1,1841,'working',1,'2018-11-27 21:17:24',NULL),(22,5,1,8226,'working',1,'2018-11-19 23:03:32',NULL);
+INSERT INTO `ticket` VALUES (1,2,1,1203,'expired',1,'2018-11-09 07:30:21','2018-11-06 14:12:29'),(2,1,3,2034,'expired',1,'2018-11-09 07:45:12','2018-11-06 14:12:29'),(3,1,1,8493,'expired',1,'2018-11-27 07:30:21','2018-11-22 00:21:22'),(17,3,1,5566,'expired',1,'2018-11-27 07:45:12','2018-11-22 00:32:37'),(18,2,2,5467,'expired',1,'2018-11-27 07:45:12','2018-11-22 00:21:46'),(19,5,1,8102,'working',1,'2018-11-27 21:11:56',NULL),(20,5,1,2815,'working',1,'2018-11-27 21:15:59',NULL),(21,5,1,1841,'working',1,'2018-11-27 21:17:24',NULL),(22,5,1,8226,'expired',1,'2018-11-25 23:03:32','2018-11-25 23:04:32'),(23,1,1,4157,'working',1,'2018-11-25 00:04:28',NULL),(24,2,1,3529,'expired',1,'2018-11-21 00:06:46','2018-11-21 23:53:50');
 /*!40000 ALTER TABLE `ticket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,7 +200,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'linhph','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphanhust@gmail.com','964976895',10,'No note','2018-10-31 16:10:13'),(2,'trangdt','c4ca4238a0b923820dcc509a6f75849b','working','Trang DT','trangdt@ghtk.vn','123456789',0,NULL,'2018-10-31 17:27:28'),(3,'linhphan','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphan@gmail.com','111222333',10,NULL,'2018-11-01 17:37:04'),(4,'linhphan1','81dc9bdb52d04dc20036dbd8313ed055','working','Phan Hồng Lĩnh','changvt2401@gmail.com','09123232333',0,NULL,'2018-11-01 17:42:56'),(5,'111','698d51a19d8a121ce581499d7b701668','working','Nguyễn Đình Mẫn','linhph@gmail.com','111',0,NULL,'2018-11-01 18:15:35'),(6,'lanem','698d51a19d8a121ce581499d7b701668','working','Ngô Lan Anh','lananh.ngo.1994@gmail.com','1111',0,NULL,'2018-11-01 18:21:21');
+INSERT INTO `user` VALUES (1,'linhph','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphanhust@gmail.com','964976895',10,'No note','2018-10-31 16:10:13'),(2,'trangdt','c4ca4238a0b923820dcc509a6f75849b','working','Trang DT','trangdt@ghtk.vn','123456789',0,NULL,'2018-10-31 17:27:28'),(3,'linhphan','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphan@gmail.com','111222333',5,NULL,'2018-11-01 17:37:04'),(4,'linhphan1','81dc9bdb52d04dc20036dbd8313ed055','working','Phan Hồng Lĩnh','changvt2401@gmail.com','09123232333',0,NULL,'2018-11-01 17:42:56'),(5,'111','698d51a19d8a121ce581499d7b701668','working','Nguyễn Đình Mẫn','linhph@gmail.com','111',0,NULL,'2018-11-01 18:15:35'),(6,'lanem','698d51a19d8a121ce581499d7b701668','working','Ngô Lan Anh','lananh.ngo.1994@gmail.com','1111',0,NULL,'2018-11-01 18:21:21');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +231,7 @@ CREATE TABLE `vehicle` (
 
 LOCK TABLES `vehicle` WRITE;
 /*!40000 ALTER TABLE `vehicle` DISABLE KEYS */;
-INSERT INTO `vehicle` VALUES (1,'63B9-99999',3,'SH Mode','xemay2.jpg','working','Xe máy SH xin xò lắm à nha. hihi'),(2,'47F1-22222',3,'Wave RSX 2012','xemay3.jpg','pending','Màu đỏ, đẹp, còn mới ưng'),(3,'29S2-12345',3,'SH Anfa','xemay.jpg','deactive','Con tym băng giá.'),(4,'29S2-12345',3,'SH Anfa','xemay.jpg','deactive','xxxx'),(5,'29S2-12345',3,'Wave Anfa','xemay.jpg','working','Ahihi đồ ngôk');
+INSERT INTO `vehicle` VALUES (1,'63B9-99999',3,'SH Mode','xemay2.jpg','working','Xe máy SH xin xò lắm à nha. hihi'),(2,'47F1-22222',3,'Wave RSX 2012','xemay3.jpg','working','Màu đỏ, đẹp, còn mới ưng'),(3,'95G1-01643',3,'Dream 2001','true1.jpg','working','Con tym băng giá.'),(4,'59C2-11894',3,'SH Anfa','wrong3.jpg','working','xxxx'),(5,'29S2-12345',3,'Wave Anfa','xemay.jpg','pending','Ahihi đồ ngôk');
 /*!40000 ALTER TABLE `vehicle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,7 +253,7 @@ CREATE TABLE `wrong_plate` (
   PRIMARY KEY (`id`),
   KEY `park_id` (`park_id`),
   CONSTRAINT `wrong_plate_ibfk_1` FOREIGN KEY (`park_id`) REFERENCES `park` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +262,7 @@ CREATE TABLE `wrong_plate` (
 
 LOCK TABLES `wrong_plate` WRITE;
 /*!40000 ALTER TABLE `wrong_plate` DISABLE KEYS */;
-INSERT INTO `wrong_plate` VALUES (1,'wrong1.jpg','29S2-12345','29S2-12345','fixed',1,'2018-11-13 19:06:23'),(2,'wrong3.jpg','59C2-11794','29S2-12345','fixed',1,'2018-11-13 19:08:10'),(3,'wrong4.jpg','59P1-43138',NULL,'pending',1,'2018-11-13 19:08:12'),(4,'wrong1.jpg','59U1-41',NULL,'pending',1,'2018-11-20 23:53:44');
+INSERT INTO `wrong_plate` VALUES (1,'wrong1.jpg','29S2-12345','29S2-12345','fixed',1,'2018-11-13 19:06:23'),(2,'wrong3.jpg','59C2-11794','29S2-12345','fixed',1,'2018-11-13 19:08:10'),(3,'wrong4.jpg','59P1-43138',NULL,'pending',1,'2018-11-13 19:08:12'),(4,'wrong1.jpg','59U1-41',NULL,'pending',1,'2018-11-20 23:53:44'),(5,'xemay2.jpg','','63B9-99999','fixed',1,'2018-11-21 00:02:49'),(6,'xemay3.jpg','47F1-22222',NULL,'pending',1,'2018-11-21 00:05:09'),(7,'true5.jpg','23B4-9722',NULL,'pending',1,'2018-11-21 00:07:30');
 /*!40000 ALTER TABLE `wrong_plate` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -275,4 +275,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-21  0:01:07
+-- Dump completed on 2018-11-22  1:08:48
