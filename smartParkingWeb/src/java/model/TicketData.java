@@ -125,14 +125,14 @@ public class TicketData {
         try {
             DbConnect connect = new DbConnect();
             String query = 
-                "SELECT t.status, t.checkin_time, t.ticket_code, v.plate " +
+                "SELECT t.id, t.status, t.checkin_time, t.ticket_code, v.plate " +
                 "FROM ticket t, vehicle v where t.vehicle_id = v.id and v.plate = ? and t.status='working' LIMIT 1;";
             
             PreparedStatement statement = connect.con.prepareStatement(query);
             statement.setString(1, plate);
             ResultSet rs = statement.executeQuery();
             if(rs.next()) {
-                
+                t.setTicketid(rs.getInt("id"));
                 t.setStatus(rs.getString("status"));
                 t.setCheckinTime(rs.getString("checkin_time"));
                 t.setTicketCode(rs.getString("ticket_code"));

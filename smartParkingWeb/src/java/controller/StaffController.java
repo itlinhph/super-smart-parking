@@ -93,7 +93,7 @@ public class StaffController {
             int parkid = staff.getParkid() ;
             
             boolean checkoutResult = VehicleData.checkoutVehicle(ticketId);
-            response.sendRedirect(request.getContextPath()+"/staff/checkinout");
+            response.sendRedirect(request.getContextPath()+"/staff/parking");
         } catch (Exception e) {
             System.out.println("Exeption checkoutVehicle: "+ e.getMessage());
         }
@@ -202,6 +202,9 @@ public class StaffController {
                 plate = GearmanConnect.getPlateByGearman(image) ;
                 System.out.println("plate: "+ plate);
                 
+            }
+            else {
+                image = request.getParameter("imgCheckout2");
             }
             int vehicleId = VehicleData.checkPlateExist(plate);
             if (vehicleId == 0) { // wrong plate

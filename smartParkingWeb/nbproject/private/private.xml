@@ -6,11 +6,9 @@
             <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/WEB-INF/jsp/staff/fixWrongPlate.jsp</file>
             <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/controller/StaffController.java</file>
             <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/WEB-INF/jsp/staff/checkoutAction.jsp</file>
-            <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/resources/css/style.css</file>
-            <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/model/VehicleData.java</file>
-            <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/WEB-INF/jsp/user/userVehicle.jsp</file>
-            <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/otherAddOn/GearmanConnect.java</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/model/UserData.java</file>
             <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/WEB-INF/jsp/staff/checkinout.jsp</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/model/WrongPlateData.java</file>
         </group>
     </open-files>
 </project-private>

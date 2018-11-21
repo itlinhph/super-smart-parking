@@ -55,20 +55,20 @@
                                 <div class="table-bordered well">
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > User</span>
-                                        <input class="form-control"  disabled value="${user.getUsername()}">
+                                        <input class="form-control" name="username"  disabled value="${user.getUsername()}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Coin</span>
-                                        <input class="form-control"  disabled value="${user.getCoin_remain()}">
+                                        <input class="form-control" name="coin"  disabled value="${user.getCoin_remain()}">
                                     </div>
                                     
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Checkin</span>
-                                        <input class="form-control"  disabled value="${ticket.getCheckinTime()}">
+                                        <input class="form-control" name="checkintime" disabled value="${ticket.getCheckinTime()}">
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon label-vehicle" > Ticket</span>
-                                        <input class="form-control"  disabled value="${ticket.getTicketCode()}">
+                                        <input class="form-control" name="ticketCode"  disabled value="${ticket.getTicketCode()}">
                                     </div>
                                     
                                     <div class="input-group">
@@ -77,7 +77,7 @@
                                     </div>
                                     <br>
                                     <input type="hidden" name="ticketid" value="${ticket.getTicketid()}" required="required">
-                                    <button type="submit" ${user.getCoin_remain()>0?"":"disabled"} class="btn btn-info">Checkout</button>
+                                    <button type="submit" ${(user.getCoin_remain()>0 && ticket.getTicketid()>0)?"":"disabled"} class="btn btn-info">Checkout</button>
                                 </div>
                                 </form>
                             </div>

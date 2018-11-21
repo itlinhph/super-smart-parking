@@ -51,7 +51,7 @@
                             </div>
                         </form>    
                     </div>
-                    <div class="col-md-6 col-lg-6 col-sm-6 checkinout hide" id="image_plate">
+                    <div class="col-md-4 col-lg-4 col-sm-6 checkinout hide" id="image_plate">
                         <div class="table-bordered">
                             <img src="${pageContext.request.contextPath}/resources/images/plate/${image_file}"  alt="" class="img-display table-bordered img-responsive">
                         </div>
@@ -63,7 +63,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <input type="file" required="required" name="imgCheckout" accept="image/x-png,image/gif,image/jpeg"> 
-
+                                        <input type="text" name="imgCheckout2" class="hide" value="${image_file}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -85,9 +85,9 @@
     </body>
     
     <script>
-//        var message = $("#modalMessage").text() ;
-        var plate = $("input[name=plate]").val();
-        if(plate != "") {
+        var message = $("#modalMessage").text() ;
+//        var plate = $("input[name=plate]").val();
+        if(message === "Plate not found!") {
             $("#fixplateinput").removeClass("hide");
             $("#image_plate").removeClass("hide");
             $("#checkinForm").addClass("hide");
