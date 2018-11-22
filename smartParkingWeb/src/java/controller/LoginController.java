@@ -5,9 +5,7 @@
  */
 package controller;
 
-import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -95,11 +93,9 @@ public class LoginController {
             request.setCharacterEncoding("UTF-8");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-//            System.out.println(username + password);
-            
             
             Admin admin = new Admin(username, password);
-            if(admin != null) {
+            if(admin.getUsername() != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("admin", admin);
                 response.sendRedirect(request.getContextPath()+"/admin/parking");

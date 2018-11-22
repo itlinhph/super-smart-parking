@@ -24,7 +24,7 @@
 
     <body>
         <!-- navbar -->
-        <jsp:include page="adNavBar.jsp"></jsp:include>
+        <jsp:include page="../partition/navbar.jsp"></jsp:include>
         <!-- End navbar -->
         <jsp:include page="../partition/message.jsp"></jsp:include>
         <!-- Sign Up/Login Tab -->

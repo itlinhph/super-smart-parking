@@ -3,15 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/src/java/model/ParkData.java</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/src/java/controller/AdminController.java</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/src/java/model/Park.java</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/src/java/controller/LoginController.java</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/web/WEB-INF/jsp/admin/adNavBar.jsp</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/src/java/model/Admin.java</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/src/java/controller/StaffController.java</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/src/java/model/UserData.java</file>
-            <file>file:/home/linhph/Dropbox/SmartParking/Thesis-git/smartParkingWeb/web/WEB-INF/jsp/admin/verifyVehicle.jsp</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/WEB-INF/jsp/admin/parkingInfor.jsp</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/WEB-INF/jsp/admin/verifyVehicle.jsp</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/model/VehicleData.java</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/web/WEB-INF/jsp/user/userVehicle.jsp</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/controller/LoginController.java</file>
+            <file>file:/home/linkpp/smart-parking/smartParkingWeb/src/java/controller/AdminController.java</file>
         </group>
     </open-files>
 </project-private>

@@ -35,22 +35,12 @@
             <li><a href="#">About</a></li>
             <li><a href="#">Help & Contact</a></li>
         </ul>
-<!--        <form class="navbar-form navbar-left navbar-collapse collapse navCollapse">
-            <div class="input-group">
-                <input type="text" class="form-control" id="searchText" placeholder="Search">
-                <div class="input-group-btn" onclick="return searchText()">
-                    <button class="btn btn-default">
-                      <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>-->
 
         <!-- Nav right -->
             <ul class="nav navbar-nav navbar-right navbar-collapse collapse navCollapse">
                 <% if(user ==null) { %>
                 <li><a href="${pageContext.request.contextPath}/login.html?action=signup"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="${pageContext.request.contextPath}/login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                <li><a href="${pageContext.request.contextPath}/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 
                 <% } else { %>
                 <li><a href="#">Hi: ${user.getFullname()}</a></li>

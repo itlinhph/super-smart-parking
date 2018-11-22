@@ -45,7 +45,7 @@ public class StaffController {
         Park park = ParkData.getParkByStaffId(staff.getId());
         mm.put("park", park);
         
-        ArrayList<Ticket> listTicket = TicketData.getListTicketByStaffId(staff.getId());
+        ArrayList<Ticket> listTicket = TicketData.getListTicketByParkId(park.getId());
         mm.put("listTicket", listTicket);
                 
         return "jsp/staff/staffPark" ;

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : parkingInfor
-    Created on : Nov 22, 2018, 8:33:32 PM
-    Author     : linhph
+    Document   : parkingDetail
+    Created on : Nov 22, 2018, 11:07:46 PM
+    Author     : linkpp
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,8 +21,10 @@
 
     </head>
     <body>
-        
+
+        <!-- navbar -->
         <jsp:include page="adNavBar.jsp"></jsp:include>
+        <!-- End navbar -->
         <jsp:include page="../partition/message.jsp"></jsp:include>
             <!-- Content -->
             <div class="content container">
@@ -31,8 +33,10 @@
                 <div class="col-md-12">
                     <hr>
                     <div class="titleParking">
-                        All your parking information:
+                        ${park.getParkCode()} has only ${park.getTotalSlot()- park.getUsingSlot()} remain slot!
                     </div>
+                    
+                    
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
                             <tr>
@@ -41,23 +45,59 @@
                                 <th>Park Name</th>
                                 <th>Total Slot</th>
                                 <th>Using Slot</th>
-                                <th>Action</th>
+                                <th>Description</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="park" items="${listPark}">
                                 <tr>
                                     <td>${park.getId()}</td>
                                     <td>${park.getParkCode()}</td>
                                     <td>${park.getParkName()}</td>
                                     <td class="totalSlot">${park.getTotalSlot()}</td>
                                     <td>${park.getUsingSlot()}</td>
-                                    <td>  <a href="parkingDetail?parkid=${park.getId()}"><button class="btn btn-info">Detail</button></a> </td>
+                                    <td>${park.getDescription()}</td>
                                 </tr>
-                            </c:forEach> 
+                           
                         </tbody>
                     </table>
                   <hr>
+                 <div id="tiketToday">
+                    <div class="titleParking">
+                    Ticket in Your Parking today:
+                    </div>
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>#No</th>
+                                <th>Plate</th>
+                                <th>Park</th>
+                                <th>Ticket Code</th>
+                                <th>Status</th>
+                                <th>Fee</th>
+                                <th>Checkin time</th>
+                                <th>Checkout time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <c:forEach var="ticket" items="${listTicket}">
+                                <tr>
+                                    <td>${ticket.getTicketid()}</td>
+                                    <td>${ticket.getPlate()}</td>
+                                    <td>${ticket.getPark()}</td>
+                                    <td>${ticket.getTicketCode()}</td>
+                                    <td class="statusTicket">${ticket.getStatus()}</td>
+                                    <td>${ticket.getFee()}</td>
+                                    <td>${ticket.getCheckinTime()}</td>
+                                    <td>${ticket.getCheckoutTime()}</td>
+                                </tr>
+                            </c:forEach> 
+                           
+                        </tbody>
+                    </table>
+                </div>
+                     
+
             </div>
             <hr>
         </div> 
@@ -77,11 +117,12 @@
                else
                    $(this).parent().css("color", "blue");
             });
+            
+            $(".statusTicket:contains('working')").parent().css("color", "red");
 
         </script>
 
 
     </body>
 </html>
-
 

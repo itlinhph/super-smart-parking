@@ -57,20 +57,20 @@ public class TicketData {
     }
     
     
-    public static ArrayList<Ticket> getListTicketByStaffId(int staffid) {
+    public static ArrayList<Ticket> getListTicketByParkId(int parkid) {
         ArrayList<Ticket> listTicket = new ArrayList<Ticket>();
         
         try {
             DbConnect connect = new DbConnect();
             String query = 
                 "SELECT t.id, v.plate, p.park_code, t.ticket_code, t.status, t.fee, t.checkin_time, t.checkout_time " +
-                "FROM staff s, ticket t, park p, vehicle v " +
-                "WHERE s.park_id = p.id and p.id = t.park_id and v.id = t.vehicle_id " +
+                "FROM ticket t, park p, vehicle v " +
+                "WHERE p.id = t.park_id and v.id = t.vehicle_id " +
                 "and t.checkin_time > curdate() " +
-                "and s.id = ? order by status desc, checkin_time desc ;";
+                "and p.id = ? order by status desc, checkin_time desc ;";
             
             PreparedStatement statement = connect.con.prepareStatement(query);
-            statement.setInt(1, staffid);
+            statement.setInt(1, parkid);
             
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
