@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author linkpp
@@ -16,10 +18,19 @@ public class Park {
     private int totalSlot;
     private int usingSlot;
     private String description;
+    private ArrayList<Ticket> listTicket;
 
     public Park() {
     }
 
+    public ArrayList<Ticket> getListTicket() {
+        return listTicket;
+    }
+
+    public void setListTicket(ArrayList<Ticket> listTicket) {
+        this.listTicket = listTicket;
+    }
+    
     public int getId() {
         return id;
     }

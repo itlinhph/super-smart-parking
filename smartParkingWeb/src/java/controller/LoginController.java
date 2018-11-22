@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Admin;
 import model.Staff;
 import model.StaffData;
 import model.User;
@@ -88,12 +89,43 @@ public class LoginController {
         
         return "jsp/login";
     }
+    @RequestMapping(value="/adminLogin", method=RequestMethod.POST)
+    public String adminLoginForm( HttpServletRequest request,HttpServletResponse response, ModelMap mm) throws IOException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+//            System.out.println(username + password);
+            
+            
+            Admin admin = new Admin(username, password);
+            if(admin != null) {
+                HttpSession session = request.getSession();
+                session.setAttribute("admin", admin);
+                response.sendRedirect(request.getContextPath()+"/admin/parking");
+            }
+            else
+                mm.put("message", "Wrong username or password!");
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        
+        return "jsp/admin/adlogin";
+    }
     
     @RequestMapping(value="/logout", method=RequestMethod.GET)
     public void logOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         session.invalidate();
         response.sendRedirect(request.getContextPath());
+
+    }
+    
+    @RequestMapping(value="/admin", method=RequestMethod.GET)
+    public String adminLogin() throws IOException {
+        
+        return "jsp/admin/adlogin" ;
 
     }
     
