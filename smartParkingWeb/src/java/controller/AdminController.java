@@ -71,6 +71,17 @@ public class AdminController {
         return "jsp/admin/verifyVehicle" ;
     }
     
+    @RequestMapping(value="/manageStaff", method = RequestMethod.GET)
+    public String getManageStaffPage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("admin");
+        if(admin == null) {
+            return "jsp/index";
+        }
+                        
+        return "jsp/admin/manageStaff" ;
+    }
+    
     @RequestMapping(value="/verifyVehicleAction", method=RequestMethod.POST)
     public String verifyVehicleAction(HttpServletRequest request, ModelMap mm) {
         
