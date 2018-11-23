@@ -12,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width initial-scale=1">
-        <title>Parking information</title>
+        <title>Manage Staff</title>
 
         <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
@@ -38,22 +38,24 @@
                         <thead>
                             <tr>
                                 <th>#No</th>
+                                <th>Staff Code</th>
+                                <th>Full Name</th>
                                 <th>Park Code</th>
-                                <th>Park Name</th>
-                                <th>Total Slot</th>
-                                <th>Using Slot</th>
+                                <th>Status</th>
+                                <th>Created</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="park" items="${listPark}">
+                            <c:forEach var="staff" items="${listStaff}">
                                 <tr>
-                                    <td>${park.getId()}</td>
-                                    <td>${park.getParkCode()}</td>
-                                    <td>${park.getParkName()}</td>
-                                    <td class="totalSlot">${park.getTotalSlot()}</td>
-                                    <td>${park.getUsingSlot()}</td>
-                                    <td>  <a href="parkingDetail?parkid=${park.getId()}"><button class="btn btn-info">Detail</button></a> </td>
+                                    <td>${staff.getId()}</td>
+                                    <td>${staff.getStaffCode()}</td>
+                                    <td>${staff.getStaffName()}</td>
+                                    <td>${staff.getParkCode()}</td>
+                                    <td>${staff.getStatus()}</td>
+                                    <td>${staff.getCreated()}</td>
+                                    <td>  <a href=""><button class="btn btn-danger">Deactive</button></a> </td>
                                 </tr>
                             </c:forEach> 
                         </tbody>
@@ -64,23 +66,6 @@
         </div> 
             </div>
         <!-- End container -->
-        <script>
-            
-            $(".totalSlot").each(function() {
-                var totalSlot = $(this).html();
-                var usingSlot = $(this).next().html();
-                var remainSlot = totalSlot - usingSlot;
-                if(remainSlot < 10) {
-                   $(this).parent().css("color", "red").css("font-weight", "bold");
-                   $(this).next().css("font-size","120%");
-                    
-                }
-               else
-                   $(this).parent().css("color", "blue");
-            });
-
-        </script>
-
 
     </body>
 </html>

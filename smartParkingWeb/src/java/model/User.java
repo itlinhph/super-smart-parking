@@ -21,7 +21,6 @@ public class User implements Serializable {
     private String email;
     private String phone;
     private int coin_remain;
-    private String note;
     private String created;
     private ArrayList<Vehicle> listVehicle;
     
@@ -100,14 +99,6 @@ public class User implements Serializable {
 
     public void setCoin_remain(int coin_remain) {
         this.coin_remain = coin_remain;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
     }
 
     public String getCreated() {

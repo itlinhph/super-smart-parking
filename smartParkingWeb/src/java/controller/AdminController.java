@@ -11,8 +11,12 @@ import javax.servlet.http.HttpSession;
 import model.Admin;
 import model.Park;
 import model.ParkData;
+import model.Staff;
+import model.StaffData;
 import model.Ticket;
 import model.TicketData;
+import model.User;
+import model.UserData;
 import model.Vehicle;
 import model.VehicleData;
 import org.springframework.stereotype.Controller;
@@ -78,8 +82,35 @@ public class AdminController {
         if(admin == null) {
             return "jsp/index";
         }
-                        
+        
+        ArrayList<Staff> listStaff = StaffData.getListStaff();
+        mm.put("listStaff", listStaff);          
         return "jsp/admin/manageStaff" ;
+    }
+    
+    
+    @RequestMapping(value="/manageUser", method = RequestMethod.GET)
+    public String getManageUserPage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("admin");
+        if(admin == null) {
+            return "jsp/index";
+        }
+        
+        ArrayList<User> listUser = UserData.getListUser();
+        mm.put("listUser", listUser);          
+        return "jsp/admin/manageUser" ;
+    }
+    
+    @RequestMapping(value="/report", method = RequestMethod.GET)
+    public String getReportPage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("admin");
+        if(admin == null) {
+            return "jsp/index";
+        }
+        
+        return "jsp/admin/report" ;
     }
     
     @RequestMapping(value="/verifyVehicleAction", method=RequestMethod.POST)

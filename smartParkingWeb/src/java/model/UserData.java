@@ -8,6 +8,7 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import otherAddOn.DbConnect;
 
 /**
@@ -86,7 +87,6 @@ public class UserData {
         user.setEmail(rs.getString("email")); 
         user.setPhone(rs.getString("phone"));
         user.setCoin_remain(rs.getInt("coin_remain")); 
-        user.setNote(rs.getString("note"));
         user.setCreated(rs.getString("created"));
         
         user.setListVehicle(VehicleData.getListVehicleByUserid(userId));
@@ -164,6 +164,42 @@ public class UserData {
         
         return user;
         
+    }
+
+    public static ArrayList<User> getListUser() {
+        ArrayList<User> listUser = new ArrayList<User>();
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = 
+                "SELECT id, username, status, fullname, email, phone, coin_remain, created "
+              + "FROM user order by status desc;";
+            
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getInt("id")) ;
+                user.setUsername(rs.getString("username"));
+                user.setStatus(rs.getString("status"));
+                user.setFullname(rs.getString("fullname"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setCoin_remain(rs.getInt("coin_remain"));
+                user.setCreated(rs.getString("created"));
+                listUser.add(user);
+            }
+            
+            connect.con.close();
+        }
+        catch (Exception e) {
+            
+            System.out.println("Error getListUser: "+ e.getMessage());
+        }
+        
+        return listUser;
+    
     }
 }
     

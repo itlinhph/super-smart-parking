@@ -8,6 +8,7 @@ package model;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import otherAddOn.DbConnect;
 
 /**
@@ -50,8 +51,46 @@ public class StaffData {
         
         return s;
     }
+    
+    public static ArrayList<Staff> getListStaff() {
+       
+        ArrayList<Staff> listStaff = new ArrayList<Staff>();
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = 
+                "SELECT s.id, s.staff_code, s.staff_name, p.park_code, s.status, s.created "
+              + "FROM staff s, park p WHERE s.park_id = p.id order by status desc;";
+            
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                Staff s = new Staff();
+                s.setId(rs.getInt("id"));
+                s.setStaffCode(rs.getString("staff_code"));
+                s.setStaffName(rs.getString("staff_name"));
+                s.setParkCode(rs.getString("park_code"));
+                s.setStatus(rs.getString("status"));
+                s.setCreated(rs.getString("created"));
+                listStaff.add(s);
+            }
+            
+            connect.con.close();
+        }
+        catch (Exception e) {
+            
+            System.out.println("Error getListStaff: "+ e.getMessage());
+        }
+        
+        return listStaff;
+    }
+    
+    
 //    public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        Staff s = getStaffBySId(1);
 //        System.out.println(s.getStaffName());
 //    }
+
+ 
 }

@@ -17,10 +17,19 @@ public class Staff implements Serializable {
     private String staffName;
     private String password;
     private int parkid;
+    private String parkCode;
     private String status;
     private String created;
 
     public Staff() {
+    }
+
+    public String getParkCode() {
+        return parkCode;
+    }
+
+    public void setParkCode(String parkCode) {
+        this.parkCode = parkCode;
     }
 
     public String getPassword() {
