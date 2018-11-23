@@ -71,6 +71,65 @@ public class AdminController {
         return "jsp/admin/verifyVehicle" ;
     }
     
+    @RequestMapping(value="/verifyVehicleAction", method=RequestMethod.POST)
+    public String verifyVehicleAction(HttpServletRequest request, ModelMap mm) {
+        
+        try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
+            if(admin == null) {
+                return "jsp/index";
+            }
+            
+            request.setCharacterEncoding("UTF-8");
+            String plate = request.getParameter("plate");
+            String model = request.getParameter("model");
+            String description = request.getParameter("description");
+            int idvehicle = Integer.parseInt(request.getParameter("idvehicle")) ;
+            
+            boolean result = VehicleData.editVehicle(idvehicle, plate, model, description);
+            if(result) {
+                mm.put("message","Verify vehicle success!" );
+                ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
+                session.setAttribute("listVehicle", listVehicle);
+                
+            }
+            else
+                mm.put("message", "Verify vehicle false!");
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        return "jsp/admin/verifyVehicle";
+    }
+    
+    @RequestMapping(value="/rejectVehicle", method=RequestMethod.POST)
+    public String rejectVehicle(HttpServletRequest request, ModelMap mm) {
+        
+        try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
+            if(admin == null) {
+                return "jsp/index";
+            }
+            
+            request.setCharacterEncoding("UTF-8");
+            int idVehicle = Integer.parseInt(request.getParameter("idReject")) ; 
+            
+            boolean result = VehicleData.rejectVehicle(idVehicle);
+            if(result) {
+                mm.put("message","Reject vehicle success!" );
+                ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
+                mm.put("listVehicle", listVehicle);
+            }
+            else
+                mm.put("message", "Reject vehicle false!");
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        return "jsp/admin/verifyVehicle";
+    }
     
     
 }

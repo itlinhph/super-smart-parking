@@ -81,7 +81,34 @@ public class VehicleData {
                 return true;
             connect.con.close();
         } catch (Exception e) {
-            System.out.println("Exeption editUserInfor: "+ e.getMessage());
+            System.out.println("Exeption editVehicle: "+ e.getMessage());
+            
+        }
+        
+        return false;
+    }
+    
+    
+    // For admin
+    public static boolean editVehicle(int idvehicle, String plate, String model, String description) {
+
+        try {
+            DbConnect connect = new DbConnect();
+           
+                String query = "UPDATE vehicle SET plate = ?, model = ?, description =?, status='working' WHERE id = ? " ;
+                PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+                statement.setString(1, plate);
+                statement.setString(2, model);
+                statement.setString(3, description);
+                statement.setInt(4, idvehicle);
+                
+            System.out.println(statement);
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption editVehicle: "+ e.getMessage());
             
         }
         
@@ -129,6 +156,25 @@ public class VehicleData {
             connect.con.close();
         } catch (Exception e) {
             System.out.println("Exeption deactive vehicle: "+ e.getMessage());
+            
+        }
+        
+        return false;
+    }
+    
+    public static boolean rejectVehicle(int idVehicle) {
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE vehicle SET status ='rejected' WHERE id = ? " ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setInt(1, idVehicle);
+
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption reject vehicle: "+ e.getMessage());
             
         }
         
@@ -241,7 +287,6 @@ public class VehicleData {
 //            System.out.println(v.getPlate());
 //        }
 //    }
-
 
  
     
