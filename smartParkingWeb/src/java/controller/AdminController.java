@@ -82,9 +82,10 @@ public class AdminController {
         if(admin == null) {
             return "jsp/index";
         }
-        
+        ArrayList<Park> listPark = ParkData.getListParkData();
         ArrayList<Staff> listStaff = StaffData.getListStaff();
         mm.put("listStaff", listStaff);          
+        mm.put("listPark", listPark);          
         return "jsp/admin/manageStaff" ;
     }
     
@@ -171,6 +172,43 @@ public class AdminController {
             System.out.println("EXEPTION: "+ e.getMessage());
         }
         return "jsp/admin/verifyVehicle";
+    }
+    
+    @RequestMapping(value="/addStaff", method=RequestMethod.POST)
+    public String addStaff(HttpServletRequest request, ModelMap mm) {
+        
+        try {
+            HttpSession session = request.getSession();
+            Admin ad = (Admin) session.getAttribute("admin");
+            if(ad == null)
+                return "jsp/index";
+            
+            request.setCharacterEncoding("UTF-8");
+            String scode = request.getParameter("scode");
+            String name = request.getParameter("fullname");
+            int parkid = Integer.parseInt(request.getParameter("parkid")) ;
+            System.out.println("Request: "+ scode + name + parkid);
+            boolean checkstaffcode = StaffData.checkStaffCode(scode) ;
+            if(checkstaffcode) {
+                mm.put("message", "Staff Code Exist!");
+            }
+            else {
+                boolean result = StaffData.addStaff(scode, name, parkid);
+                if(result)
+                    mm.put("message","Add vehicle success!" );
+                else
+                    mm.put("message", "Add vehicle false!");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        ArrayList<Park> listPark = ParkData.getListParkData();
+        ArrayList<Staff> listStaff = StaffData.getListStaff();
+        mm.put("listStaff", listStaff);          
+        mm.put("listPark", listPark);
+        
+        return "jsp/admin/manageStaff" ;
     }
     
     

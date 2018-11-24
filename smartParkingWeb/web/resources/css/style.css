@@ -450,3 +450,7 @@ h1 {
     font-size: 25px;
     color: red;
 }
+
+#selectPark {
+    width: 205px;
+}

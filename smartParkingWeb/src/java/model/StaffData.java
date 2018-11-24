@@ -86,6 +86,41 @@ public class StaffData {
         return listStaff;
     }
     
+    public static boolean addStaff(String scode, String name, int parkid) {
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "Insert into staff(staff_code, password, staff_name, park_id) values (?, md5(?), ?, ?);";
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setString(1, scode);
+            statement.setString(2, scode);
+            statement.setString(3, name);
+            statement.setInt(4, parkid);
+            int result = statement.executeUpdate();
+            if(result ==1)
+                return true;
+        }
+        catch (Exception e) {
+            System.out.println("SQL Exeption: "+ e.getMessage());
+        }
+
+        return false;
+    }
+    
+    public static boolean checkStaffCode(String scode) throws SQLException, ClassNotFoundException {
+        DbConnect connect = new DbConnect();
+        String query = "SELECT id FROM staff WHERE staff_code =?";
+        PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
+        st.setString(1,scode);
+        ResultSet rs = st.executeQuery();
+        
+        if(rs.next()) {
+            return true;
+        }
+        
+        return false;
+    }
+    
     
 //    public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        Staff s = getStaffBySId(1);
