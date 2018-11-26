@@ -90,8 +90,8 @@
                                     <td>${staff.getParkCode()}</td>
                                     <td>${staff.getStatus()}</td>
                                     <td>${staff.getCreated()}</td>
-                                    <td> <a href="#deactive" data-toggle="modal" class="btn btn-danger deactiveBtn ${staff.getStatus()=="deactive"? "hide":""}">Deactive</a>
-                                        <a href="#active" data-toggle="modal" class="btn btn-primary activeBtn ${staff.getStatus()=="deactive"? "":"hide"}">Active</a> 
+                                    <td> <a href="#deactive" data-toggle="modal" class="btn btn-danger btnSetstatus ${staff.getStatus()=="deactive"? "hide":""}">Deactive</a>
+                                        <a href="#active" data-toggle="modal" class="btn btn-primary btnSetstatus ${staff.getStatus()=="deactive"? "":"hide"}">Active</a> 
                                         <input name="idStaff" class="hide" value="${staff.getId()}"></td>
                                     
                                 </tr>
@@ -110,7 +110,7 @@
     <!-- End container -->
     <!-- modal-delete-->
     <div class="modal fade" id="deactive">
-        <form action="deactiveStaff" method="POST" role="form">
+        <form action="setStatusStaff" method="POST" role="form">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -122,7 +122,8 @@
                     <div class="modal-footer">
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                        <input type="hidden" name="idDeactive" value="" id="idStaffDeactive">
+                        <input type="hidden" name="idStaff" value="" class="idStaff">
+                        <input type="hidden" name="status" value="deactive" >
                         <button type="submit" class="btn btn-danger" >YES</button>
                     </div>
                 </div>
@@ -131,7 +132,7 @@
     </div> <!-- End modal -->
     <!-- modal-active-->
     <div class="modal fade" id="active">
-        <form action="activeStaff" method="POST" role="form">
+        <form action="setStatusStaff" method="POST" role="form">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -143,7 +144,8 @@
                     <div class="modal-footer">
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                        <input type="hidden" name="idActive" value="" id="idStaffActive">
+                        <input type="hidden" name="idStaff" value="" class="idStaff">
+                        <input type="hidden" name="status" value="working" >
                         <button type="submit" class="btn btn-primary" >YES</button>
                     </div>
                 </div>
@@ -166,14 +168,10 @@
         $("#addStaffBtn").removeClass("hide");
     });
     
-    $(".deactiveBtn").click(function(){
-            var x= $(this).next().val();
-            $("#idStaffDeactive").val(x);
-            
-    });
-    $(".activeBtn").click(function(){
-            var x= $(this).next().val();
-            $("#idStaffActive").val(x);
+    $(".btnSetstatus").click(function(){
+            var x= $(this).parent().find("input").val();
+            console.log(x);
+            $(".idStaff").val(x);
             
     });
 

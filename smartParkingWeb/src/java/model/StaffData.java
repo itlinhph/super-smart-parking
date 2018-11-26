@@ -121,21 +121,21 @@ public class StaffData {
         return false;
     }
     
-    public static boolean deactiveStaff(int idStaff) {
+    public static boolean setStatusStaff(int idStaff, String status) {
         
         try {
             DbConnect connect = new DbConnect();
-            String query = "UPDATE staff SET status ='deactive' WHERE (id = ?)" ;
+            String query = "UPDATE staff SET status = ? WHERE (id = ?)" ;
             PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
-            statement.setInt(1, idStaff);
+            statement.setString(1, status);
+            statement.setInt(2, idStaff);
 
-//            System.out.println(statement);
             int rs = statement.executeUpdate();
             if(rs >0)
                 return true;
             connect.con.close();
         } catch (Exception e) {
-            System.out.println("Exeption deactive staff: "+ e.getMessage());
+            System.out.println("Exeption setstatus staff: "+ e.getMessage());
             
         }
         

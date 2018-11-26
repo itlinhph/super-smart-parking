@@ -211,8 +211,8 @@ public class AdminController {
         return "jsp/admin/manageStaff" ;
     }
     
-    @RequestMapping(value="/deactiveStaff", method=RequestMethod.POST)
-    public String deactiveStaff(HttpServletRequest request, ModelMap mm) {
+    @RequestMapping(value="/setStatusStaff", method=RequestMethod.POST)
+    public String setStatusStaff(HttpServletRequest request, ModelMap mm) {
         
         try {
             HttpSession session = request.getSession();
@@ -222,16 +222,18 @@ public class AdminController {
             }
             
             request.setCharacterEncoding("UTF-8");
-            int idStaff = Integer.parseInt(request.getParameter("idDeactive")) ; 
+            int idStaff = Integer.parseInt(request.getParameter("idStaff")) ; 
+            String status = request.getParameter("status");
+            System.out.println(idStaff + status);
             
-            boolean result = StaffData.deactiveStaff(idStaff);
+            boolean result = StaffData.setStatusStaff(idStaff, status);
             if(result) {
-                mm.put("message","Remove Staff success!" );
+                mm.put("message","Success!" );
                 ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
                 mm.put("listVehicle", listVehicle);
             }
             else
-                mm.put("message", "Remove Staff false!");
+                mm.put("message", "Action with this staff false!");
         }
         catch(Exception e) {
             System.out.println("EXEPTION: "+ e.getMessage());
