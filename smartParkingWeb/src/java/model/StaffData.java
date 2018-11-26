@@ -121,11 +121,34 @@ public class StaffData {
         return false;
     }
     
+    public static boolean deactiveStaff(int idStaff) {
+        
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE staff SET status ='deactive' WHERE (id = ?)" ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setInt(1, idStaff);
+
+//            System.out.println(statement);
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption deactive staff: "+ e.getMessage());
+            
+        }
+        
+        return false;
+    }
+    
     
 //    public static void main(String[] args) throws SQLException, ClassNotFoundException {
 //        Staff s = getStaffBySId(1);
 //        System.out.println(s.getStaffName());
 //    }
+
+
 
  
 }

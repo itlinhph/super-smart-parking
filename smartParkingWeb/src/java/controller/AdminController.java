@@ -195,9 +195,9 @@ public class AdminController {
             else {
                 boolean result = StaffData.addStaff(scode, name, parkid);
                 if(result)
-                    mm.put("message","Add vehicle success!" );
+                    mm.put("message","Add staff success!" );
                 else
-                    mm.put("message", "Add vehicle false!");
+                    mm.put("message", "Add staff false!");
             }
         }
         catch(Exception e) {
@@ -209,6 +209,40 @@ public class AdminController {
         mm.put("listPark", listPark);
         
         return "jsp/admin/manageStaff" ;
+    }
+    
+    @RequestMapping(value="/deactiveStaff", method=RequestMethod.POST)
+    public String deactiveStaff(HttpServletRequest request, ModelMap mm) {
+        
+        try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
+            if(admin == null) {
+                return "jsp/index";
+            }
+            
+            request.setCharacterEncoding("UTF-8");
+            int idStaff = Integer.parseInt(request.getParameter("idDeactive")) ; 
+            
+            boolean result = StaffData.deactiveStaff(idStaff);
+            if(result) {
+                mm.put("message","Remove Staff success!" );
+                ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
+                mm.put("listVehicle", listVehicle);
+            }
+            else
+                mm.put("message", "Remove Staff false!");
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        
+        ArrayList<Park> listPark = ParkData.getListParkData();
+        ArrayList<Staff> listStaff = StaffData.getListStaff();
+        mm.put("listStaff", listStaff);          
+        mm.put("listPark", listPark);
+        
+        return "jsp/admin/manageStaff";
     }
     
     
