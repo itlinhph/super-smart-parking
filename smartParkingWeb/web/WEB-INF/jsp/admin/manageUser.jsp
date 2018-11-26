@@ -12,7 +12,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width initial-scale=1">
-        <title>Manae User</title>
+        <title>Manage User</title>
 
         <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
@@ -57,7 +57,9 @@
                                     <td>${user.getPhone()}</td>
                                     <td>${user.getStatus()}</td>
                                     <td>${user.getCreated()}</td>
-                                    <td>  <a href=""><button class="btn btn-danger">Deactive</button></a> </td>
+                                    <td> <a href="#deactive" data-toggle="modal" class="btn btn-danger btnSetstatus ${user.getStatus()=="deactive"? "hide":""}">Deactive</a>
+                                        <a href="#active" data-toggle="modal" class="btn btn-primary btnSetstatus ${user.getStatus()=="deactive"? "":"hide"}">Active</a> 
+                                        <input name="idUser" class="hide" value="${user.getUserId()}"></td>
                                 </tr>
                             </c:forEach> 
                         </tbody>
@@ -68,9 +70,65 @@
         </div> 
             </div>
         <!-- End container -->
+        <!-- modal-delete-->
+    <div class="modal fade" id="deactive">
+        <form action="setStatusUser" method="POST" role="form">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">Are you sure want to remove this user?</h4>
 
-    </body>
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <input type="hidden" name="idUser" value="" class="idUser">
+                        <input type="hidden" name="status" value="deactive" >
+                        <button type="submit" class="btn btn-danger" >YES</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div> <!-- End modal -->
+    <!-- modal-active-->
+    <div class="modal fade" id="active">
+        <form action="setStatusUser" method="POST" role="form">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">Are you sure want to active this user?</h4>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        <input type="hidden" name="idUser" value="" class="idUser">
+                        <input type="hidden" name="status" value="working" >
+                        <button type="submit" class="btn btn-primary" >YES</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div> <!-- End modal -->
+
+
+</body>
+<script>
+    
+    $(".btnSetstatus").click(function(){
+            var x= $(this).parent().find("input").val();
+            console.log(x);
+            $(".idUser").val(x);
+            
+    });
+
+</script>
 </html>
+
 
 
 

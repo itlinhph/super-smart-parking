@@ -7,6 +7,7 @@ package controller;
 
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Admin;
 import model.Park;
@@ -212,7 +213,7 @@ public class AdminController {
     }
     
     @RequestMapping(value="/setStatusStaff", method=RequestMethod.POST)
-    public String setStatusStaff(HttpServletRequest request, ModelMap mm) {
+    public String setStatusStaff(HttpServletRequest request,HttpServletResponse response, ModelMap mm) {
         
         try {
             HttpSession session = request.getSession();
@@ -224,27 +225,56 @@ public class AdminController {
             request.setCharacterEncoding("UTF-8");
             int idStaff = Integer.parseInt(request.getParameter("idStaff")) ; 
             String status = request.getParameter("status");
-            System.out.println(idStaff + status);
             
             boolean result = StaffData.setStatusStaff(idStaff, status);
-            if(result) {
-                mm.put("message","Success!" );
-                ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
-                mm.put("listVehicle", listVehicle);
+            if(result)
+                response.sendRedirect(request.getContextPath()+"/admin/manageStaff");
+            
+            else {
+                mm.put("message", "Action with this user false!");
+                ArrayList<User> listUser = UserData.getListUser();
+                mm.put("listUser", listUser);
+                
             }
-            else
-                mm.put("message", "Action with this staff false!");
         }
         catch(Exception e) {
             System.out.println("EXEPTION: "+ e.getMessage());
         }
         
-        ArrayList<Park> listPark = ParkData.getListParkData();
-        ArrayList<Staff> listStaff = StaffData.getListStaff();
-        mm.put("listStaff", listStaff);          
-        mm.put("listPark", listPark);
-        
         return "jsp/admin/manageStaff";
+    }
+    
+    
+    @RequestMapping(value="/setStatusUser", method=RequestMethod.POST)
+    public String setStatusUser(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+         
+        try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
+            if(admin == null) {
+                return "jsp/index";
+            }
+            
+            request.setCharacterEncoding("UTF-8");
+            int idUser = Integer.parseInt(request.getParameter("idUser")) ; 
+            String status = request.getParameter("status");
+            
+            boolean result = UserData.setStatusUser(idUser, status);
+            if(result)
+                response.sendRedirect(request.getContextPath()+"/admin/manageUser");
+            
+            else {
+                mm.put("message", "Action with this user false!");
+                ArrayList<User> listUser = UserData.getListUser();
+                mm.put("listUser", listUser);
+                
+            }
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        
+        return "jsp/admin/manageUser";
     }
     
     

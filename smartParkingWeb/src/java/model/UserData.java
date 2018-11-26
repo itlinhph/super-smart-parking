@@ -201,5 +201,27 @@ public class UserData {
         return listUser;
     
     }
+
+    public static boolean setStatusUser(int idUser, String status) {
+       
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE user SET status = ? WHERE (id = ?)" ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setString(1, status);
+            statement.setInt(2, idUser);
+
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption set status user: "+ e.getMessage());
+            
+        }
+        
+        return false; 
+  
+    }
 }
     
