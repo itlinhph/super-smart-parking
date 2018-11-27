@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Admin;
 import model.Staff;
-import model.StaffData;
+import model.StaffDAO;
 import model.User;
-import model.UserData;
+import model.UserDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +60,7 @@ public class LoginController {
             String accountType = request.getParameter("accountType");
 //            System.out.println(username + password);
             if(accountType.equals("staff")) {
-                Staff staff = StaffData.checkValidLogin(username, password) ;
+                Staff staff = StaffDAO.checkValidLogin(username, password) ;
                 if(staff != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("staff", staff); 
@@ -71,7 +71,7 @@ public class LoginController {
             return "jsp/login";
             }
             
-            User user = UserData.checkValidLogin(username, password);
+            User user = UserDAO.checkValidLogin(username, password);
             if(user != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user); 
@@ -140,11 +140,11 @@ public class LoginController {
             String phone = request.getParameter("phone");
             
             
-            if(UserData.checkUserExist(username)){
+            if(UserDAO.checkUserExist(username)){
                 message = "Username exist!";
             }
             else {
-                boolean addUserResult = UserData.addUser(username, email, password, fullname, phone);
+                boolean addUserResult = UserDAO.addUser(username, email, password, fullname, phone);
                 if(addUserResult)
                     message = "Register Success!";
                 else

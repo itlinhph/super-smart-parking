@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import model.Park;
-import model.ParkData;
+import model.ParkDAO;
 import model.Ticket;
-import model.TicketData;
+import model.TicketDAO;
 import model.User;
-import model.UserData;
+import model.UserDAO;
 import model.Vehicle;
-import model.VehicleData;
+import model.VehicleDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +52,7 @@ public class UserController {
             return "jsp/index";
         int userid = us.getUserId();
         
-        ArrayList<Ticket> listTicket = TicketData.getListTicketByUserId(userid);
+        ArrayList<Ticket> listTicket = TicketDAO.getListTicketByUserId(userid);
         
         for(Ticket t: listTicket) {    
             System.out.println(t.getCheckoutTime());
@@ -71,7 +71,7 @@ public class UserController {
             return "jsp/index";
         int userid = us.getUserId();
         
-        ArrayList<Park> listPark = ParkData.getListParkData();
+        ArrayList<Park> listPark = ParkDAO.getListParkData();
         
         for(Park p: listPark) {    
             System.out.println(p.getParkCode());
@@ -101,7 +101,7 @@ public class UserController {
                 return "Nothing to change!";
                 
             
-            User userNew = UserData.editUserInfor(userid, email, fullname, phone);
+            User userNew = UserDAO.editUserInfor(userid, email, fullname, phone);
             if(userNew != null) {
                 
                 message = "Edit profile success!";
@@ -137,7 +137,7 @@ public class UserController {
             HttpSession session = request.getSession();
             User us = (User) session.getAttribute("user");
             int userid = us.getUserId();
-            boolean result = UserData.editPassword(userid, oldPass, newPass);
+            boolean result = UserDAO.editPassword(userid, oldPass, newPass);
             if(result)
                 message = "Change Password success!";
         } catch (Exception e) {
@@ -165,10 +165,10 @@ public class UserController {
             String description = request.getParameter("description");
             int idvehicle = Integer.parseInt(request.getParameter("idvehicle")) ;
             
-            boolean result = VehicleData.editVehicle(idvehicle, plate, userid, model, imgFile, description);
+            boolean result = VehicleDAO.editVehicle(idvehicle, plate, userid, model, imgFile, description);
             if(result) {
                 mm.put("message","Edit vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleData.getListVehicleByUserid(userid);
+                ArrayList<Vehicle> listVehicle = VehicleDAO.getListVehicleByUserid(userid);
                 us.setListVehicle(listVehicle);
                 session.setAttribute("user", us);
                 
@@ -199,10 +199,10 @@ public class UserController {
             String model = request.getParameter("model");
             String description = request.getParameter("description");
             
-            boolean result = VehicleData.addVehicle(userid, plate, model, description, imgFile);
+            boolean result = VehicleDAO.addVehicle(userid, plate, model, description, imgFile);
             if(result) {
                 mm.put("message","Add vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleData.getListVehicleByUserid(userid);
+                ArrayList<Vehicle> listVehicle = VehicleDAO.getListVehicleByUserid(userid);
                 us.setListVehicle(listVehicle);
                 session.setAttribute("user", us);
                 
@@ -230,10 +230,10 @@ public class UserController {
             request.setCharacterEncoding("UTF-8");
             int idVehicle = Integer.parseInt(request.getParameter("idDeactive")) ; 
             
-            boolean result = VehicleData.deactiveVehicle(userid, idVehicle);
+            boolean result = VehicleDAO.deactiveVehicle(userid, idVehicle);
             if(result) {
                 mm.put("message","Deactive vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleData.getListVehicleByUserid(userid);
+                ArrayList<Vehicle> listVehicle = VehicleDAO.getListVehicleByUserid(userid);
                 us.setListVehicle(listVehicle);
                 session.setAttribute("user", us);
                 

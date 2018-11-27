@@ -15,7 +15,7 @@ import otherAddOn.DbConnect;
  *
  * @author linhph
  */
-public class StaffData {
+public class StaffDAO {
     
     public static Staff checkValidLogin(String staffCode, String password) throws SQLException, ClassNotFoundException {
         DbConnect connect = new DbConnect();

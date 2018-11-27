@@ -15,7 +15,7 @@ import otherAddOn.DbConnect;
  *
  * @author linhph
  */
-public class UserData {
+public class UserDAO {
     
     
     public static boolean checkUserExist(String username) throws SQLException, ClassNotFoundException {
@@ -74,7 +74,7 @@ public class UserData {
     public static User getUserById(int userId) throws SQLException, ClassNotFoundException {
         DbConnect connect = new DbConnect();
         User user = new User();
-        String query = "Select username, password, status, fullname, email, phone, coin_remain, note, created From user where id=?";
+        String query = "Select username, password, status, fullname, email, phone, coin_remain, created From user where id=?";
         PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
         st.setInt(1,userId);
         ResultSet rs = st.executeQuery();
@@ -89,7 +89,7 @@ public class UserData {
         user.setCoin_remain(rs.getInt("coin_remain")); 
         user.setCreated(rs.getString("created"));
         
-        user.setListVehicle(VehicleData.getListVehicleByUserid(userId));
+        user.setListVehicle(VehicleDAO.getListVehicleByUserid(userId));
         
         return user;
         

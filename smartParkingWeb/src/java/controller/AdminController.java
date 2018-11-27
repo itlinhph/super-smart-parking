@@ -11,15 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Admin;
 import model.Park;
-import model.ParkData;
+import model.ParkDAO;
 import model.Staff;
-import model.StaffData;
+import model.StaffDAO;
 import model.Ticket;
-import model.TicketData;
+import model.TicketDAO;
 import model.User;
-import model.UserData;
+import model.UserDAO;
 import model.Vehicle;
-import model.VehicleData;
+import model.VehicleDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +39,7 @@ public class AdminController {
         if(admin == null) {
             return "jsp/index";
         }
-        ArrayList<Park> listPark = ParkData.getListParkData();
+        ArrayList<Park> listPark = ParkDAO.getListParkData();
         mm.put("listPark", listPark);
                         
         return "jsp/admin/parkingInfor" ;
@@ -54,10 +54,10 @@ public class AdminController {
             return "jsp/index";
         }
         int parkid = Integer.parseInt(request.getParameter("parkid")) ;
-        Park park = ParkData.getParkById(parkid);
+        Park park = ParkDAO.getParkById(parkid);
         mm.put("park", park);
         
-        ArrayList<Ticket> listTicket = TicketData.getListTicketByParkId(park.getId());
+        ArrayList<Ticket> listTicket = TicketDAO.getListTicketByParkId(park.getId());
         mm.put("listTicket", listTicket);
                         
         return "jsp/admin/parkingDetail" ;
@@ -70,7 +70,7 @@ public class AdminController {
         if(admin == null) {
             return "jsp/index";
         }
-        ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
+        ArrayList<Vehicle> listVehicle = VehicleDAO.getListPendingVehicle();
         mm.put("listVehicle", listVehicle);
                         
         return "jsp/admin/verifyVehicle" ;
@@ -83,8 +83,8 @@ public class AdminController {
         if(admin == null) {
             return "jsp/index";
         }
-        ArrayList<Park> listPark = ParkData.getListParkData();
-        ArrayList<Staff> listStaff = StaffData.getListStaff();
+        ArrayList<Park> listPark = ParkDAO.getListParkData();
+        ArrayList<Staff> listStaff = StaffDAO.getListStaff();
         mm.put("listStaff", listStaff);          
         mm.put("listPark", listPark);          
         return "jsp/admin/manageStaff" ;
@@ -99,7 +99,7 @@ public class AdminController {
             return "jsp/index";
         }
         
-        ArrayList<User> listUser = UserData.getListUser();
+        ArrayList<User> listUser = UserDAO.getListUser();
         mm.put("listUser", listUser);          
         return "jsp/admin/manageUser" ;
     }
@@ -131,10 +131,10 @@ public class AdminController {
             String description = request.getParameter("description");
             int idvehicle = Integer.parseInt(request.getParameter("idvehicle")) ;
             
-            boolean result = VehicleData.editVehicle(idvehicle, plate, model, description);
+            boolean result = VehicleDAO.editVehicle(idvehicle, plate, model, description);
             if(result) {
                 mm.put("message","Verify vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
+                ArrayList<Vehicle> listVehicle = VehicleDAO.getListPendingVehicle();
                 session.setAttribute("listVehicle", listVehicle);
                 
             }
@@ -160,10 +160,10 @@ public class AdminController {
             request.setCharacterEncoding("UTF-8");
             int idVehicle = Integer.parseInt(request.getParameter("idReject")) ; 
             
-            boolean result = VehicleData.rejectVehicle(idVehicle);
+            boolean result = VehicleDAO.rejectVehicle(idVehicle);
             if(result) {
                 mm.put("message","Reject vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleData.getListPendingVehicle();
+                ArrayList<Vehicle> listVehicle = VehicleDAO.getListPendingVehicle();
                 mm.put("listVehicle", listVehicle);
             }
             else
@@ -189,12 +189,12 @@ public class AdminController {
             String name = request.getParameter("fullname");
             int parkid = Integer.parseInt(request.getParameter("parkid")) ;
             System.out.println("Request: "+ scode + name + parkid);
-            boolean checkstaffcode = StaffData.checkStaffCode(scode) ;
+            boolean checkstaffcode = StaffDAO.checkStaffCode(scode) ;
             if(checkstaffcode) {
                 mm.put("message", "Staff Code Exist!");
             }
             else {
-                boolean result = StaffData.addStaff(scode, name, parkid);
+                boolean result = StaffDAO.addStaff(scode, name, parkid);
                 if(result)
                     mm.put("message","Add staff success!" );
                 else
@@ -204,8 +204,8 @@ public class AdminController {
         catch(Exception e) {
             System.out.println("EXEPTION: "+ e.getMessage());
         }
-        ArrayList<Park> listPark = ParkData.getListParkData();
-        ArrayList<Staff> listStaff = StaffData.getListStaff();
+        ArrayList<Park> listPark = ParkDAO.getListParkData();
+        ArrayList<Staff> listStaff = StaffDAO.getListStaff();
         mm.put("listStaff", listStaff);          
         mm.put("listPark", listPark);
         
@@ -226,13 +226,13 @@ public class AdminController {
             int idStaff = Integer.parseInt(request.getParameter("idStaff")) ; 
             String status = request.getParameter("status");
             
-            boolean result = StaffData.setStatusStaff(idStaff, status);
+            boolean result = StaffDAO.setStatusStaff(idStaff, status);
             if(result)
                 response.sendRedirect(request.getContextPath()+"/admin/manageStaff");
             
             else {
                 mm.put("message", "Action with this user false!");
-                ArrayList<User> listUser = UserData.getListUser();
+                ArrayList<User> listUser = UserDAO.getListUser();
                 mm.put("listUser", listUser);
                 
             }
@@ -259,13 +259,13 @@ public class AdminController {
             int idUser = Integer.parseInt(request.getParameter("idUser")) ; 
             String status = request.getParameter("status");
             
-            boolean result = UserData.setStatusUser(idUser, status);
+            boolean result = UserDAO.setStatusUser(idUser, status);
             if(result)
                 response.sendRedirect(request.getContextPath()+"/admin/manageUser");
             
             else {
                 mm.put("message", "Action with this user false!");
-                ArrayList<User> listUser = UserData.getListUser();
+                ArrayList<User> listUser = UserDAO.getListUser();
                 mm.put("listUser", listUser);
                 
             }

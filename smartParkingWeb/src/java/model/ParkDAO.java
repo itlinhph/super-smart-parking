@@ -14,7 +14,7 @@ import otherAddOn.DbConnect;
  *
  * @author linkpp
  */
-public class ParkData {
+public class ParkDAO {
     
     public static ArrayList<Park> getListParkData() {
         

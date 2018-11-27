@@ -15,7 +15,7 @@ import otherAddOn.DbConnect;
  *
  * @author linhph
  */
-public class VehicleData {
+public class VehicleDAO {
     public static ArrayList<Vehicle> getListVehicleByUserid(int userid) {
         ArrayList<Vehicle> listVehicle = new ArrayList<Vehicle>();
         

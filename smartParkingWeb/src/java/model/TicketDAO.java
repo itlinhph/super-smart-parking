@@ -14,7 +14,7 @@ import otherAddOn.DbConnect;
  *
  * @author linhph
  */
-public class TicketData {
+public class TicketDAO {
     
     public static ArrayList<Ticket> getListTicketByUserId(int userid) {
         ArrayList<Ticket> listTicket = new ArrayList<Ticket>();

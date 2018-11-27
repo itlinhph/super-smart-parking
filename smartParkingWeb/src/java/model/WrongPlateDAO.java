@@ -14,7 +14,7 @@ import otherAddOn.DbConnect;
  *
  * @author linhph
  */
-public class WrongPlateData {
+public class WrongPlateDAO {
     public static ArrayList<WrongPlate> getListWrongPlateByParkId(int parkid) {
         ArrayList<WrongPlate> listWrongPlate = new ArrayList<WrongPlate>();
         
@@ -62,7 +62,7 @@ public class WrongPlateData {
             if(!rs.next())
                 return false;
             int vehicleId = rs.getInt("id");
-            boolean resultCreateTicket = TicketData.createTicket(vehicleId, parkid);
+            boolean resultCreateTicket = TicketDAO.createTicket(vehicleId, parkid);
             if(!resultCreateTicket)
                 return false;
                     

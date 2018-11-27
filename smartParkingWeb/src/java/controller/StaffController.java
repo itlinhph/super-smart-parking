@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Park;
-import model.ParkData;
+import model.ParkDAO;
 import model.Staff;
 import model.Ticket;
-import model.TicketData;
+import model.TicketDAO;
 import model.User;
-import model.UserData;
+import model.UserDAO;
 import model.Vehicle;
-import model.VehicleData;
+import model.VehicleDAO;
 import model.WrongPlate;
-import model.WrongPlateData;
+import model.WrongPlateDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,10 +42,10 @@ public class StaffController {
         if(staff == null) {
             return "jsp/index";
         }
-        Park park = ParkData.getParkByStaffId(staff.getId());
+        Park park = ParkDAO.getParkByStaffId(staff.getId());
         mm.put("park", park);
         
-        ArrayList<Ticket> listTicket = TicketData.getListTicketByParkId(park.getId());
+        ArrayList<Ticket> listTicket = TicketDAO.getListTicketByParkId(park.getId());
         mm.put("listTicket", listTicket);
                 
         return "jsp/staff/staffPark" ;
@@ -59,7 +59,7 @@ public class StaffController {
             return "jsp/index";
         }
         
-        ArrayList<WrongPlate> listWrongPlate = WrongPlateData.getListWrongPlateByParkId(staff.getParkid());
+        ArrayList<WrongPlate> listWrongPlate = WrongPlateDAO.getListWrongPlateByParkId(staff.getParkid());
         mm.put("listWrongPlate",listWrongPlate);
         
         return "jsp/staff/fixWrongPlate" ;
@@ -92,7 +92,7 @@ public class StaffController {
             int ticketId = Integer.parseInt(request.getParameter("ticketid")) ;
             int parkid = staff.getParkid() ;
             
-            boolean checkoutResult = VehicleData.checkoutVehicle(ticketId);
+            boolean checkoutResult = VehicleDAO.checkoutVehicle(ticketId);
             response.sendRedirect(request.getContextPath()+"/staff/parking");
         } catch (Exception e) {
             System.out.println("Exeption checkoutVehicle: "+ e.getMessage());
@@ -118,7 +118,7 @@ public class StaffController {
             int plateId = Integer.parseInt(plate_id);
             int parkid = staff.getParkid() ;
             
-            boolean editFixedPlateResult = WrongPlateData.editFixPlate(plate, plateId, parkid);
+            boolean editFixedPlateResult = WrongPlateDAO.editFixPlate(plate, plateId, parkid);
 
         } catch (Exception e) {
             System.out.println("Exeption editWrongPlate: "+ e.getMessage());
@@ -140,9 +140,9 @@ public class StaffController {
             String plate = request.getParameter("plate");
             String img = request.getParameter("img");
 
-            Ticket t = TicketData.getTicketByPlate(plate);
-            Vehicle v = VehicleData.getVehicleByPlate(plate);
-            User u = UserData.getUserByPlate(plate);
+            Ticket t = TicketDAO.getTicketByPlate(plate);
+            Vehicle v = VehicleDAO.getVehicleByPlate(plate);
+            User u = UserDAO.getUserByPlate(plate);
             
             mm.put("vehicle", v);
             mm.put("ticket", t);
@@ -169,13 +169,13 @@ public class StaffController {
             String image = request.getParameter("imgCheckin");
             String plate = GearmanConnect.getPlateByGearman(image) ;
             System.out.println("plate: "+ plate);
-            int vehicleId = VehicleData.checkPlateExist(plate);
+            int vehicleId = VehicleDAO.checkPlateExist(plate);
             if(vehicleId ==0) { // wrong plate
-                WrongPlateData.addWrongPlate(image, plate, staff.getParkid());
+                WrongPlateDAO.addWrongPlate(image, plate, staff.getParkid());
                 response.sendRedirect(request.getContextPath()+"/staff/fixplate");
             }
             else {
-                TicketData.createTicket(vehicleId, staff.getParkid());
+                TicketDAO.createTicket(vehicleId, staff.getParkid());
                 response.sendRedirect(request.getContextPath()+"/staff/parking");
             }
         
@@ -206,7 +206,7 @@ public class StaffController {
             else {
                 image = request.getParameter("imgCheckout2");
             }
-            int vehicleId = VehicleData.checkPlateExist(plate);
+            int vehicleId = VehicleDAO.checkPlateExist(plate);
             if (vehicleId == 0) { // wrong plate
                 mm.put("message", "Plate not found!");
                 mm.put("detect_plate", plate);

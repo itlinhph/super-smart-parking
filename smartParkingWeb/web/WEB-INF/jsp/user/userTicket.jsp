@@ -49,6 +49,7 @@
                                 <th>Fee</th>
                                 <th>Checkin time</th>
                                 <th>Checkout time</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -63,6 +64,7 @@
                                     <td>${ticket.getFee()}</td>
                                     <td>${ticket.getCheckinTime()}</td>
                                     <td>${ticket.getCheckoutTime()}</td>
+                                    <td><a href="report?ticket=${ticket.getTicketid()}" data-toggle="modal" class="btn btn-warning btnSetstatus ${ticket.getStatus()=="working"? "hide":""}">Report</a></td>
                                 </tr>
                             </c:forEach> 
                            
