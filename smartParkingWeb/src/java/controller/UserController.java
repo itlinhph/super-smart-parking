@@ -7,9 +7,12 @@ package controller;
 
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.Park;
 import model.ParkDAO;
+import model.Report;
+import model.ReportDAO;
 import model.Ticket;
 import model.TicketDAO;
 import model.User;
@@ -247,5 +250,32 @@ public class UserController {
         return "jsp/user/userVehicle";
     }
     
+    
+    @RequestMapping(value="report", method=RequestMethod.GET)
+    public String getReportPage(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+        
+        try {
+            HttpSession session = request.getSession();
+            User us = (User) session.getAttribute("user");
+            if(us == null)
+                return "jsp/index";
+            
+            request.setCharacterEncoding("UTF-8");
+            int ticketId = Integer.parseInt(request.getParameter("ticket")) ; 
+            int userid = us.getUserId();
+            
+            Report r = ReportDAO.getReportByTicketId(ticketId, userid) ;
+            if(r == null) {
+                response.sendRedirect(request.getContextPath()+"/user/ticket");
+            }
+            else 
+                mm.put("report", r);
+            
+        } catch (Exception e) {
+            System.out.println("Exeption getReportPage: "+ e.getMessage());
+        }
+        
+        return "jsp/user/report" ;
+    }
     
 }
