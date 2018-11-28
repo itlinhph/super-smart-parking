@@ -22,12 +22,11 @@ public class ReportDAO {
             DbConnect connect = new DbConnect();
             String query = "Select r.id, r.type, r.ticket_id, r.description, r.status, r.admin_note, r.created, r.processed_time, u.email "
                     + "FROM report r, ticket t, vehicle v, user u  "
-                    + "WHERE r.ticket_id = t.id AND t.vehicle_id = v.id AND v.user_id = u.id AND t.ticket_id = ? and u.id = ?" ;
+                    + "WHERE r.ticket_id = t.id AND t.vehicle_id = v.id AND v.user_id = u.id AND t.id = ? and u.id = ?" ;
             
             PreparedStatement statement = connect.con.prepareStatement(query);
             statement.setInt(1, ticketId);
-            statement.setInt(1, userId);
-            
+            statement.setInt(2, userId);
             ResultSet rs = statement.executeQuery();
             if(rs.next()) {
                 report.setId(rs.getInt("id"));
@@ -50,6 +49,24 @@ public class ReportDAO {
         }
         
         return report;
+    }
+
+    public static boolean createReport(String type, int ticketId, String description) {
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "Insert into report(type, ticket_id, description) values (?, ?, ?)";
+            PreparedStatement statement = connect.con.prepareStatement(query);
+            statement.setString(1, type);
+            statement.setInt(2, ticketId);
+            statement.setString(3, description);
+            int result = statement.executeUpdate();
+            if(result ==1)
+                return true;
+        }
+        catch (Exception e) {
+            System.out.println("SQL Exeption: "+ e.getMessage());
+        }
+        return false;
     }
     
 }

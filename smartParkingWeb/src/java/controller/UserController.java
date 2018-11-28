@@ -263,13 +263,15 @@ public class UserController {
             request.setCharacterEncoding("UTF-8");
             int ticketId = Integer.parseInt(request.getParameter("ticket")) ; 
             int userid = us.getUserId();
-            
             Report r = ReportDAO.getReportByTicketId(ticketId, userid) ;
+            
             if(r == null) {
                 response.sendRedirect(request.getContextPath()+"/user/ticket");
             }
-            else 
+            else {
                 mm.put("report", r);
+                mm.put("ticketId", ticketId);
+            }
             
         } catch (Exception e) {
             System.out.println("Exeption getReportPage: "+ e.getMessage());
@@ -278,4 +280,32 @@ public class UserController {
         return "jsp/user/report" ;
     }
     
+    @RequestMapping(value="/reportAction", method=RequestMethod.POST)
+    public String reportAction(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+        
+        try {
+            HttpSession session = request.getSession();
+            User us = (User) session.getAttribute("user");
+            if(us == null)
+                return "jsp/index";
+            
+            int userid = us.getUserId();
+            
+            request.setCharacterEncoding("UTF-8");
+            int ticketId = Integer.parseInt(request.getParameter("ticketId")) ; 
+            String type = request.getParameter("type");
+            String description = request.getParameter("description");
+            
+            boolean result = ReportDAO.createReport(type, ticketId, description);
+            if(result) {
+                response.sendRedirect(request.getContextPath()+"/user/report?ticket="+ ticketId);
+            }
+            else
+                mm.put("message", "Can't report to admin!");
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        return "jsp/user/report";
+    }
 }

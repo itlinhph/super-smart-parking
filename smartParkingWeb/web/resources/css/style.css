@@ -451,11 +451,19 @@ h1 {
     color: red;
 }
 
-#selectPark {
+#selectPark, #selectType {
     width: 205px;
 }
 
 .btnSetstatus {
     
     width: 80px;
+}
+
+.descriptionReport {
+    width: 310px;
+    height: 80px;
+    border: 30px;
+    border-radius: 10px;
+    padding: 10px;
 }
