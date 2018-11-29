@@ -58,19 +58,21 @@ DROP TABLE IF EXISTS `report`;
 
 CREATE TABLE `report` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `type_code` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'staff, ticket, vehicle, other',
+  `type` varchar(20) COLLATE utf8_unicode_ci NOT NULL COMMENT 'staff, ticket, vehicle, other',
   `ticket_id` bigint(20) unsigned NOT NULL,
   `description` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `img` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'pending' COMMENT '0: pending, 1: done.',
+  `admin_reply` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `admin_note` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `processed_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ticket_id` (`ticket_id`),
   CONSTRAINT `report_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `ticket` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*Data for the table `report` */
+
+insert  into `report` values (1,'ticket',24,'Nhân viên phục vụ chưa tốt','processed','Tôi đã trả lời qua email','2018-11-28 20:06:28','2018-11-29 20:42:39'),(2,'ticket',22,'i lost my ticket','processed','admin reply kaka','2018-11-28 21:07:16','2018-11-29 20:43:42'),(44,'vehicle',17,'Hihi','pending','','2018-11-29 19:39:48',NULL);
 
 /*Table structure for table `staff` */
 
@@ -91,7 +93,7 @@ CREATE TABLE `staff` (
 
 /*Data for the table `staff` */
 
-insert  into `staff` values (1,'S1001','202cb962ac59075b964b07152d234b70','Hà Anh Tuấn',1,'working','2018-11-09 00:00:27'),(2,'S1002','202cb962ac59075b964b07152d234b70','Nam Anh',2,'working','2018-11-09 00:46:19'),(3,'S1003','63e621913f19b642a32beb38a7e78a67','Ku bin',1,'deactive','2018-11-24 00:15:36'),(4,'S1004','36ab4bd00640a5a597aa6df0259184b5','Phan Hồng Lĩnh',3,'working','2018-11-24 19:07:36'),(5,'S1005','090aabf6b3af17eb0059c8a4f92cd392','ABC',2,'working','2018-11-24 19:09:25'),(6,'S-JASUA','196bacdbbc00f5f427a3d9b7be0ec500','ABC',1,'deactive','2018-11-26 19:13:19');
+insert  into `staff` values (1,'S1001','202cb962ac59075b964b07152d234b70','Hà Anh Tuấn',1,'deactive','2018-11-09 00:00:27'),(2,'S1002','202cb962ac59075b964b07152d234b70','Nam Anh',2,'deactive','2018-11-09 00:46:19'),(3,'S1003','63e621913f19b642a32beb38a7e78a67','Ku bin',1,'working','2018-11-24 00:15:36'),(4,'S1004','36ab4bd00640a5a597aa6df0259184b5','Phan Hồng Lĩnh',3,'working','2018-11-24 19:07:36'),(5,'S1005','090aabf6b3af17eb0059c8a4f92cd392','ABC',2,'working','2018-11-24 19:09:25'),(6,'S-JASUA','196bacdbbc00f5f427a3d9b7be0ec500','ABC',1,'working','2018-11-26 19:13:19');
 
 /*Table structure for table `ticket` */
 
@@ -136,7 +138,7 @@ CREATE TABLE `user` (
 
 /*Data for the table `user` */
 
-insert  into `user` values (1,'linhph','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphanhust@gmail.com','964976895',10,'2018-10-31 16:10:13'),(2,'trangdt','c4ca4238a0b923820dcc509a6f75849b','working','Trang DT','trangdt@ghtk.vn','123456789',0,'2018-10-31 17:27:28'),(3,'linhphan','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphan@gmail.com','111222333',5,'2018-11-01 17:37:04'),(4,'linhphan1','81dc9bdb52d04dc20036dbd8313ed055','working','Phan Hồng Lĩnh','changvt2401@gmail.com','09123232333',0,'2018-11-01 17:42:56'),(5,'111','698d51a19d8a121ce581499d7b701668','working','Nguyễn Đình Mẫn','linhph@gmail.com','111',0,'2018-11-01 18:15:35'),(6,'lanem','698d51a19d8a121ce581499d7b701668','working','Ngô Lan Anh','lananh.ngo.1994@gmail.com','1111',0,'2018-11-01 18:21:21');
+insert  into `user` values (1,'linhph','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphanhust@gmail.com','964976895',10,'2018-10-31 16:10:13'),(2,'trangdt','c4ca4238a0b923820dcc509a6f75849b','working','Trang DT','trangdt@ghtk.vn','123456789',0,'2018-10-31 17:27:28'),(3,'linhphan','202cb962ac59075b964b07152d234b70','working','Phan Hồng Lĩnh','linhphan@gmail.com','111222333',5,'2018-11-01 17:37:04'),(4,'linhphan1','81dc9bdb52d04dc20036dbd8313ed055','working','Phan Hồng Lĩnh','changvt2401@gmail.com','09123232333',0,'2018-11-01 17:42:56'),(5,'111','698d51a19d8a121ce581499d7b701668','deactive','Nguyễn Đình Mẫn','linhph@gmail.com','111',0,'2018-11-01 18:15:35'),(6,'lanem','698d51a19d8a121ce581499d7b701668','deactive','Ngô Lan Anh','lananh.ngo.1994@gmail.com','1111',0,'2018-11-01 18:21:21');
 
 /*Table structure for table `vehicle` */
 

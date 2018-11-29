@@ -12,6 +12,8 @@ import javax.servlet.http.HttpSession;
 import model.Admin;
 import model.Park;
 import model.ParkDAO;
+import model.Report;
+import model.ReportDAO;
 import model.Staff;
 import model.StaffDAO;
 import model.Ticket;
@@ -111,8 +113,12 @@ public class AdminController {
         if(admin == null) {
             return "jsp/index";
         }
-        
-        return "jsp/admin/report" ;
+        ArrayList<Report> listReport = ReportDAO.getAllReport();
+        mm.put("listReport", listReport) ;
+        for(Report r: listReport) {
+            System.out.println("r: "+ r.getId());
+    }
+        return "jsp/admin/adreport" ;
     }
     
     @RequestMapping(value="/verifyVehicleAction", method=RequestMethod.POST)
@@ -275,6 +281,39 @@ public class AdminController {
         }
         
         return "jsp/admin/manageUser";
+    }
+    
+    @RequestMapping(value="/replyReport", method=RequestMethod.POST)
+    public String replyReport(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+         
+        try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
+            if(admin == null) {
+                return "jsp/index";
+            }
+            
+            request.setCharacterEncoding("UTF-8");
+            int reportId = Integer.parseInt(request.getParameter("reportId")) ; 
+            String adminReply = request.getParameter("adminReply");
+            System.out.println(reportId + adminReply);
+            
+            boolean result = ReportDAO.setReplyAdmin(reportId, adminReply) ;
+            if(result)
+                response.sendRedirect(request.getContextPath()+"/admin/report");
+            
+            else {
+                mm.put("message", "Reply report false!");
+                ArrayList<Report> listReport = ReportDAO.getAllReport();
+                mm.put("listReport", listReport);
+                
+            }
+        }
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        
+        return "jsp/admin/adreport";
     }
     
     
