@@ -64,7 +64,7 @@
                                     <td>${ticket.getFee()}</td>
                                     <td>${ticket.getCheckinTime()}</td>
                                     <td>${ticket.getCheckoutTime()}</td>
-                                    <td><a href="report?ticket=${ticket.getTicketid()}" data-toggle="modal" class="btn btn-warning btnSetstatus ${ticket.getStatus()=="working"? "hide":""}">Report</a></td>
+                                    <td><a href="../report/userReport?ticket=${ticket.getTicketid()}" data-toggle="modal" class="btn btn-warning btnSetstatus ${ticket.getStatus()=="working"? "hide":""}">Report</a></td>
                                 </tr>
                             </c:forEach> 
                            

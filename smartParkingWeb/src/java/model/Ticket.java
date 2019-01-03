@@ -18,6 +18,7 @@ public class Ticket {
     private int fee;
     private String checkinTime;
     private String checkoutTime;
+    private Report report;
 
     public Ticket() {
     
@@ -87,5 +88,14 @@ public class Ticket {
     public void setCheckoutTime(String checkoutTime) {
         this.checkoutTime = checkoutTime;
     }
+
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
+    
     
 }

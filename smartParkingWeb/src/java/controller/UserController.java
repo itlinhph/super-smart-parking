@@ -9,16 +9,9 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.Park;
-import model.ParkDAO;
-import model.Report;
-import model.ReportDAO;
-import model.Ticket;
-import model.TicketDAO;
+import model.Admin;
 import model.User;
 import model.UserDAO;
-import model.Vehicle;
-import model.VehicleDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,51 +33,50 @@ public class UserController {
         return "jsp/user/userInfor" ;
     }
     
-    @RequestMapping(value="/vehicle", method = RequestMethod.GET)
-    public String userVehiclePage(ModelMap mm) {
-        mm.put("menuitem", "vehiclemenu");
-        return "jsp/user/userVehicle";
-    }
-    
-    
-    @RequestMapping(value="/tiket", method = RequestMethod.GET)
-    public String userTiketPage(HttpServletRequest request, ModelMap mm) {
+    @RequestMapping(value="/adManageUser", method = RequestMethod.GET)
+    public String getManageUserPage(HttpServletRequest request, ModelMap mm) {
         HttpSession session = request.getSession();
-        User us = (User) session.getAttribute("user");
-        if(us == null)
+        Admin admin = (Admin) session.getAttribute("admin");
+        if(admin == null) {
             return "jsp/index";
-        int userid = us.getUserId();
-        
-        ArrayList<Ticket> listTicket = TicketDAO.getListTicketByUserId(userid);
-        
-        for(Ticket t: listTicket) {    
-            System.out.println(t.getCheckoutTime());
         }
-        mm.put("menuitem", "tiketmenu");
-        mm.put("listTicket", listTicket);
         
-        return "jsp/user/userTicket";
+        ArrayList<User> listUser = UserDAO.getListUser();
+        mm.put("listUser", listUser);          
+        return "jsp/admin/manageUser" ;
     }
     
-    @RequestMapping(value="/parking", method = RequestMethod.GET)
-    public String getParkingPage(HttpServletRequest request, ModelMap mm) {
-        HttpSession session = request.getSession();
-        User us = (User) session.getAttribute("user");
-        if(us == null)
-            return "jsp/index";
-        int userid = us.getUserId();
-        
-        ArrayList<Park> listPark = ParkDAO.getListParkData();
-        
-        for(Park p: listPark) {    
-            System.out.println(p.getParkCode());
+    @RequestMapping(value="/adSetStatusUser", method=RequestMethod.POST)
+    public String setStatusUser(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+         
+        try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
+            if(admin == null) {
+                return "jsp/index";
+            }
+            
+            request.setCharacterEncoding("UTF-8");
+            int idUser = Integer.parseInt(request.getParameter("idUser")) ; 
+            String status = request.getParameter("status");
+            
+            boolean result = UserDAO.setStatusUser(idUser, status);
+            if(result)
+                response.sendRedirect(request.getContextPath()+"/user/adManageUser");
+            
+            else {
+                mm.put("message", "Action with this user false!");
+                ArrayList<User> listUser = UserDAO.getListUser();
+                mm.put("listUser", listUser);
+                
+            }
         }
-        mm.put("menuitem", "parkmenu");
-        mm.put("listPark", listPark);
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
         
-        return "jsp/user/userParkInfor";
+        return "jsp/admin/manageUser";
     }
-    
     
     @RequestMapping(value="/editProfile", method = RequestMethod.POST)
     @ResponseBody
@@ -109,7 +101,6 @@ public class UserController {
                 
                 message = "Edit profile success!";
                 session.setAttribute("user", userNew);
-                
             }
             
         } catch (Exception e) {
@@ -149,163 +140,5 @@ public class UserController {
         
         return message;
     }
-    
-    @RequestMapping(value="/editVehicle", method=RequestMethod.POST)
-    public String editVehicle(HttpServletRequest request, ModelMap mm) {
-        String messages = "Edit Vehicle false!";
-        try {
-            HttpSession session = request.getSession();
-            User us = (User) session.getAttribute("user");
-            if(us == null)
-                return "jsp/index";
-            
-            int userid = us.getUserId();
-            
-            request.setCharacterEncoding("UTF-8");
-            String imgFile = request.getParameter("imgFile");
-            String plate = request.getParameter("plate");
-            String model = request.getParameter("model");
-            String description = request.getParameter("description");
-            int idvehicle = Integer.parseInt(request.getParameter("idvehicle")) ;
-            
-            boolean result = VehicleDAO.editVehicle(idvehicle, plate, userid, model, imgFile, description);
-            if(result) {
-                mm.put("message","Edit vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleDAO.getListVehicleByUserid(userid);
-                us.setListVehicle(listVehicle);
-                session.setAttribute("user", us);
-                
-            }
-            else
-                mm.put("message", "Edit vehicle false!");
-        }
-        catch(Exception e) {
-            System.out.println("EXEPTION: "+ e.getMessage());
-        }
-        return "jsp/user/userVehicle";
-    }
-    
-    @RequestMapping(value="/addVehicle", method=RequestMethod.POST)
-    public String addNewVehicle(HttpServletRequest request, ModelMap mm) {
-        String messages = "Edit Vehicle false!";
-        try {
-            HttpSession session = request.getSession();
-            User us = (User) session.getAttribute("user");
-            if(us == null)
-                return "jsp/index";
-            
-            int userid = us.getUserId();
-            
-            request.setCharacterEncoding("UTF-8");
-            String imgFile = request.getParameter("imgFile");
-            String plate = request.getParameter("plate");
-            String model = request.getParameter("model");
-            String description = request.getParameter("description");
-            
-            boolean result = VehicleDAO.addVehicle(userid, plate, model, description, imgFile);
-            if(result) {
-                mm.put("message","Add vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleDAO.getListVehicleByUserid(userid);
-                us.setListVehicle(listVehicle);
-                session.setAttribute("user", us);
-                
-            }
-            else
-                mm.put("message", "Add vehicle false!");
-        }
-        catch(Exception e) {
-            System.out.println("EXEPTION: "+ e.getMessage());
-        }
-        return "jsp/user/userVehicle";
-    }
-    
-    @RequestMapping(value="/deactiveVehicle", method=RequestMethod.POST)
-    public String deactiveVehicle(HttpServletRequest request, ModelMap mm) {
-        String messages = "Deactive false!";
-        try {
-            HttpSession session = request.getSession();
-            User us = (User) session.getAttribute("user");
-            if(us == null)
-                return "jsp/index";
-            
-            int userid = us.getUserId();
-            
-            request.setCharacterEncoding("UTF-8");
-            int idVehicle = Integer.parseInt(request.getParameter("idDeactive")) ; 
-            
-            boolean result = VehicleDAO.deactiveVehicle(userid, idVehicle);
-            if(result) {
-                mm.put("message","Deactive vehicle success!" );
-                ArrayList<Vehicle> listVehicle = VehicleDAO.getListVehicleByUserid(userid);
-                us.setListVehicle(listVehicle);
-                session.setAttribute("user", us);
-                
-            }
-            else
-                mm.put("message", "Deactive vehicle false!");
-        }
-        catch(Exception e) {
-            System.out.println("EXEPTION: "+ e.getMessage());
-        }
-        return "jsp/user/userVehicle";
-    }
-    
-    
-    @RequestMapping(value="report", method=RequestMethod.GET)
-    public String getReportPage(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
-        
-        try {
-            HttpSession session = request.getSession();
-            User us = (User) session.getAttribute("user");
-            if(us == null)
-                return "jsp/index";
-            
-            request.setCharacterEncoding("UTF-8");
-            int ticketId = Integer.parseInt(request.getParameter("ticket")) ; 
-            int userid = us.getUserId();
-            Report r = ReportDAO.getReportByTicketId(ticketId, userid) ;
-            
-            if(r == null) {
-                response.sendRedirect(request.getContextPath()+"/user/ticket");
-            }
-            else {
-                mm.put("report", r);
-                mm.put("ticketId", ticketId);
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Exeption getReportPage: "+ e.getMessage());
-        }
-        
-        return "jsp/user/report" ;
-    }
-    
-    @RequestMapping(value="/reportAction", method=RequestMethod.POST)
-    public String reportAction(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
-        
-        try {
-            HttpSession session = request.getSession();
-            User us = (User) session.getAttribute("user");
-            if(us == null)
-                return "jsp/index";
-            
-            int userid = us.getUserId();
-            
-            request.setCharacterEncoding("UTF-8");
-            int ticketId = Integer.parseInt(request.getParameter("ticketId")) ; 
-            String type = request.getParameter("type");
-            String description = request.getParameter("description");
-            
-            boolean result = ReportDAO.createReport(type, ticketId, description);
-            if(result) {
-                response.sendRedirect(request.getContextPath()+"/user/report?ticket="+ ticketId);
-            }
-            else
-                mm.put("message", "Can't report to admin!");
-        }
-        catch(Exception e) {
-            System.out.println("EXEPTION: "+ e.getMessage());
-        }
-        return "jsp/user/report";
-    }
+
 }

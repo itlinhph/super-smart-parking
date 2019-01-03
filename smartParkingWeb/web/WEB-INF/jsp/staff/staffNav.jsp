@@ -21,23 +21,13 @@
                 <span class="icon-bar"></span>
             </button>
             
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/staff/parking">My Parking</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/park/staffParkInfor">My Parking</a>
         </div>
         <ul class="nav navbar-nav navbar-collapse collapse navCollapse">
-            <li><a href="${pageContext.request.contextPath}/staff/parking">Parking Information</a></li>
-            <li><a href="${pageContext.request.contextPath}/staff/fixplate">Fix wrong plate</a></li>
-            <li><a href="${pageContext.request.contextPath}/staff/checkinout">CheckIn/Out</a></li>
+            <li><a href="${pageContext.request.contextPath}/park/staffParkInfor">Parking Information</a></li>
+            <li><a href="${pageContext.request.contextPath}/plate/staffFixPlate">Fix wrong plate</a></li>
+            <li><a href="${pageContext.request.contextPath}/checkInOut/checkInOutPage">CheckIn/Out</a></li>
         </ul>
-        <form class="navbar-form navbar-left navbar-collapse collapse navCollapse">
-            <div class="input-group">
-                <input type="text" class="form-control" id="searchText" placeholder="Search">
-                <div class="input-group-btn" onclick="return searchText()">
-                    <button class="btn btn-default">
-                      <i class="glyphicon glyphicon-search"></i>
-                    </button>
-                </div>
-            </div>
-        </form>
 
         <!-- Nav right -->
             <ul class="nav navbar-nav navbar-right navbar-collapse collapse navCollapse">
@@ -45,9 +35,9 @@
                 <li><a href="#">Hi: ${staff.getStaffName()}</a></li>
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> My Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="glyphicon glyphicon-tag" href="${pageContext.request.contextPath}/staff/parking"> ParkingInfor</a></li>
-                        <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/staff/fixplate"> WrongPlate</a></li>
-                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/staff/checkinout"> CheckInOut</a></li>
+                        <li><a class="glyphicon glyphicon-tag" href="${pageContext.request.contextPath}/park/staffParkInfor"> ParkingInfor</a></li>
+                        <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/plate/staffFixPlate"> WrongPlate</a></li>
+                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/checkInOut/checkInOutPage"> CheckInOut</a></li>
                         <li id="logout1"><a class="glyphicon glyphicon-log-out" href="${pageContext.request.contextPath}/login/logout"> LogOut</a></li>
                     </ul>
                 </li>

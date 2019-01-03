@@ -42,7 +42,7 @@
                                 <p >You have ${listVehicle.size()} plate are waiting to verify:</p>
 
                             <c:forEach var="vehicle" items="${listVehicle}">
-                                <form role="form" method="POST" action="verifyVehicleAction" id="vehicle_${vehicle.getId()}">
+                                <form role="form" method="POST" action="adVerifyVehicleAction" id="vehicle_${vehicle.getId()}">
                                     <div class="row">
 
                                         <div class="col-sm-6 col-md-4 col-lg-4">
@@ -102,7 +102,7 @@
             </div>
             <!-- modal-delete-->
             <div class="modal fade" id="delete_1">
-                <form action="rejectVehicle" method="POST" role="form">
+                <form action="adRejectVehicle" method="POST" role="form">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">

@@ -22,13 +22,13 @@
                 <span class="icon-bar"></span>
             </button>
             
-            <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/parking">My Parking</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}/park/adminParkInfor">My Parking</a>
         </div>
         <ul class="nav navbar-nav navbar-collapse collapse navCollapse">
-            <li><a href="${pageContext.request.contextPath}/admin/verifyVehicle">Verify Vehicle</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/manageStaff">Manage Staff</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/manageUser">Manage User</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/report">Report</a></li>
+            <li><a href="${pageContext.request.contextPath}/vehicle/adVerifyVehicle">Verify Vehicle</a></li>
+            <li><a href="${pageContext.request.contextPath}/staff/adManageStaff">Manage Staff</a></li>
+            <li><a href="${pageContext.request.contextPath}/user/adManageUser">Manage User</a></li>
+            <li><a href="${pageContext.request.contextPath}/report/adReportPage">Report</a></li>
         </ul>
         <form class="navbar-form navbar-left navbar-collapse collapse navCollapse">
             <div class="input-group">
@@ -47,11 +47,11 @@
                 <li><a href="#">Hi: ${admin.getUsername()}</a></li>
                 <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> My Account<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="glyphicon glyphicon-info-sign" href="${pageContext.request.contextPath}/admin/parking"> ParkingInfo</a></li>
-                        <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/admin/verifyVehicle"> VerifyVehicle</a></li>
-                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/admin/manageStaff"> ManageStaff</a></li>
-                        <li><a class="glyphicon glyphicon-user" href="${pageContext.request.contextPath}/admin/manageUser"> ManageUser</a></li>
-                        <li><a class="glyphicon glyphicon-flag" href="${pageContext.request.contextPath}/admin/report"> Report</a></li>
+                        <li><a class="glyphicon glyphicon-info-sign" href="${pageContext.request.contextPath}/park/adminParkInfor"> ParkingInfo</a></li>
+                        <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/vehicle/adVerifyVehicle"> VerifyVehicle</a></li>
+                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/staff/adManageStaff"> ManageStaff</a></li>
+                        <li><a class="glyphicon glyphicon-user" href="${pageContext.request.contextPath}/user/adManageUser"> ManageUser</a></li>
+                        <li><a class="glyphicon glyphicon-flag" href="${pageContext.request.contextPath}/report/adReportPage"> Report</a></li>
                         <li id="logout1"><a class="glyphicon glyphicon-log-out" href="${pageContext.request.contextPath}/login/logout"> LogOut</a></li>
                     </ul>
                 </li>

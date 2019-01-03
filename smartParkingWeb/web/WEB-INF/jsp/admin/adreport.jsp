@@ -68,7 +68,7 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-6 col-lg-6 ">
-                                            <form action="replyReport" method="POST">
+                                            <form action="adReplyReport" method="POST">
                                                 <textarea class="descriptionReportAdmin" name="adminReply" placeholder="Admin reply here..." required="required">${report.getAdminNote()}</textarea>
                                                 <input type="hidden" name="reportId" value="${report.getId()}">
                                                 <br><br>

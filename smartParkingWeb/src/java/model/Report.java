@@ -13,7 +13,6 @@ public class Report {
     
     private int id;
     private String type;
-    private int ticketId;
     private String description;
     private String status;
     private String adminNote;
@@ -37,14 +36,6 @@ public class Report {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public int getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(int ticketId) {
-        this.ticketId = ticketId;
     }
 
     public String getDescription() {

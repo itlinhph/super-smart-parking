@@ -32,7 +32,6 @@ public class ReportDAO {
             if(rs.next()) {
                 report.setId(rs.getInt("id"));
                 report.setType(rs.getString("type"));
-                report.setTicketId(rs.getInt("ticket_id"));
                 report.setDescription(rs.getString("description"));
                 report.setStatus(rs.getString("status"));
                 report.setAdminNote(rs.getString("admin_reply"));
@@ -70,7 +69,6 @@ public class ReportDAO {
                 Report report = new Report();
                 report.setId(rs.getInt("id"));
                 report.setType(rs.getString("type"));
-                report.setTicketId(rs.getInt("ticket_id"));
                 report.setDescription(rs.getString("description"));
                 report.setStatus(rs.getString("status"));
                 report.setAdminNote(rs.getString("admin_reply"));

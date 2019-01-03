@@ -64,7 +64,7 @@ public class LoginController {
                 if(staff != null) {
                     HttpSession session = request.getSession();
                     session.setAttribute("staff", staff); 
-                    response.sendRedirect(request.getContextPath()+"/staff/parking"); 
+                    response.sendRedirect(request.getContextPath()+"/park/staffParkInfor"); 
                 }
                 else
                     mm.put("message", "Login false, wrong username or password!");
@@ -98,7 +98,7 @@ public class LoginController {
             if(admin.getUsername() != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("admin", admin);
-                response.sendRedirect(request.getContextPath()+"/admin/parking");
+                response.sendRedirect(request.getContextPath()+"/park/adminParkInfor");
             }
             else
                 mm.put("message", "Wrong username or password!");

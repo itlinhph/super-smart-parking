@@ -41,7 +41,7 @@
                             </div>
                             <div class="panel-body">
 
-                                <form role="form" method="POST" action="reportAction">
+                                <form role="form" method="POST" action="userReportAction">
                                     <div class="row">
 
                                      

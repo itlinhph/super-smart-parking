@@ -47,15 +47,7 @@ public class ParkDAO {
         
         return listPark;
     }
-    
-//    public static ArrayList<Park> getFullParkData() {
-//        ArrayList<Park> listPark = getListParkData();
-//        for(Park p: listPark) {
-//            ArrayList<Ticket> listTicket = TicketData.getListTicketByParkId(p.getId());
-//            p.setListTicket(listTicket);
-//        }
-//        return listPark;
-//    }
+
     
     public static Park getParkByStaffId(int sid) {
         try {

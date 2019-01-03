@@ -9,22 +9,17 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Admin;
 import model.Park;
 import model.ParkDAO;
 import model.Staff;
-import model.Ticket;
-import model.TicketDAO;
+import model.StaffDAO;
 import model.User;
 import model.UserDAO;
-import model.Vehicle;
-import model.VehicleDAO;
-import model.WrongPlate;
-import model.WrongPlateDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import otherAddOn.GearmanConnect;
 
 /**
  *
@@ -34,191 +29,88 @@ import otherAddOn.GearmanConnect;
 @Controller
 @RequestMapping(value="/staff")
 public class StaffController {
-    
-    @RequestMapping(value="/parking", method = RequestMethod.GET)
-    public String userInforPage(HttpServletRequest request, ModelMap mm) {
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
-        Park park = ParkDAO.getParkByStaffId(staff.getId());
-        mm.put("park", park);
-        
-        ArrayList<Ticket> listTicket = TicketDAO.getListTicketByParkId(park.getId());
-        mm.put("listTicket", listTicket);
-                
-        return "jsp/staff/staffPark" ;
-    }
-    
-    @RequestMapping(value="/fixplate", method = RequestMethod.GET) 
-    public String fixWrongPlatePage(HttpServletRequest request, ModelMap mm) {
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
-        
-        ArrayList<WrongPlate> listWrongPlate = WrongPlateDAO.getListWrongPlateByParkId(staff.getParkid());
-        mm.put("listWrongPlate",listWrongPlate);
-        
-        return "jsp/staff/fixWrongPlate" ;
-    }
-    
-    @RequestMapping(value="/checkinout", method=RequestMethod.GET)
-    public String checkoutInOutPage(HttpServletRequest request, ModelMap mm) {
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
-        
-        
-        return "jsp/staff/checkinout";
-    }
-    
-    
-    @RequestMapping(value="/checkoutVehicle", method = RequestMethod.POST) 
-    public String checkoutVehicle(HttpServletRequest request, ModelMap mm, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
-        
-        try {
-            request.setCharacterEncoding("UTF-8");
-            String plate = request.getParameter("plate");
-            int ticketId = Integer.parseInt(request.getParameter("ticketid")) ;
-            int parkid = staff.getParkid() ;
-            
-            boolean checkoutResult = VehicleDAO.checkoutVehicle(ticketId);
-            response.sendRedirect(request.getContextPath()+"/staff/parking");
-        } catch (Exception e) {
-            System.out.println("Exeption checkoutVehicle: "+ e.getMessage());
-        }
-        
-        return "jsp/staff/checkoutAction" ;
-    }
-    
-    
-    @RequestMapping(value="/editWrongPlate", method = RequestMethod.POST)
-    public String editWrongPlate(HttpServletRequest request, ModelMap mm) {
-        
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
-        
-        try {
-            request.setCharacterEncoding("UTF-8");
-            String plate = request.getParameter("plate");
-            String plate_id = request.getParameter("plate_id");
-            int plateId = Integer.parseInt(plate_id);
-            int parkid = staff.getParkid() ;
-            
-            boolean editFixedPlateResult = WrongPlateDAO.editFixPlate(plate, plateId, parkid);
 
-        } catch (Exception e) {
-            System.out.println("Exeption editWrongPlate: "+ e.getMessage());
-        }
-        mm.put("script", "window.location = 'fixplate';") ;
-        return "jsp/staff/fixWrongPlate" ;
-    }
-    
-    
-    @RequestMapping(value="/checkoutAction", method= RequestMethod.GET)
-    public String checkoutAction(HttpServletRequest request, ModelMap mm) {
+    @RequestMapping(value="/adManageStaff", method = RequestMethod.GET)
+    public String getManageStaffPage(HttpServletRequest request, ModelMap mm) {
         HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
+        Admin admin = (Admin) session.getAttribute("admin");
+        if(admin == null) {
             return "jsp/index";
         }
-        try {
-            request.setCharacterEncoding("UTF-8");
-            String plate = request.getParameter("plate");
-            String img = request.getParameter("img");
-
-            Ticket t = TicketDAO.getTicketByPlate(plate);
-            Vehicle v = VehicleDAO.getVehicleByPlate(plate);
-            User u = UserDAO.getUserByPlate(plate);
-            
-            mm.put("vehicle", v);
-            mm.put("ticket", t);
-            mm.put("user", u);
-            mm.put("checkoutImg", img);
-            
-        } catch (Exception e) {
-            System.out.println("Exeption checkoutAction: "+ e.getMessage());
-        }
-        
-        return "jsp/staff/checkoutAction";
+        ArrayList<Park> listPark = ParkDAO.getListParkData();
+        ArrayList<Staff> listStaff = StaffDAO.getListStaff();
+        mm.put("listStaff", listStaff);          
+        mm.put("listPark", listPark);          
+        return "jsp/admin/manageStaff" ;
     }
     
-    @RequestMapping(value="/checkin", method =RequestMethod.POST)
-    public String checkin(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value="/adAddStaff", method=RequestMethod.POST)
+    public String addStaff(HttpServletRequest request, ModelMap mm) {
         
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
         try {
+            HttpSession session = request.getSession();
+            Admin ad = (Admin) session.getAttribute("admin");
+            if(ad == null)
+                return "jsp/index";
+            
             request.setCharacterEncoding("UTF-8");
-            String image = request.getParameter("imgCheckin");
-            String plate = GearmanConnect.getPlateByGearman(image) ;
-            System.out.println("plate: "+ plate);
-            int vehicleId = VehicleDAO.checkPlateExist(plate);
-            if(vehicleId ==0) { // wrong plate
-                WrongPlateDAO.addWrongPlate(image, plate, staff.getParkid());
-                response.sendRedirect(request.getContextPath()+"/staff/fixplate");
+            String scode = request.getParameter("scode");
+            String name = request.getParameter("fullname");
+            int parkid = Integer.parseInt(request.getParameter("parkid")) ;
+            System.out.println("Request: "+ scode + name + parkid);
+            boolean checkstaffcode = StaffDAO.checkStaffCode(scode) ;
+            if(checkstaffcode) {
+                mm.put("message", "Staff Code Exist!");
             }
             else {
-                TicketDAO.createTicket(vehicleId, staff.getParkid());
-                response.sendRedirect(request.getContextPath()+"/staff/parking");
+                boolean result = StaffDAO.addStaff(scode, name, parkid);
+                if(result)
+                    mm.put("message","Add staff success!" );
+                else
+                    mm.put("message", "Add staff false!");
             }
-        
-        } catch (Exception e) {
-            System.out.println("Exeption checkoutAction: "+ e.getMessage());
         }
-        return "jsp/staff/checkinout";
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        ArrayList<Park> listPark = ParkDAO.getListParkData();
+        ArrayList<Staff> listStaff = StaffDAO.getListStaff();
+        mm.put("listStaff", listStaff);          
+        mm.put("listPark", listPark);
+        
+        return "jsp/admin/manageStaff" ;
     }
     
-    
-    @RequestMapping(value="/checkout", method =RequestMethod.POST)
-    public String checkout(HttpServletRequest request, HttpServletResponse response, ModelMap mm) {
+    @RequestMapping(value="/adSetStatusStaff", method=RequestMethod.POST)
+    public String setStatusStaff(HttpServletRequest request,HttpServletResponse response, ModelMap mm) {
         
-        HttpSession session = request.getSession();
-        Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
-            return "jsp/index";
-        }
         try {
+            HttpSession session = request.getSession();
+            Admin admin = (Admin) session.getAttribute("admin");
+            if(admin == null) {
+                return "jsp/index";
+            }
+            
             request.setCharacterEncoding("UTF-8");
-            String image = request.getParameter("imgCheckout");
-            String plate = request.getParameter("plate");
-            if(!image.equals("")) {
-                plate = GearmanConnect.getPlateByGearman(image) ;
-                System.out.println("plate: "+ plate);
+            int idStaff = Integer.parseInt(request.getParameter("idStaff")) ; 
+            String status = request.getParameter("status");
+            
+            boolean result = StaffDAO.setStatusStaff(idStaff, status);
+            if(result)
+                response.sendRedirect(request.getContextPath()+"/admin/manageStaff");
+            
+            else {
+                mm.put("message", "Action with this user false!");
+                ArrayList<User> listUser = UserDAO.getListUser();
+                mm.put("listUser", listUser);
                 
             }
-            else {
-                image = request.getParameter("imgCheckout2");
-            }
-            int vehicleId = VehicleDAO.checkPlateExist(plate);
-            if (vehicleId == 0) { // wrong plate
-                mm.put("message", "Plate not found!");
-                mm.put("detect_plate", plate);
-                mm.put("image_file", image);
-            }
-            else {
-                String redirectPage = request.getContextPath() + "/staff/checkoutAction?plate="+plate + "&img="+image;
-                response.sendRedirect(redirectPage);
-            }
-        } catch (Exception e) {
-            System.out.println("Exeption checkout: "+ e.getMessage());
         }
-        return "jsp/staff/checkinout";
+        catch(Exception e) {
+            System.out.println("EXEPTION: "+ e.getMessage());
+        }
+        
+        return "jsp/admin/manageStaff";
     }
+    
 }

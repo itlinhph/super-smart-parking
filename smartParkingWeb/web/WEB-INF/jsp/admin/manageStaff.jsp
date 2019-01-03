@@ -41,7 +41,7 @@
 
                         <div class="col-sm-6 col-md-6 col-lg-6 hide" id="addStaffDiv">
                             <button class="btn btn-default hide" style="float: right;" id="hideStaffBtn">X</button>
-                            <form action="addStaff" method="POST">
+                            <form action="adAddStaff" method="POST">
                                 <div class="table-bordered well">
                                     <div style="font-size: 30px; font-weight: bold; color: red">Add new Staff:</div> 
                                     <br>
@@ -110,7 +110,7 @@
     <!-- End container -->
     <!-- modal-delete-->
     <div class="modal fade" id="deactive">
-        <form action="setStatusStaff" method="POST" role="form">
+        <form action="adSetStatusStaff" method="POST" role="form">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -132,7 +132,7 @@
     </div> <!-- End modal -->
     <!-- modal-active-->
     <div class="modal fade" id="active">
-        <form action="setStatusStaff" method="POST" role="form">
+        <form action="adSetStatusStaff" method="POST" role="form">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

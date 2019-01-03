@@ -72,7 +72,7 @@
         <!-- End container -->
         <!-- modal-delete-->
     <div class="modal fade" id="deactive">
-        <form action="setStatusUser" method="POST" role="form">
+        <form action="adSetStatusUser" method="POST" role="form">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -94,7 +94,7 @@
     </div> <!-- End modal -->
     <!-- modal-active-->
     <div class="modal fade" id="active">
-        <form action="setStatusUser" method="POST" role="form">
+        <form action="adSetStatusUser" method="POST" role="form">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
