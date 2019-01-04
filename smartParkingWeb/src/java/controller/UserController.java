@@ -28,9 +28,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
     
     @RequestMapping(value="/userInfor", method = RequestMethod.GET)
-    public String userInforPage(ModelMap mm) {
+    public String userInforPage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        User us = (User) session.getAttribute("user");
+        if(us == null)
+            return "jsp/index";
         mm.put("menuitem", "userInformenu");
         return "jsp/user/userInfor" ;
+    }
+    
+    @RequestMapping(value="/buyCoin", method = RequestMethod.GET)
+    public String buyCoinPage(HttpServletRequest request, ModelMap mm) {
+        HttpSession session = request.getSession();
+        User us = (User) session.getAttribute("user");
+        if(us == null)
+            return "jsp/index";
+        mm.put("menuitem", "buyCoinMenu");
+        return "jsp/user/buyCoin" ;
     }
     
     @RequestMapping(value="/adManageUser", method = RequestMethod.GET)
@@ -136,6 +150,30 @@ public class UserController {
                 message = "Change Password success!";
         } catch (Exception e) {
             System.out.println("Exeption changePass: "+ e.getMessage());
+        }
+        
+        return message;
+    }
+    
+    @RequestMapping(value="/buyCoinAction", method=RequestMethod.POST)
+    @ResponseBody
+    public String buyCoinAction(HttpServletRequest request) {
+        String message = "Buy coin fail, please try again!";
+        try {
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            if(user == null) {
+                return "jsp/index";
+            }
+            request.setCharacterEncoding("UTF-8");
+            int coin = Integer.parseInt(request.getParameter("coin")) ;
+            
+            int userid = user.getUserId();
+            boolean result = UserDAO.addMoreCoin(userid, coin);
+            if(result)
+                message = "Buy Coin success!";
+        } catch (Exception e) {
+            System.out.println("Exeption buy coin: "+ e.getMessage());
         }
         
         return message;

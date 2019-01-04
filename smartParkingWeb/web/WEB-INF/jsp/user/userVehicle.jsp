@@ -30,8 +30,8 @@
         <jsp:include page="../partition/navbar.jsp"></jsp:include>
             <!-- End message -->
         <jsp:include page="../partition/message.jsp"></jsp:include>
-            <!-- Content -->
-            <div class="content container">
+        <!-- Content -->
+        <div class="content container">
                 <div class="row">
                     <!-- NAV LEFT -->
                 <jsp:include page="../partition/navLeft.jsp"></jsp:include>

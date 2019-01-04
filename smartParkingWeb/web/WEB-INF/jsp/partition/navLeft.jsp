@@ -15,7 +15,7 @@
         <li id="vehiclemenu" class="selectCategory"> <a href="${pageContext.request.contextPath}/vehicle/userVehiclePage" class="glyphicon glyphicon glyphicon-bed cName"> Manage Vehicle</a></li>
         <li id="userInformenu" class="selectCategory"> <a href="${pageContext.request.contextPath}/user/userInfor" class="glyphicon glyphicon-cog cName"> Personal Setting</a></li>
         <li id="parkmenu" class="selectCategory"> <a href="${pageContext.request.contextPath}/park/userParkInfor" class="glyphicon glyphicon glyphicon-info-sign cName"> Parking Information</a></li>
-        <li id="reportmenu" class="selectCategory"> <a href="#" class="glyphicon glyphicon-bitcoin cName"> Buy Coin </a></li>
+        <li id="buyCoinMenu" class="selectCategory"> <a href="${pageContext.request.contextPath}/user/buyCoin" class="glyphicon glyphicon-bitcoin cName"> Buy Coin </a></li>
 
     </ul>
 </div>

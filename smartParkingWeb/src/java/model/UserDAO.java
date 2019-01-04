@@ -223,5 +223,25 @@ public class UserDAO {
         return false; 
   
     }
+
+    public static boolean addMoreCoin(int userid, int coin) {
+        try {
+            DbConnect connect = new DbConnect();
+            String query = "UPDATE user SET coin_remain = (coin_remain + ?) WHERE (id = ?)" ;
+            PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
+            statement.setInt(1, coin);
+            statement.setInt(2, userid);
+            
+            int rs = statement.executeUpdate();
+            if(rs >0)
+                return true;
+            connect.con.close();
+        } catch (Exception e) {
+            System.out.println("Exeption add more coin: "+ e.getMessage());
+            
+        }
+        
+        return false; 
+    }
 }
     

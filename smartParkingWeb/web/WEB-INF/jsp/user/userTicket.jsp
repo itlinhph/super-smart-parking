@@ -34,7 +34,7 @@
                 <!-- NAV LEFT -->
                 <jsp:include page="../partition/navLeft.jsp"></jsp:include>
                     <!-- END NAV LEFT -->
-                <div class="col-md-9">
+                <div class="col-md-9 contentRight">
                     <br>
                     Your ticket history over alltime:
                     <hr>
