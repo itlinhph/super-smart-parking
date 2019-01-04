@@ -43,7 +43,7 @@ Project Detail
 > - Spring Framework with MVC
 > - Gearman job with ML SYSTEM.
 
+Contact me
 ------------
-Contact me: 
 - Facebook: fb.com/deluxe.psk
 - Email: linhphanhust@gmail.com
