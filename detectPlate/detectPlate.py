@@ -514,7 +514,7 @@ def detectPlateMain(gearman_worker, gearman_job):
     # logging.info("List Plate: %s", listPlates)
     if(len(listPlates) ==0):
         print("No plate!")
-        return
+        return ""
 
     listCharsInPlates = getListChars(listPlates)
     print listCharsInPlates
