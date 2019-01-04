@@ -1,4 +1,4 @@
-# LinhPH
+
 Super Smart Parking
 ===========================================
 
@@ -43,5 +43,7 @@ Project Detail
 > - Spring Framework with MVC
 > - Gearman job with ML SYSTEM.
 
-------------------
-Contact me: fb.com/deluxe.psk
+------------
+Contact me: 
+- Facebook: fb.com/deluxe.psk
+- Email: linhphanhust@gmail.com
