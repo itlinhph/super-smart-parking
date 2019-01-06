@@ -1,15 +1,9 @@
 body{
     padding-top: 60px;
     margin: 5px;
-    /* min-height: 1000px; */
-}
-
-#searchText {
-	width: 300px;
 
 }
 
-/* Sign up/login */
 #signupLoginTab {
 	max-width: 440px;
 	max-height: 600px;
@@ -28,17 +22,14 @@ body{
 	max-width: 100%;
 	
 }
-/* End signup/login */
 
 
-
-/* Index */
-h3 {
+h1, h2, h3 {
 	font-weight: bold;
 	color: red;
 }
 
-h4 {
+h4, .titleH5 {
 	font-weight: bold;
 }
 
@@ -90,24 +81,6 @@ h4 {
 	width:100%;
 }
 
-.productPreview {
-	border-radius: 10px;
-	max-height: 520px;
-	padding: 5px;
-	margin-top: 23px;
-
-	-webkit-transition-duration: 0.1s; 
-	-moz-transition-duration: 0.1s; /*Mozilla */ 
-}
-
-.productPreview:hover {
-
-	box-shadow:0px 0px 30px gray; 
-	-webkit-transform:scale(1.12);
-	-moz-transform:scale(1.1); /*Mozilla */
-	-moz-box-shadow:0px 0px 30px gray; /*Mozilla */
-	opacity: 0.9;
-}
 
 .btnDetail {
 	width: 1000px;
@@ -122,33 +95,7 @@ h4 {
 	
 }
 
-#timeLeft {
-	font-size: 15px;
-	font-style: italic;
-	font-weight: bold;
-}
 
-.bidTimePreview {
-	background-color: #E6E6E6;
-	padding: 5px;
-	margin-top: 15px;
-	border-radius: 5px;
-}
-
-.inputPrice > span {
-	display: inline-block ;
-}
-
-.inputPrice  input {
-	display: inline-block;
-}
-
-/* End index */
-
-
-
-
-/* Product Detail */
 .productPreviewDetail {
 	border-radius: 10px;
 	height: 350px;
@@ -157,204 +104,17 @@ h4 {
     background-size: cover;
 }
 
-.productPreviewDetail img {	
 
-	border-radius: 10px;
-	width:100%;
-	height:100%;
-	
+.navbar-header {
+	padding-left: 50px;
 }
 
 .imgZoom {
 	z-index: 30;
 }
 
-.imgZoom:hover {
-	box-shadow:0px 0px 30px gray; 
-	-webkit-transform:scale(2.7);
-	-moz-transform:scale(2.7); /* Mozilla*/
-	position:absolute;
-	margin-top: 70px;
-	margin-left: 300px;
-	z-index: 30;
-}
-
-#productDetail8 {
-	z-index: 20;
-}
-
-#productDetail8 hr {
-	border: 0.7px solid #AAAAAA;
-}
-/* .stars {
-    display: flex;
-    flex-direction: row-reverse;
-    margin: 10px;
-} */
-
-.starRating div {
-	display: inline-block;
-	/* margin-bottom: 5px; */
-}
-
 .logo  {
 	position: absolute;
-}
-.navbar-header {
-	padding-left: 50px;
-}
-
-#sellerInfo {
-	background-color:white  ;
-	border-radius: 10px;
-	box-shadow:  0px 1px 1px 1px #BDBDBD;
-	padding: 10px;
-}
-
-#sellerInfo > ul > li {
-	margin-left: -35px;
-}
-
-
-p.feedback {
-	color: green;
-	font-size: 18px;
-	margin-top: 40px;
-}
-
-p#sellerAcc {
-	/* color: #0026FF; */
-	font-weight: bold;
-	font-style: italic;
-	float: right;
-	margin-top: 10px;
-	position: relative;
-	/* display: inline-block; */
-}
-
-.stars {
-	color: #BEBE06;	
-}
-
-.verifedimg {
-	display: inline-block;
-	width: 70px;
-	height: 70px;
-	position: absolute;
-}
-
-#numStars {
-	color: #FFFB00;
-}
-
-
-.bidPlace {
-	margin-top: 10px;
-	padding: 30px;
-	max-height: 200px;
-	background-color: #BBBBBB;
-	color: white;
-	box-shadow: 0px 2px 5px 5px #D1CFCF;
-	border-radius: 10px;
-	border: 1px solid gray;
-	font-size: 20px;
-}
-
-.bidPlace a {
-	color: violet ;
-	text-decoration: underline;
-	display: inline-block;
-}
-
-#currentBid {
-	color: red;
-	font-size: 25px;
-}
-.itemTitle {
-	font-weight: bold;
-	display: inline-block;
-}
-
-
-#information {
-	font-size: 30px;
-	
-}
-
-.nameTitle {
-	color: red ;
-}
-
-.time-left {
-	
-	font-size: 25px;
-	font-weight: bold;
-	margin-left: 5px;
-	display: inline-block;
-}
-
-#titleTimeLeft {
-	display: inline-block;
-}
-
-#timeout {
-	font-size: 25px;
-	font-weight: bold;
-	color: red;
-}
-
-#timeleft {
-	font-size: 2em;
-	color: #0099CC;
-}
-
-/* End Product Detail */
-
-
-/* Bid History */
-
-#bidHeader {
-	margin-bottom: 15px;
-}
-
-.bidInfoTitle {
-	display: inline-block;
-	margin-right: 30px;
-	font-size: 20px;
-	
-}
-
-.hrBidHistory {
-	border-top: 3px double #8c8b8b;
-}
-
-h2 {
-	color: red;
-}
-
-.bidInfor {
-	font-size: 25px;
-	color: #090080;
-}
-.bidSucess {
-	font-weight: bold;
-	font-size: 17px;
-}
-
-.productTitle {
-	font-size: 25px;
-	color: red;
-	font-style: italic;
-}
-
-/* End Bid History */
-
-
-/* User Profile */
-
-.verifiedInfo {
-	margin-top: 20px;
-	border-radius: 10px;
 }
 
 .profileLabel {
@@ -367,14 +127,6 @@ h2 {
 	font-weight: bold;
 }
 
-
-h1 {
-	font-weight: bold;
-}
-/* End user Profile */
-
-/* Sell new product, selling product */
-
 .title {
 	font-family: Lobster;
 	color: red;
@@ -386,9 +138,6 @@ h1 {
 	width: 100%;
 	margin-top: 5px;
 }
-/* End sell new product, selling product */
-
-
 
 .vehicleDescription {
     border-radius: 10px;
