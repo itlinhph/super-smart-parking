@@ -7,10 +7,12 @@ import shapely.affinity
 import logging
 from sklearn import svm
 from sklearn.externals import joblib
+import time
+import gearman
 
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
 
-
+HOST_GEARMAN = 'localhost:4730'
 
 # Char first pass
 CHAR_MIN_AREA = 30
@@ -485,7 +487,7 @@ def recognizeChar(listCharImg):
 
 def detectPlateMain(gearman_worker, gearman_job):
     fileImg = gearman_job.data.encode("utf-8")
-    fileImg = "../smartParkingWeb/build/web/resources/images/plate/" + fileImg
+    fileImg = "../smartParkingWeb/web/resources/images/plate/" + fileImg
     print("File image:", fileImg)
     imgOrigin = cv2.imread(fileImg)
     height, width, _ = imgOrigin.shape
@@ -527,9 +529,7 @@ def detectPlateMain(gearman_worker, gearman_job):
     return plate
 
 
-import time
-import gearman
-HOST_GEARMAN = 'localhost:4730'
+
 gm_worker = gearman.GearmanWorker([HOST_GEARMAN])
 print("start worker!")
 gm_worker.set_client_id('detect_plate')
