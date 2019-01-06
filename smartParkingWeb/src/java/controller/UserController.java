@@ -82,7 +82,6 @@ public class UserController {
                 mm.put("message", "Action with this user false!");
                 ArrayList<User> listUser = UserDAO.getListUser();
                 mm.put("listUser", listUser);
-                
             }
         }
         catch(Exception e) {
@@ -108,11 +107,8 @@ public class UserController {
             
             if(email.equals(us.getEmail()) && fullname.equals(us.getFullname()) && phone.equals(us.getPhone()))
                 return "Nothing to change!";
-                
-            
             User userNew = UserDAO.editUserInfor(userid, email, fullname, phone);
             if(userNew != null) {
-                
                 message = "Edit profile success!";
                 session.setAttribute("user", userNew);
             }
@@ -170,8 +166,11 @@ public class UserController {
             
             int userid = user.getUserId();
             boolean result = UserDAO.addMoreCoin(userid, coin);
-            if(result)
+            if(result) {
+                user.setCoin_remain(user.getCoin_remain() + coin);
+                session.setAttribute("user", user);
                 message = "Buy Coin success!";
+            }
         } catch (Exception e) {
             System.out.println("Exeption buy coin: "+ e.getMessage());
         }

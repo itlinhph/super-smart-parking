@@ -20,7 +20,7 @@ public class WrongPlateDAO {
         
         try {
             DbConnect connect = new DbConnect();
-            String query = "SELECT id, img, detect_result, status, park_id, checkin_time FROM smart_parking.wrong_plate where park_id = ? and status= 'pending';" ;
+            String query = "SELECT id, img, detect_result, status, park_id, checkin_time FROM smart_parking.wrong_plate where park_id = ? and status= 'pending' order by checkin_time desc;" ;
             
             PreparedStatement statement = connect.con.prepareStatement(query);
             statement.setInt(1, parkid);
