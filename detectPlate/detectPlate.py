@@ -10,8 +10,15 @@ from sklearn.externals import joblib
 import time
 import gearman
 
+#logging config
 logging.basicConfig(filename='log_detectPlate.log',filemode='w', format='%(levelname)s\t%(message)s', level=logging.DEBUG)
+SHOWLOG = False
 
+#load model SVM
+svmCharModel = joblib.load("modelML/modelChar.pkl")
+svmNumberModel = joblib.load("modelML/modelNumber.pkl")
+
+#define host gearman
 HOST_GEARMAN = 'localhost:4730'
 
 # Char first pass
@@ -32,7 +39,6 @@ MAX_DISTANCE_MULTI = 3.2
 # PLATE
 PLATE_WIDTH_PADD_MULTI = 1.8
 PLATE_HEIGHT_PADD_MULTI = 1.5
-
 
 # Combine Plate
 MIN_DIFF_ANGLE = -20
@@ -75,8 +81,8 @@ def findCharsFromImg(imgThresh):
     imgContours, contours, _ = cv2.findContours(imgThreshCopy, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
     logging.debug("Num contours first: %s", len(contours) )
     
-    imgContours = np.zeros((imgThresh.shape[0], imgThresh.shape[1], 3), np.uint8)
     # draw Contours:
+    imgContours = np.zeros((imgThresh.shape[0], imgThresh.shape[1], 3), np.uint8)
     for i, item in enumerate(contours):
 
         isChar = isCanBeChar(item)
@@ -85,14 +91,14 @@ def findCharsFromImg(imgThresh):
             cv2.drawContours(imgContours, contours, i, (255.0, 255.0, 255.0) )
             
     logging.debug("Len list chars after: %s", len(listChars))
-    # cv2.imshow("Draw Contour", imgContours)
-    # cv2.waitKey(0)
+    
+    if(SHOWLOG):
+        cv2.imshow("Draw Contour", imgContours)
+        cv2.waitKey(0)
 
     #END DRAW CONTOUR
 
     return listChars
-
-
 
 def isCanBeChar(contour):
     
@@ -106,7 +112,6 @@ def isCanBeChar(contour):
     if(W > CHAR_MIN_W and H > CHAR_MIN_H and boundArea > CHAR_MIN_AREA and WHRatio > CHAR_MIN_WHRATIO and WHRatio < CHAR_MAX_WHRATIO):
         centerX = (X+X+W)/2.0
         centerY = (Y+Y+H)/2.0
-        # diagonal= math.sqrt(W**2 + H**2)
         char = {
             "centerX": centerX,
             "centerY": centerY, 
@@ -115,11 +120,8 @@ def isCanBeChar(contour):
             "contour" : contour,
             "isChar": True
         }
-        # char = (centerX, centerY, X, Y, W, H, boundArea, contour)
 
     return char
-
-
 
 def findClusterChar(char, listChars, maxAngle): 
     clusterChar = []
@@ -127,18 +129,10 @@ def findClusterChar(char, listChars, maxAngle):
     # logging.debug("listChar find CLuster: %s", listChars)
     for pChar in listChars: 
         if pChar == char:
-            # numContinue += 1
-            # logging.debug("Numcontinue: %s", numContinue)
             continue
-        # item = pChar
-        # logging.debug("possible Machingchar: %s", item["position"])
 
         centerX, centerY, W, H, boundArea = char["centerX"], char["centerY"],char["position"][2],char["position"][3], char["boundArea"]
         pcenterX, pcenterY, pW, pH, pboundArea = pChar["centerX"], pChar["centerY"],pChar["position"][2],pChar["position"][3], pChar["boundArea"]
-
-        # pcenterX, pcenterY, pW, pH, pboundArea, = pChar
-        # logging.debug("Char: %s %s %s %s %s", pcenterX, pcenterY, pW, pH, pboundArea)
-        # Compute distance two char
         diffX = abs(pcenterX - centerX)
         diffY = abs(pcenterY - centerY)
         distanceTwoChar = math.sqrt(diffX**2 + diffY**2)
@@ -289,13 +283,10 @@ def combinePlates(imgOrigin, listPlates):
     for i, plate in enumerate(listPlates):
         if i not in listIndex and plate["twoRow"]:
             plateReturn = rotationPlate(imgOrigin, plate)
-            # _, _, width, height, _ = plateReturn["location"]
-            # shapeRatio = width/height
             if plateReturn["img"] is not None:
                 listPlateReturn.append(plateReturn)
     
     return listPlateReturn
-
 
 
 def rotationPlate(imgOrigin, plate):
@@ -332,7 +323,6 @@ def getEqualHeightList(listChars, mode=0):
         listChars = [x for x in listChars if x["position"][3] <= upperBound and x["position"][3] >= lowerBound]
     return listChars
 
-# remove inner chars
 def removeInnerChars(listOfCharsInPlate):
     for i, char1 in enumerate(listOfCharsInPlate):
         for j, char2 in enumerate(listOfCharsInPlate):
@@ -370,45 +360,22 @@ def getListChars(listPlates):
     listStrChar = []
     for plate in listPlates:
         plate["imgGray"] , plate["imgThresh"] = adaptiveImgs(plate["img"])
-        
-        # cv2.imshow("plate Gray", plate["imgGray"])
-        # cv2.imshow("plate Thresh",plate["imgThresh"])
-
         adaptivePlate = cv2.adaptiveThreshold(plate["imgGray"],255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)
-        # blurPlate = cv2.GaussianBlur(adaptivePlate, (5,5),0)
-        # _, processedPlate = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
-
-        # cv2.imshow("adaptive", adaptivePlate)
-        # cv2.imshow("BluePlate", blurPlate)
-        # cv2.imshow("processedPlate", processedPlate)
-
-        # plate["imgThresh"] = cv2.resize(plate["imgThresh"],(0, 0), fx = 1.6, fy = 1.6)
-        # cv2.imshow("threash", plate["imgThresh"])
-        # cv2.waitKey(0)
-
         listChar = findCharsFromImg(adaptivePlate)
         listChar.sort(key = lambda Char: Char["centerX"])
         logging.debug("len list char: %s", len(listChar))
-        # for item in listChar:
-        #     logging.debug("---> Char: %s", (item["centerX"], item["centerY"]))
         
         #20:04 15/10
         listClusterChars= findListClusterChar(listChar, 3, 10) # Min char, max angle
 
-
         if len(listClusterChars) == 0:
             continue
-        # print(len(listClusterChars))
 
         listClusterChar1 = [getEqualHeightList(x) for x in listClusterChars]
         listClusterChar2 = getEqualHeightList(listClusterChar1, mode=1)
         listClusterChar3 = [removeDistanceChar(x) for x in listClusterChar2]
         listOfCharsInPlate = [char for listChars in listClusterChar3 for char in listChars]
         listOfCharsInPlate = removeInnerChars(listOfCharsInPlate)
-        
-        # logging.debug("--------------> Start point:")
-        # for char in listOfCharsInPlate:
-        #     logging.debug("---> Char: %s", (char["centerX"], char["centerY"]))
         
         if len(listOfCharsInPlate) >= 6:
             plateStr = getStrCharFromPlate(plate["imgGray"], listOfCharsInPlate)
@@ -431,27 +398,16 @@ def getStrCharFromPlate(imgThresh, listChar):
 
         cv2.rectangle(imgThreshColor, pt1, pt2, (255,255,0), 2) 
 
-
         imgROI = imgThresh[pt1[1]:pt2[1], pt1[0]:pt2[0]]
         imgROIResized = cv2.resize(imgROI, CHAR_SIZE)
-        # cv2.imshow("IMROI_"+ str(i),imgROI)
         
-        # retreive binary image from the char images
         adaptivePlate = cv2.adaptiveThreshold(imgROIResized,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,11,2)
         blurPlate = cv2.GaussianBlur(adaptivePlate, (5,5),0)
-        # _, im = cv2.threshold(blurPlate,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         _, im = cv2.threshold(blurPlate,0,1,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
         borderChar = cv2.copyMakeBorder(im, 5, 5, 5, 5, cv2.BORDER_CONSTANT, value=0)
         im = cv2.resize(borderChar, (28,28))
         
         listCharImg.append(im)
-
-        # cv2.imwrite("resize_" + str(i)+ ".jpg", im)
-        # cv2.imshow("img_thresh", imgThresh)
-
-    #17/10 DONE TRUE FOR THIS
-         
-    # cv2.imshow("imgT
 
     plateStr = recognizeChar(listCharImg)
 
@@ -470,10 +426,6 @@ def recognizeChar(listCharImg):
 
     XNumber = XNumberTemp.reshape(len(XNumberTemp), 28 * 28)
     XChar   = XCharTemp.reshape(1, 28*28)
-    
-    #load model SVM
-    svmCharModel = joblib.load("modelML/modelChar.pkl")
-    svmNumberModel = joblib.load("modelML/modelNumber.pkl")
 
     char2 = svmCharModel.predict(XChar)
     listStr = svmNumberModel.predict(XNumber)
@@ -486,15 +438,20 @@ def recognizeChar(listCharImg):
 
 
 def detectPlateMain(gearman_worker, gearman_job):
-    fileImg = gearman_job.data.encode("utf-8")
-    fileImg = "../smartParkingWeb/web/resources/images/plate/" + fileImg
-    print("File image:", fileImg)
+    fileImgOrigin = gearman_job.data.encode("utf-8")
+    fileImg = "../smartParkingWeb/web/resources/images/plate/" + fileImgOrigin
+    print("File image:", fileImgOrigin)
     imgOrigin = cv2.imread(fileImg)
     height, width, _ = imgOrigin.shape
     
-    imgContours = np.zeros((height, width, 3), np.uint8)
+    # imgContours = np.zeros((height, width, 3), np.uint8)
+    imgGray, imgPreprocess = adaptiveImgs(imgOrigin)
 
-    _, imgPreprocess = adaptiveImgs(imgOrigin)
+    #Debug mode
+    if(SHOWLOG):
+        cv2.imshow("imgGray", imgGray)
+        cv2.imshow("imgThresh", imgPreprocess)
+        cv2.waitKey(0)
 
     listChars = findCharsFromImg(imgPreprocess)
     listChars = sorted(listChars, key=lambda x: x["centerX"])
@@ -504,6 +461,26 @@ def detectPlateMain(gearman_worker, gearman_job):
     logging.debug("Len List Cluster Char: %s", len(listClusterChars))
 
     imgContours = np.zeros((height, width, 3), np.uint8)
+    #SHOWLOG
+    if(SHOWLOG):
+        colors = {
+            1: (0,255,255), 
+            2: (255,0,255),
+            3: (255,255,0),
+            4: (0,0,255),
+            5: (0,255,0)
+        }
+
+        for i,clusterChar in enumerate (listClusterChars):
+            color = colors.get(i, (255,0,0))  
+            contours = []
+            for char in clusterChar:
+                contours.append(char["contour"])
+
+            cv2.drawContours(imgContours, contours, -1, color)
+
+        cv2.imshow("contours", imgContours)
+        cv2.waitKey(0)
 
     listPlates = []
     for clusterChar in listClusterChars:
@@ -513,6 +490,18 @@ def detectPlateMain(gearman_worker, gearman_job):
     #12/10
     listPlates = combinePlates(imgOrigin, listPlates)
     
+    if(SHOWLOG):
+        for i in range(0, len(listPlates)):
+            location = ((listPlates[i]["location"][0], listPlates[i]["location"][1]), (listPlates[i]["location"][2], listPlates[i]["location"][3]), listPlates[i]["location"][4])
+            p2fRectPoints = cv2.boxPoints(location)
+            cv2.line(imgContours, tuple(p2fRectPoints[0]), tuple(p2fRectPoints[1]), (0,255,255), 2)
+            cv2.line(imgContours, tuple(p2fRectPoints[1]), tuple(p2fRectPoints[2]), (0,255,255), 2)
+            cv2.line(imgContours, tuple(p2fRectPoints[2]), tuple(p2fRectPoints[3]), (0,255,255), 2)
+            cv2.line(imgContours, tuple(p2fRectPoints[3]), tuple(p2fRectPoints[0]), (0,255,255), 2)
+            cv2.imshow("contours2", imgContours)
+            cv2.imshow("plate", listPlates[i]["img"])
+            cv2.waitKey(0)
+
     # logging.info("List Plate: %s", listPlates)
     if(len(listPlates) ==0):
         print("No plate!")
@@ -521,14 +510,10 @@ def detectPlateMain(gearman_worker, gearman_job):
     listCharsInPlates = getListChars(listPlates)
     print listCharsInPlates
 
-
-    # cv2.waitKey(0)
     cv2.destroyAllWindows()
     plate = listCharsInPlates[0][:4] + "-" + listCharsInPlates[0][4:]
     print plate
     return plate
-
-
 
 gm_worker = gearman.GearmanWorker([HOST_GEARMAN])
 print("start worker!")
