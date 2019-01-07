@@ -58,7 +58,7 @@ public class PlateController {
         } catch (Exception e) {
             System.out.println("Exeption editWrongPlate: "+ e.getMessage());
         }
-        mm.put("script", "window.location = 'fixplate';") ;
+        mm.put("script", "window.location = 'staffFixPlate';") ;
         return "jsp/staff/fixWrongPlate" ;
     }
 }
