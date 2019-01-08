@@ -32,6 +32,7 @@
             <!-- Content -->
             <div class="content container">
                 <div class="row">
+                <h3>You have ${listWrongPlate.size()} wrong plate need to fix in your park!</h3>
                 <!-- For each here -->
                 <c:forEach var="wrongPlate" items="${listWrongPlate}">
                     <form role="form" method="POST" action="editWrongPlate" id="vehicle_${vehicle.getId()}">

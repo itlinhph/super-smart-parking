@@ -89,6 +89,7 @@
                         <button id="loginBtn" type="submit" class="btn btn-success">Log In</button>
                     </form>
                 <br>
+                <div style="text-align: center;"><a href="login/admin">If you are admin, click here!</a></div>
                 </div>
                 
             </div>

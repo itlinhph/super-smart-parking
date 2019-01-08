@@ -175,7 +175,6 @@ def findListClusterChar(listChars, minNumChar, maxAngle):
             if item not in clusterChar:
                 listCharRemain.append(item)
 
-        #recursive
         recuListClusterChar = findListClusterChar(listCharRemain, minNumChar, maxAngle)
         
         for item in recuListClusterChar:
