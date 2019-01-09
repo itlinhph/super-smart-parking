@@ -15,21 +15,21 @@ import otherAddOn.DbConnect;
  * @author linhph
  */
 public class ReportDAO {
-    
+
     public static Report getReportByTicketId(int ticketId, int userId) {
-        
+
         Report report = new Report();
         try {
             DbConnect connect = new DbConnect();
             String query = "Select r.id, r.type, r.ticket_id, r.description, r.status, r.admin_reply, r.created, r.processed_time, u.email "
                     + "FROM report r, ticket t, vehicle v, user u  "
-                    + "WHERE r.ticket_id = t.id AND t.vehicle_id = v.id AND v.user_id = u.id AND t.id = ? and u.id = ?" ;
-            
+                    + "WHERE r.ticket_id = t.id AND t.vehicle_id = v.id AND v.user_id = u.id AND t.id = ? and u.id = ?";
+
             PreparedStatement statement = connect.con.prepareStatement(query);
             statement.setInt(1, ticketId);
             statement.setInt(2, userId);
             ResultSet rs = statement.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 report.setId(rs.getInt("id"));
                 report.setType(rs.getString("type"));
                 report.setDescription(rs.getString("description"));
@@ -38,34 +38,32 @@ public class ReportDAO {
                 report.setCreated(rs.getString("created"));
                 report.setProcessedTime(rs.getString("processed_time"));
                 report.setEmailUser(rs.getString("email"));
-               
+
             }
-            
+
             connect.con.close();
+        } catch (Exception e) {
+
+            System.out.println("Error getReportByTicketId: " + e.getMessage());
         }
-        catch (Exception e) {
-            
-            System.out.println("Error getReportByTicketId: "+ e.getMessage());
-        }
-        
+
         return report;
     }
 
     public static ArrayList<Report> getAllReport() {
-        
-        
-        ArrayList <Report> listReport = new ArrayList<Report>();
+
+        ArrayList<Report> listReport = new ArrayList<Report>();
         try {
             DbConnect connect = new DbConnect();
             String query = "Select r.id, r.type, r.ticket_id, r.description, r.status, r.admin_reply, r.created, r.processed_time, u.email "
                     + "FROM report r, ticket t, vehicle v, user u  "
-                    + "WHERE r.ticket_id = t.id AND t.vehicle_id = v.id AND v.user_id = u.id and r.status='pending';" ;
-            
+                    + "WHERE r.ticket_id = t.id AND t.vehicle_id = v.id AND v.user_id = u.id and r.status='pending';";
+
             PreparedStatement statement = connect.con.prepareStatement(query);
 
             ResultSet rs = statement.executeQuery();
-            while(rs.next()) {
-                
+            while (rs.next()) {
+
                 Report report = new Report();
                 report.setId(rs.getInt("id"));
                 report.setType(rs.getString("type"));
@@ -75,20 +73,18 @@ public class ReportDAO {
                 report.setCreated(rs.getString("created"));
                 report.setProcessedTime(rs.getString("processed_time"));
                 report.setEmailUser(rs.getString("email"));
-               listReport.add(report);
+                listReport.add(report);
             }
-            
+
             connect.con.close();
+        } catch (Exception e) {
+
+            System.out.println("Error getReportByTicketId: " + e.getMessage());
         }
-        catch (Exception e) {
-            
-            System.out.println("Error getReportByTicketId: "+ e.getMessage());
-        }
-        
+
         return listReport;
     }
-    
-    
+
     public static boolean createReport(String type, int ticketId, String description) {
         try {
             DbConnect connect = new DbConnect();
@@ -96,8 +92,8 @@ public class ReportDAO {
             PreparedStatement statement = connect.con.prepareStatement(queryCheckReport);
             statement.setInt(1, ticketId);
             ResultSet rs = statement.executeQuery();
-            if(rs.next()) {
-                
+            if (rs.next()) {
+
                 String queryUpdate = "UPDATE report SET type = ?, description =? WHERE (ticket_id = ?);";
                 statement = connect.con.prepareStatement(queryUpdate);
                 statement.setString(1, type);
@@ -106,18 +102,17 @@ public class ReportDAO {
                 statement.executeUpdate();
                 return true;
             }
-            
+
             String query = "Insert into report(type, ticket_id, description) values (?, ?, ?)";
             statement = connect.con.prepareStatement(query);
             statement.setString(1, type);
             statement.setInt(2, ticketId);
             statement.setString(3, description);
             int result = statement.executeUpdate();
-            if(result ==1)
+            if (result == 1)
                 return true;
-        }
-        catch (Exception e) {
-            System.out.println("Exeption create ticket: "+ e.getMessage());
+        } catch (Exception e) {
+            System.out.println("Exeption create ticket: " + e.getMessage());
         }
         return false;
     }
@@ -130,15 +125,14 @@ public class ReportDAO {
             statement.setString(1, adminReply);
             statement.setInt(2, reportid);
             int result = statement.executeUpdate();
-            if(result>0) {
+            if (result > 0) {
                 return true;
             }
-            
-        }
-        catch (Exception e) {
-            System.out.println("Exeption adminreply: "+ e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println("Exeption adminreply: " + e.getMessage());
         }
         return false;
     }
-    
+
 }

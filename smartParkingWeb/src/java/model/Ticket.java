@@ -21,7 +21,7 @@ public class Ticket {
     private Report report;
 
     public Ticket() {
-    
+
     }
 
     public int getFee() {
@@ -31,7 +31,6 @@ public class Ticket {
     public void setFee(int fee) {
         this.fee = fee;
     }
-    
 
     public int getTicketid() {
         return ticketid;
@@ -96,6 +95,5 @@ public class Ticket {
     public void setReport(Report report) {
         this.report = report;
     }
-    
-    
+
 }

@@ -11,17 +11,18 @@
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
-        
-        <img src="${pageContext.request.contextPath}/resources/images/logoParking.jpg" alt="logo" class="logo img-responsive" width="50px" height="45px">
+
+        <img src="${pageContext.request.contextPath}/resources/images/logoParking.jpg" alt="logo" class="logo img-responsive"
+            width="50px" height="45px">
         <div class="navbar-header">
-            
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navCollapse" >
-                
+
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navCollapse">
+
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            
+
             <a class="navbar-brand" href="${pageContext.request.contextPath}/park/adminParkInfor">My Parking</a>
         </div>
         <ul class="nav navbar-nav navbar-collapse collapse navCollapse">
@@ -35,28 +36,34 @@
                 <input type="text" class="form-control" id="searchText" placeholder="Search">
                 <div class="input-group-btn" onclick="return searchText()">
                     <button class="btn btn-default">
-                      <i class="glyphicon glyphicon-search"></i>
+                        <i class="glyphicon glyphicon-search"></i>
                     </button>
                 </div>
             </div>
         </form>
 
         <!-- Nav right -->
-            <ul class="nav navbar-nav navbar-right navbar-collapse collapse navCollapse">
-                
-                <li><a href="#">Hi: ${admin.getUsername()}</a></li>
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> My Account<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a class="glyphicon glyphicon-info-sign" href="${pageContext.request.contextPath}/park/adminParkInfor"> ParkingInfo</a></li>
-                        <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/vehicle/adVerifyVehicle"> VerifyVehicle</a></li>
-                        <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/staff/adManageStaff"> ManageStaff</a></li>
-                        <li><a class="glyphicon glyphicon-user" href="${pageContext.request.contextPath}/user/adManageUser"> ManageUser</a></li>
-                        <li><a class="glyphicon glyphicon-flag" href="${pageContext.request.contextPath}/report/adReportPage"> Report</a></li>
-                        <li id="logout1"><a class="glyphicon glyphicon-log-out" href="${pageContext.request.contextPath}/login/logout"> LogOut</a></li>
-                    </ul>
-                </li>
-                
-            </ul>
+        <ul class="nav navbar-nav navbar-right navbar-collapse collapse navCollapse">
+
+            <li><a href="#">Hi: ${admin.getUsername()}</a></li>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#"> My Account<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="glyphicon glyphicon-info-sign" href="${pageContext.request.contextPath}/park/adminParkInfor">
+                            ParkingInfo</a></li>
+                    <li><a class="glyphicon glyphicon glyphicon-bed" href="${pageContext.request.contextPath}/vehicle/adVerifyVehicle">
+                            VerifyVehicle</a></li>
+                    <li><a class="glyphicon glyphicon-cog" href="${pageContext.request.contextPath}/staff/adManageStaff">
+                            ManageStaff</a></li>
+                    <li><a class="glyphicon glyphicon-user" href="${pageContext.request.contextPath}/user/adManageUser">
+                            ManageUser</a></li>
+                    <li><a class="glyphicon glyphicon-flag" href="${pageContext.request.contextPath}/report/adReportPage">
+                            Report</a></li>
+                    <li id="logout1"><a class="glyphicon glyphicon-log-out" href="${pageContext.request.contextPath}/login/logout">
+                            LogOut</a></li>
+                </ul>
+            </li>
+
+        </ul>
 
         <!-- End nav right -->
 

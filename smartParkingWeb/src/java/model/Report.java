@@ -10,7 +10,7 @@ package model;
  * @author linhph
  */
 public class Report {
-    
+
     private int id;
     private String type;
     private String description;
@@ -20,8 +20,9 @@ public class Report {
     private String processedTime;
     private String emailUser;
 
-    public Report() {}
-    
+    public Report() {
+    }
+
     public int getId() {
         return id;
     }
@@ -85,7 +86,5 @@ public class Report {
     public void setEmailUser(String emailUser) {
         this.emailUser = emailUser;
     }
-    
-    
-    
+
 }

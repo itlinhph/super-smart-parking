@@ -21,44 +21,44 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author linhph
  */
 @Controller
-@RequestMapping(value="/plate")
+@RequestMapping(value = "/plate")
 public class PlateController {
-    @RequestMapping(value="/staffFixPlate", method = RequestMethod.GET) 
+    @RequestMapping(value = "/staffFixPlate", method = RequestMethod.GET)
     public String fixWrongPlatePage(HttpServletRequest request, ModelMap mm) {
         HttpSession session = request.getSession();
         Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
+        if (staff == null) {
             return "jsp/index";
         }
-        
+
         ArrayList<WrongPlate> listWrongPlate = WrongPlateDAO.getListWrongPlateByParkId(staff.getParkid());
-        mm.put("listWrongPlate",listWrongPlate);
-        
-        return "jsp/staff/fixWrongPlate" ;
+        mm.put("listWrongPlate", listWrongPlate);
+
+        return "jsp/staff/fixWrongPlate";
     }
-    
-    @RequestMapping(value="/editWrongPlate", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/editWrongPlate", method = RequestMethod.POST)
     public String editWrongPlate(HttpServletRequest request, ModelMap mm) {
-        
+
         HttpSession session = request.getSession();
         Staff staff = (Staff) session.getAttribute("staff");
-        if(staff == null) {
+        if (staff == null) {
             return "jsp/index";
         }
-        
+
         try {
             request.setCharacterEncoding("UTF-8");
             String plate = request.getParameter("plate");
             String plate_id = request.getParameter("plate_id");
             int plateId = Integer.parseInt(plate_id);
-            int parkid = staff.getParkid() ;
-            
+            int parkid = staff.getParkid();
+
             boolean editFixedPlateResult = WrongPlateDAO.editFixPlate(plate, plateId, parkid);
 
         } catch (Exception e) {
-            System.out.println("Exeption editWrongPlate: "+ e.getMessage());
+            System.out.println("Exeption editWrongPlate: " + e.getMessage());
         }
-        mm.put("script", "window.location = 'staffFixPlate';") ;
-        return "jsp/staff/fixWrongPlate" ;
+        mm.put("script", "window.location = 'staffFixPlate';");
+        return "jsp/staff/fixWrongPlate";
     }
 }

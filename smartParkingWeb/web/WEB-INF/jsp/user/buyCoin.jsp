@@ -9,28 +9,31 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width initial-scale=1">
-        <title>Buy Coin</title>
 
-        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
-        <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    <title>Buy Coin</title>
 
-    </head>
-    <body>
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+
     <body>
         <!-- navbar -->
         <jsp:include page="../partition/navbar.jsp"></jsp:include>
-            <!-- End message -->
+        <!-- End message -->
         <jsp:include page="../partition/message.jsp"></jsp:include>
-            <!-- Content -->
-            <div class="content container">
-                <div class="row">
-                    <!-- NAV LEFT -->
+        <!-- Content -->
+        <div class="content container">
+            <div class="row">
+                <!-- NAV LEFT -->
                 <jsp:include page="../partition/navLeft.jsp"></jsp:include>
                 <div class="col-md-9 contentRight">
 
@@ -45,7 +48,8 @@
 
                                     <div class="form-group">
                                         <label for="">Enter Amount *</label>
-                                        <input type="number" class="form-control" placeholder="Enter amount" required="required" name="coin">
+                                        <input type="number" class="form-control" placeholder="Enter amount" required="required"
+                                            name="coin">
                                     </div>
 
                                     <div>
@@ -73,26 +77,27 @@
     </body>
 </body>
 <script>
-        
-        function formSubmit(dataSend, url) {
-            $.ajax({
-                method: "POST",
-                url: url,
-//                async: false,
-                data: dataSend,
-                success: function (data) { 
-                    var message = data; 
-                    console.log(message);
-                    $("#modalMessage").text(message);
-                    showMessage();
-                }
-//           
-            });
-        }
-        $("#buyCoinForm").submit(function(e){
-            e.preventDefault();
-            var dataSend = $("#buyCoinForm").serialize();
-            formSubmit(dataSend,"buyCoinAction");
+
+    function formSubmit(dataSend, url) {
+        $.ajax({
+            method: "POST",
+            url: url,
+            //                async: false,
+            data: dataSend,
+            success: function (data) {
+                var message = data;
+                console.log(message);
+                $("#modalMessage").text(message);
+                showMessage();
+            }
+            //           
         });
-    </script>
+    }
+    $("#buyCoinForm").submit(function (e) {
+        e.preventDefault();
+        var dataSend = $("#buyCoinForm").serialize();
+        formSubmit(dataSend, "buyCoinAction");
+    });
+</script>
+
 </html>

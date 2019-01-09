@@ -21,24 +21,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author linhph
  */
 @Controller
-@RequestMapping(value="/ticket")
+@RequestMapping(value = "/ticket")
 public class TicketController {
-    @RequestMapping(value="/manageTiket", method = RequestMethod.GET)
+    @RequestMapping(value = "/manageTiket", method = RequestMethod.GET)
     public String userTiketPage(HttpServletRequest request, ModelMap mm) {
         HttpSession session = request.getSession();
         User us = (User) session.getAttribute("user");
-        if(us == null)
+        if (us == null)
             return "jsp/index";
         int userid = us.getUserId();
-        
+
         ArrayList<Ticket> listTicket = TicketDAO.getListTicketByUserId(userid);
-        
-        for(Ticket t: listTicket) {    
+
+        for (Ticket t : listTicket) {
             System.out.println(t.getCheckoutTime());
         }
         mm.put("menuitem", "tiketmenu");
         mm.put("listTicket", listTicket);
-        
+
         return "jsp/user/userTicket";
     }
 }

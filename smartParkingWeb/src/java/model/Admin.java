@@ -18,26 +18,27 @@ public class Admin implements Serializable {
     private int id;
     private String username;
 
-    
-    public Admin() {}
-    
+    public Admin() {
+    }
+
     public Admin(String username, String password) {
         try {
             DbConnect connect = new DbConnect();
             String query = "Select id, username From admin where username=? and password = md5(?) and status='working';";
             PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
-            st.setString(1,username);
-            st.setString(2,password);
+            st.setString(1, username);
+            st.setString(2, password);
             ResultSet rs = st.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 this.id = rs.getInt("id");
                 this.username = rs.getString("username");
             }
         } catch (Exception e) {
             System.out.println("Can't get Admin!");
         }
-        System.out.println("Admin: "+ this.username );
+        System.out.println("Admin: " + this.username);
     }
+
     public int getId() {
         return id;
     }
@@ -54,5 +55,4 @@ public class Admin implements Serializable {
         this.username = username;
     }
 
-    
 }

@@ -21,7 +21,6 @@ public class WrongPlate {
     public WrongPlate() {
     }
 
-    
     public String getFixedPlate() {
         return fixedPlate;
     }
@@ -30,7 +29,6 @@ public class WrongPlate {
         this.fixedPlate = fixedPlate;
     }
 
-    
     public int getId() {
         return id;
     }
@@ -78,6 +76,5 @@ public class WrongPlate {
     public void setCheckinTime(String checkinTime) {
         this.checkinTime = checkinTime;
     }
-    
 
 }

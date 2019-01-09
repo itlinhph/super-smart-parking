@@ -39,7 +39,7 @@ public class Staff implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -87,8 +87,5 @@ public class Staff implements Serializable {
     public void setCreated(String created) {
         this.created = created;
     }
-    
-    
-    
-    
+
 }

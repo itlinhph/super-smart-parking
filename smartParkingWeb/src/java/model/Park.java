@@ -21,7 +21,7 @@ public class Park {
 
     public Park() {
     }
-    
+
     public int getId() {
         return id;
     }
@@ -69,6 +69,5 @@ public class Park {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
+
 }

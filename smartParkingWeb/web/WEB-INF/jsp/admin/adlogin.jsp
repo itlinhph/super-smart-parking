@@ -8,52 +8,55 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width initial-scale=1">
-        <title>Admin login</title>
+<head>
 
-        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
-        <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    <title>Admin login</title>
 
-    </head>
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
 
-    <body>
-        <!-- navbar -->
-        <jsp:include page="../partition/navbar.jsp"></jsp:include>
-        <!-- End navbar -->
-        <jsp:include page="../partition/message.jsp"></jsp:include>
-        <!-- Sign Up/Login Tab -->
-        <div id="signupLoginTab" class="well">
-            
-            <div class="tab-content">
+</head>
 
-                <div id="login">
-                    
-                    <form action="${pageContext.request.contextPath}/login/adminLogin" method="POST" role="form">
-                        <br>
-                        <div class="form-group">
-                            <label for="">Admin</label>
-                            <input type="text" class="form-control" id="username"  placeholder="Username" required="required" name="username">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password" required="required" name="password">
-                        </div>
-                        <br>
-                        <button id="loginBtn" type="submit" class="btn btn-success">Log In</button>
-                    </form>
+<body>
+    <!-- navbar -->
+    <jsp:include page="../partition/navbar.jsp"></jsp:include>
+    <!-- End navbar -->
+    <jsp:include page="../partition/message.jsp"></jsp:include>
+    <!-- Sign Up/Login Tab -->
+    <div id="signupLoginTab" class="well">
+
+        <div class="tab-content">
+
+            <div id="login">
+
+                <form action="${pageContext.request.contextPath}/login/adminLogin" method="POST" role="form">
                     <br>
-                </div>
-                
+                    <div class="form-group">
+                        <label for="">Admin</label>
+                        <input type="text" class="form-control" id="username" placeholder="Username" required="required"
+                            name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" required="required"
+                            name="password">
+                    </div>
+                    <br>
+                    <button id="loginBtn" type="submit" class="btn btn-success">Log In</button>
+                </form>
+                <br>
             </div>
+
         </div>
-        <!-- End Tab -->
-    </body>
+    </div>
+    <!-- End Tab -->
+</body>
 
 
 </html>

@@ -23,8 +23,6 @@
 
     </head>
     <body>
-
-
         <!-- navbar -->
         <jsp:include page="staffNav.jsp"></jsp:include>
             <!-- End message -->
@@ -32,19 +30,15 @@
             <!-- Content -->
             <div class="content container">
                 <div class="row">
-                   
                         <div class="row">
-
                             <div class="col-sm-6 col-md-4 col-lg-4">
 
                                 <div class="table-bordered">
-                                    <img src="${pageContext.request.contextPath}/resources/images/plate/${vehicle.getImg()}" class="img-display table-bordered img-responsive">
-                                    
+                                    <img src="${pageContext.request.contextPath}/resources/images/plate/${vehicle.getImg()}" class="img-display table-bordered img-responsive">      
                                 </div>
                                 <span class="labelImgCheckOut">Registered Image</span>
                             </div>
                             <div class="col-sm-6 col-md-4 col-lg-4">
-                                
                                 <div class="table-bordered">
                                     <img src="${pageContext.request.contextPath}/resources/images/plate/${checkoutImg}" class="img-display table-bordered img-responsive">
                                 </div>
@@ -82,12 +76,9 @@
                                 </form>
                             </div>
                         </div>
-                    
                     <hr>
                 <!-- ./row -->
-
             </div>  
-
         </div>
     </body>
 

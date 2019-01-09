@@ -9,68 +9,72 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width initial-scale=1">
-        <title>Manage User</title>
 
-        <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
-        <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    <title>Manage User</title>
 
-    </head>
-    <body>
-        
-        <jsp:include page="adNavBar.jsp"></jsp:include>
-        <jsp:include page="../partition/message.jsp"></jsp:include>
-            <!-- Content -->
-            <div class="content container">
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet" type="text/css">
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/script.js" type="text/javascript"></script>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <hr>
-                    <div class="titleParking">
-                        All user information:
-                    </div>
-                    <table class="table table-bordered table-hover table-striped">
-                        <thead>
+</head>
+
+<body>
+
+    <jsp:include page="adNavBar.jsp"></jsp:include>
+    <jsp:include page="../partition/message.jsp"></jsp:include>
+    <!-- Content -->
+    <div class="content container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+                <div class="titleParking">
+                    All user information:
+                </div>
+                <table class="table table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>#No</th>
+                            <th>Username</th>
+                            <th>Fullname</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="user" items="${listUser}">
                             <tr>
-                                <th>#No</th>
-                                <th>Username</th>
-                                <th>Fullname</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Status</th>
-                                <th>Created</th>
-                                <th>Action</th>
+                                <td>${user.getUserId()}</td>
+                                <td>${user.getUsername()}</td>
+                                <td>${user.getFullname()}</td>
+                                <td>${user.getEmail()}</td>
+                                <td>${user.getPhone()}</td>
+                                <td>${user.getStatus()}</td>
+                                <td>${user.getCreated()}</td>
+                                <td> <a href="#deactive" data-toggle="modal" class="btn btn-danger btnSetstatus ${user.getStatus()=="
+                                        deactive"? "hide" :""}">Deactive</a>
+                                    <a href="#active" data-toggle="modal" class="btn btn-primary btnSetstatus ${user.getStatus()=="
+                                        deactive"? "" :"hide"}">Active</a>
+                                    <input name="idUser" class="hide" value="${user.getUserId()}"></td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="user" items="${listUser}">
-                                <tr>
-                                    <td>${user.getUserId()}</td>
-                                    <td>${user.getUsername()}</td>
-                                    <td>${user.getFullname()}</td>
-                                    <td>${user.getEmail()}</td>
-                                    <td>${user.getPhone()}</td>
-                                    <td>${user.getStatus()}</td>
-                                    <td>${user.getCreated()}</td>
-                                    <td> <a href="#deactive" data-toggle="modal" class="btn btn-danger btnSetstatus ${user.getStatus()=="deactive"? "hide":""}">Deactive</a>
-                                        <a href="#active" data-toggle="modal" class="btn btn-primary btnSetstatus ${user.getStatus()=="deactive"? "":"hide"}">Active</a> 
-                                        <input name="idUser" class="hide" value="${user.getUserId()}"></td>
-                                </tr>
-                            </c:forEach> 
-                        </tbody>
-                    </table>
-                  <hr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+                <hr>
             </div>
             <hr>
-        </div> 
-            </div>
-        <!-- End container -->
-        <!-- modal-delete-->
+        </div>
+    </div>
+    <!-- End container -->
+    <!-- modal-delete-->
     <div class="modal fade" id="deactive">
         <form action="adSetStatusUser" method="POST" role="form">
             <div class="modal-dialog">
@@ -85,8 +89,8 @@
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         <input type="hidden" name="idUser" value="" class="idUser">
-                        <input type="hidden" name="status" value="deactive" >
-                        <button type="submit" class="btn btn-danger" >YES</button>
+                        <input type="hidden" name="status" value="deactive">
+                        <button type="submit" class="btn btn-danger">YES</button>
                     </div>
                 </div>
             </div>
@@ -107,8 +111,8 @@
 
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         <input type="hidden" name="idUser" value="" class="idUser">
-                        <input type="hidden" name="status" value="working" >
-                        <button type="submit" class="btn btn-primary" >YES</button>
+                        <input type="hidden" name="status" value="working">
+                        <button type="submit" class="btn btn-primary">YES</button>
                     </div>
                 </div>
             </div>
@@ -118,17 +122,14 @@
 
 </body>
 <script>
-    
-    $(".btnSetstatus").click(function(){
-            var x= $(this).parent().find("input").val();
-            console.log(x);
-            $(".idUser").val(x);
-            
+
+    $(".btnSetstatus").click(function () {
+        var x = $(this).parent().find("input").val();
+        console.log(x);
+        $(".idUser").val(x);
+
     });
 
 </script>
+
 </html>
-
-
-
-

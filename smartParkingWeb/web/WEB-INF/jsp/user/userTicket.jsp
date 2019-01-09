@@ -21,8 +21,6 @@
 
     </head>
     <body>
-
-
         <!-- navbar -->
         <jsp:include page="../partition/navbar.jsp"></jsp:include>
             <!-- End message -->
@@ -36,7 +34,7 @@
                     <!-- END NAV LEFT -->
                 <div class="col-md-9 contentRight">
                     <br>
-                    Your ticket history over alltime:
+                    <h3>Your ticket history over all time:</h3>
                     <hr>
                     <table class="table table-bordered table-hover table-striped">
                         <thead>
@@ -78,7 +76,6 @@
         <script>
             $(".statusTicket:contains('working')").parent().css("color", "red");
         </script>
-
 
     </body>
 </html>

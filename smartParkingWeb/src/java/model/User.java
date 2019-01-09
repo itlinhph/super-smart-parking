@@ -23,12 +23,11 @@ public class User implements Serializable {
     private int coin_remain;
     private String created;
     private ArrayList<Vehicle> listVehicle;
-    
-    
+
     public User() {
-        
+
     }
-    
+
     public User(String username, String email, String password, String fullname, String phone) {
         this.username = username;
         this.password = password;
@@ -36,7 +35,7 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
     }
-    
+
     public int getUserId() {
         return userId;
     }
@@ -116,6 +115,5 @@ public class User implements Serializable {
     public void setListVehicle(ArrayList<Vehicle> listVehicle) {
         this.listVehicle = listVehicle;
     }
-    
 
 }

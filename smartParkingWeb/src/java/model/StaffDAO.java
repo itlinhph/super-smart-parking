@@ -16,23 +16,23 @@ import otherAddOn.DbConnect;
  * @author linhph
  */
 public class StaffDAO {
-    
+
     public static Staff checkValidLogin(String staffCode, String password) throws SQLException, ClassNotFoundException {
         DbConnect connect = new DbConnect();
-        String query = "SELECT id from staff WHERE staff_code =? and password = md5(?)" ;
+        String query = "SELECT id from staff WHERE staff_code =? and password = md5(?)";
         PreparedStatement statement = connect.con.prepareStatement(query);
         statement.setString(1, staffCode);
         statement.setString(2, password);
-        
+
         ResultSet rs = statement.executeQuery();
-        if(rs.next()) {
+        if (rs.next()) {
             int sid = rs.getInt("id");
             Staff staff = getStaffBySId(sid);
             return staff;
         }
         return null;
     }
-    
+
     public static Staff getStaffBySId(int sid) throws SQLException, ClassNotFoundException {
         Staff s = new Staff();
         DbConnect connect = new DbConnect();
@@ -48,24 +48,23 @@ public class StaffDAO {
         s.setParkid(rs.getInt("park_id"));
         s.setStatus(rs.getString("status"));
         s.setCreated(rs.getString("created"));
-        
+
         return s;
     }
-    
+
     public static ArrayList<Staff> getListStaff() {
-       
+
         ArrayList<Staff> listStaff = new ArrayList<Staff>();
-        
+
         try {
             DbConnect connect = new DbConnect();
-            String query = 
-                "SELECT s.id, s.staff_code, s.staff_name, p.park_code, s.status, s.created "
-              + "FROM staff s, park p WHERE s.park_id = p.id order by status desc;";
-            
+            String query = "SELECT s.id, s.staff_code, s.staff_name, p.park_code, s.status, s.created "
+                    + "FROM staff s, park p WHERE s.park_id = p.id order by status desc;";
+
             PreparedStatement statement = connect.con.prepareStatement(query);
-            
+
             ResultSet rs = statement.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 Staff s = new Staff();
                 s.setId(rs.getInt("id"));
                 s.setStaffCode(rs.getString("staff_code"));
@@ -75,19 +74,18 @@ public class StaffDAO {
                 s.setCreated(rs.getString("created"));
                 listStaff.add(s);
             }
-            
+
             connect.con.close();
+        } catch (Exception e) {
+
+            System.out.println("Error getListStaff: " + e.getMessage());
         }
-        catch (Exception e) {
-            
-            System.out.println("Error getListStaff: "+ e.getMessage());
-        }
-        
+
         return listStaff;
     }
-    
+
     public static boolean addStaff(String scode, String name, int parkid) {
-        
+
         try {
             DbConnect connect = new DbConnect();
             String query = "Insert into staff(staff_code, password, staff_name, park_id) values (?, md5(?), ?, ?);";
@@ -97,58 +95,54 @@ public class StaffDAO {
             statement.setString(3, name);
             statement.setInt(4, parkid);
             int result = statement.executeUpdate();
-            if(result ==1)
+            if (result == 1)
                 return true;
-        }
-        catch (Exception e) {
-            System.out.println("SQL Exeption: "+ e.getMessage());
+        } catch (Exception e) {
+            System.out.println("SQL Exeption: " + e.getMessage());
         }
 
         return false;
     }
-    
+
     public static boolean checkStaffCode(String scode) throws SQLException, ClassNotFoundException {
         DbConnect connect = new DbConnect();
         String query = "SELECT id FROM staff WHERE staff_code =?";
         PreparedStatement st = (PreparedStatement) connect.con.prepareStatement(query);
-        st.setString(1,scode);
+        st.setString(1, scode);
         ResultSet rs = st.executeQuery();
-        
-        if(rs.next()) {
+
+        if (rs.next()) {
             return true;
         }
-        
+
         return false;
     }
-    
+
     public static boolean setStatusStaff(int idStaff, String status) {
-        
+
         try {
             DbConnect connect = new DbConnect();
-            String query = "UPDATE staff SET status = ? WHERE (id = ?)" ;
+            String query = "UPDATE staff SET status = ? WHERE (id = ?)";
             PreparedStatement statement = (PreparedStatement) connect.con.prepareStatement(query);
             statement.setString(1, status);
             statement.setInt(2, idStaff);
 
             int rs = statement.executeUpdate();
-            if(rs >0)
+            if (rs > 0)
                 return true;
             connect.con.close();
         } catch (Exception e) {
-            System.out.println("Exeption setstatus staff: "+ e.getMessage());
-            
+            System.out.println("Exeption setstatus staff: " + e.getMessage());
+
         }
-        
+
         return false;
     }
-    
-    
-//    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        Staff s = getStaffBySId(1);
-//        System.out.println(s.getStaffName());
-//    }
 
+    // public static void main(String[] args) throws SQLException,
+    // ClassNotFoundException {
+    // Staff s = getStaffBySId(1);
+    // System.out.println(s.getStaffName());
+    // }
 
-
- 
 }

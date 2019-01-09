@@ -26,109 +26,105 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 
-@RequestMapping(value="/login") 
+@RequestMapping(value = "/login")
 public class LoginController {
-    
-    @RequestMapping(value="", method=RequestMethod.GET)
-    public String loginPage( HttpServletRequest request,HttpServletResponse response, ModelMap mm) throws IOException {
-        
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public String loginPage(HttpServletRequest request, HttpServletResponse response, ModelMap mm) throws IOException {
+
         try {
             request.setCharacterEncoding("utf-8");
             String action = request.getParameter("action");
-            
+
             int isLogin = 1;
-            if(action !=null && action.equals("signup")) {
+            if (action != null && action.equals("signup")) {
                 isLogin = 0;
             }
             mm.put("isLogin", isLogin);
-            
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.sendRedirect(request.getContextPath()+"/index.html");
+            response.sendRedirect(request.getContextPath() + "/index.html");
         }
-        
-        
-        return "jsp/login" ;
+
+        return "jsp/login";
     }
-    
-    @RequestMapping(value="/loginForm", method=RequestMethod.POST)
-    public String loginForm( HttpServletRequest request,HttpServletResponse response, ModelMap mm) throws IOException {
+
+    @RequestMapping(value = "/loginForm", method = RequestMethod.POST)
+    public String loginForm(HttpServletRequest request, HttpServletResponse response, ModelMap mm) throws IOException {
         try {
             request.setCharacterEncoding("UTF-8");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             String accountType = request.getParameter("accountType");
-//            System.out.println(username + password);
-            if(accountType.equals("staff")) {
-                Staff staff = StaffDAO.checkValidLogin(username, password) ;
-                if(staff != null) {
+            // System.out.println(username + password);
+            if (accountType.equals("staff")) {
+                Staff staff = StaffDAO.checkValidLogin(username, password);
+                if (staff != null) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("staff", staff); 
-                    response.sendRedirect(request.getContextPath()+"/park/staffParkInfor"); 
-                }
-                else
+                    session.setAttribute("staff", staff);
+                    response.sendRedirect(request.getContextPath() + "/park/staffParkInfor");
+                } else
                     mm.put("message", "Login false, wrong username or password!");
-            return "jsp/login";
+                return "jsp/login";
             }
-            
+
             User user = UserDAO.checkValidLogin(username, password);
-            if(user != null) {
+            if (user != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("user", user); 
-                response.sendRedirect(request.getContextPath()+"/index.html"); 
-            }
-            else
+                session.setAttribute("user", user);
+                response.sendRedirect(request.getContextPath() + "/index.html");
+            } else
                 mm.put("message", "Login false, wrong username or password!");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            response.sendRedirect(request.getContextPath()+"/index.html");
+            response.sendRedirect(request.getContextPath() + "/index.html");
         }
-        
+
         return "jsp/login";
     }
-    @RequestMapping(value="/adminLogin", method=RequestMethod.POST)
-    public String adminLoginForm( HttpServletRequest request,HttpServletResponse response, ModelMap mm) throws IOException {
+
+    @RequestMapping(value = "/adminLogin", method = RequestMethod.POST)
+    public String adminLoginForm(HttpServletRequest request, HttpServletResponse response, ModelMap mm)
+            throws IOException {
         try {
             request.setCharacterEncoding("UTF-8");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            
+
             Admin admin = new Admin(username, password);
-            if(admin.getUsername() != null) {
+            if (admin.getUsername() != null) {
                 HttpSession session = request.getSession();
                 session.setAttribute("admin", admin);
-                response.sendRedirect(request.getContextPath()+"/park/adminParkInfor");
-            }
-            else
+                response.sendRedirect(request.getContextPath() + "/park/adminParkInfor");
+            } else
                 mm.put("message", "Wrong username or password!");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        
+
         return "jsp/admin/adlogin";
     }
-    
-    @RequestMapping(value="/logout", method=RequestMethod.GET)
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public void logOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         session.invalidate();
         response.sendRedirect(request.getContextPath());
 
     }
-    
-    @RequestMapping(value="/admin", method=RequestMethod.GET)
+
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminLogin() throws IOException {
-        
-        return "jsp/admin/adlogin" ;
+
+        return "jsp/admin/adlogin";
 
     }
-    
-    @RequestMapping(value="/registerUser", method=RequestMethod.POST)
+
+    @RequestMapping(value = "/registerUser", method = RequestMethod.POST)
     @ResponseBody
-    public String registerUser (HttpServletRequest request) {
-        
+    public String registerUser(HttpServletRequest request) {
+
         String message = "";
         try {
             request.setCharacterEncoding("UTF-8");
@@ -136,31 +132,24 @@ public class LoginController {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             String fullname = request.getParameter("fullname");
-            
+
             String phone = request.getParameter("phone");
-            
-            
-            if(UserDAO.checkUserExist(username)){
+
+            if (UserDAO.checkUserExist(username)) {
                 message = "Username exist!";
-            }
-            else {
+            } else {
                 boolean addUserResult = UserDAO.addUser(username, email, password, fullname, phone);
-                if(addUserResult)
+                if (addUserResult)
                     message = "Register Success!";
                 else
                     message = "Register False!";
             }
-            
+
         } catch (Exception e) {
-            System.out.println("Exeption: "+ e.getMessage());
+            System.out.println("Exeption: " + e.getMessage());
             message = e.getMessage();
         }
-        return message ;
+        return message;
     }
-    
-    
-    
-    
-    
-    
+
 }

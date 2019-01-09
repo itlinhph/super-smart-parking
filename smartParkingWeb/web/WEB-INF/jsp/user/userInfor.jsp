@@ -23,8 +23,6 @@
 
     </head>
     <body>
-
-
         <!-- navbar -->
         <jsp:include page="../partition/navbar.jsp"></jsp:include>
             <!-- End message -->

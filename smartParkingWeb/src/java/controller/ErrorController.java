@@ -17,32 +17,31 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class ErrorController {
- 
+
     @RequestMapping(value = "errors", method = RequestMethod.GET)
     public ModelAndView renderErrorPage(HttpServletRequest httpRequest) {
-         
+
         ModelAndView errorPage = new ModelAndView("jsp/errorPage");
         String errorMsg = "";
         int errorCode = (Integer) httpRequest.getAttribute("javax.servlet.error.status_code");
- 
+
         switch (errorCode) {
-            case 400: {
-                errorMsg = "Error 400: Bad Request";
-                break;
-            }
-            
-            case 404: {
-                errorMsg = "Error 404: Page resource not found!";
-                break;
-            }
-            
-            default: {
-                errorMsg = "An unknow error occured!";
-            }
+        case 400: {
+            errorMsg = "Error 400: Bad Request";
+            break;
+        }
+
+        case 404: {
+            errorMsg = "Error 404: Page resource not found!";
+            break;
+        }
+
+        default: {
+            errorMsg = "An unknow error occured!";
+        }
         }
         errorPage.addObject("errorMsg", errorMsg);
         return errorPage;
     }
-     
-  
+
 }
