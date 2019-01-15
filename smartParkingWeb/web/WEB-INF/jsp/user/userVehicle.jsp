@@ -53,7 +53,7 @@
 
                                     <div class="col-sm-6 col-md-4 col-lg-4">
 
-                                        <div class="statusVehicle ${vehicle.getStatus()==" working"?"hide":""}">${vehicle.getStatus()}</div>
+                                        <div class="statusVehicle ${vehicle.getStatus()=="working"?"hide":""}">${vehicle.getStatus()}</div>
                                         <div class="table-bordered productPreview">
                                             <img src="${pageContext.request.contextPath}/resources/images/plate/${vehicle.img}"
                                                 alt="" class="img-display table-bordered img-responsive">
@@ -102,8 +102,7 @@
                                             <br>
                                             <div class="row">
                                                 <div class="col-md-6 ">
-                                                    <button type="submit" class="btn btn-info ${vehicle.getStatus()=="
-                                                        working"?"hide":""}">Update Vehicle</button>
+                                                    <button type="submit" class="btn btn-info ${vehicle.getStatus()=="working"?"hide":""}">Update Vehicle</button>
                                                 </div>
                                                 <div class="col-md-6" align="right">
                                                     <a href="#delete_1" data-toggle="modal" class="btn btn-danger deactiveBtn">Deactive</a>
