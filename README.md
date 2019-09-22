@@ -45,5 +45,5 @@ Project Detail
 
 Contact me
 ------------
-- Facebook: fb.com/deluxe.psk
+- Facebook: fb.com/linhpph
 - Email: linhphanhust@gmail.com
